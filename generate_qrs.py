@@ -8,7 +8,7 @@ import os
 ROOMS = list(range(205, 218)) + list(range(301, 315)) + list(range(403, 418))
 
 OUTPUT_DIR = '/Users/elnurmehtiyev/otel-demo/qr-rooms'
-BASE_URL = 'https://grand-hotel-psi.vercel.app/demo.html'
+BASE_URL = 'https://elnurmeh.github.io/Grand-hotel-Room-Qr/demo.html'
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

@@ -44,41 +44,20 @@
 
   /* HEADER */
   .header {
-    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 50%, var(--ink) 100%);
-    background-size: 200% 200%;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
     color: white;
     padding: 18px 20px 36px;
     position: relative;
     border-radius: 0 0 28px 28px;
     overflow: hidden;
-    animation: gradientShift 14s ease-in-out infinite;
   }
   .header::before {
     content: ""; position: absolute;
     top: -50%; right: -20%;
     width: 230px; height: 230px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,137,62,0.2) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(184,137,62,0.18) 0%, transparent 60%);
     pointer-events: none;
-    animation: drift 16s ease-in-out infinite;
-  }
-  .header::after {
-    content: ""; position: absolute;
-    bottom: -40%; left: -10%;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,137,62,0.12) 0%, transparent 65%);
-    pointer-events: none;
-    animation: drift 20s ease-in-out infinite reverse;
-  }
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  @keyframes drift {
-    0%, 100% { transform: translate(0, 0); }
-    33% { transform: translate(-20px, 15px); }
-    66% { transform: translate(15px, -10px); }
   }
   .header > * { position: relative; z-index: 2; }
   .header-top {
@@ -790,8 +769,7 @@
   .welcome-overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 50%, var(--ink) 100%);
-    background-size: 200% 200%;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -800,25 +778,14 @@
     padding: 32px 24px;
     color: white;
     overflow-y: auto;
-    animation: gradientShift 18s ease-in-out infinite;
   }
   .welcome-overlay::before {
     content: ""; position: absolute;
     top: 10%; right: -10%;
     width: 320px; height: 320px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,137,62,0.15) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(184,137,62,0.13) 0%, transparent 65%);
     pointer-events: none;
-    animation: drift 22s ease-in-out infinite;
-  }
-  .welcome-overlay::after {
-    content: ""; position: absolute;
-    bottom: 5%; left: -15%;
-    width: 280px; height: 280px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,137,62,0.1) 0%, transparent 60%);
-    pointer-events: none;
-    animation: drift 26s ease-in-out infinite reverse;
   }
   .welcome-overlay > * { position: relative; z-index: 1; }
   .welcome-overlay.hidden { display: none; }
@@ -950,13 +917,8 @@
     position: absolute;
     width: 220px; height: 220px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,137,62,0.28) 0%, rgba(184,137,62,0.08) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(184,137,62,0.22) 0%, rgba(184,137,62,0.06) 40%, transparent 70%);
     z-index: 0;
-    animation: haloPulse 4s ease-in-out infinite;
-  }
-  @keyframes haloPulse {
-    0%, 100% { transform: scale(1); opacity: 0.7; }
-    50% { transform: scale(1.18); opacity: 1; }
   }
   .welcome-logo-img {
     height: 135px;
@@ -1503,9 +1465,9 @@
 
   /* CALL DIALOG */
   .call-dialog-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.65);
     display: none; align-items: center; justify-content: center;
-    z-index: 500; padding: 20px; backdrop-filter: blur(4px);
+    z-index: 500; padding: 20px;
   }
   .call-dialog-overlay.show { display: flex; animation: fadeIn 0.2s; }
   .call-dialog {
@@ -1720,19 +1682,16 @@
     transform: scale(0.97);
   }
 
-  /* Subtle shine on active order card */
-  .active-order-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(184,137,62,0.08) 50%, transparent 100%);
-    background-size: 200% 100%;
-    border-radius: 16px;
-    animation: shimmer 6s ease-in-out infinite;
-    pointer-events: none;
-  }
   .active-order-card { position: relative; overflow: hidden; }
-  .active-order-card.done::before { display: none; }
+
+  /* DISABLE HEAVY ANIMATIONS ON SLOW DEVICES */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
   /* TOAST */
   .toast {
@@ -2701,6 +2660,17 @@ document.addEventListener('click', e => {
   }
 });
 
+// Pause polling when page is hidden (saves battery)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (chatPollInterval) { clearInterval(chatPollInterval); chatPollInterval = null; }
+  } else {
+    if (!chatPollInterval && loadOrders().some(o => !o.steps[4])) {
+      chatPollInterval = setInterval(pollChatMessages, 5000);
+    }
+  }
+});
+
 function copyWifi() {
   navigator.clipboard?.writeText('Grand@0081');
   const btn = document.getElementById('copyBtn');
@@ -3285,7 +3255,7 @@ async function startStatusProgression() {
     } catch (e) {}
   }
   if (!chatPollInterval) {
-    chatPollInterval = setInterval(pollChatMessages, 2000);
+    chatPollInterval = setInterval(pollChatMessages, 5000);
   }
 }
 
@@ -3445,7 +3415,7 @@ async function openChat() {
     } catch (e) {}
   }
   if (!chatPollInterval) {
-    chatPollInterval = setInterval(pollChatMessages, 2500);
+    chatPollInterval = setInterval(pollChatMessages, 5000);
   }
   setTimeout(() => document.getElementById('chatInput').focus(), 300);
 }
@@ -3629,7 +3599,7 @@ updateNotifBadge();
   renderActiveOrderCard();
   const hasActive = orders.some(o => !o.steps[4]);
   if (hasActive && !chatPollInterval) {
-    chatPollInterval = setInterval(pollChatMessages, 2000);
+    chatPollInterval = setInterval(pollChatMessages, 5000);
   }
 })();
 </script>
