@@ -1276,6 +1276,128 @@
     font-size: 13px;
   }
 
+  /* CITY GUIDE */
+  .discover-card {
+    margin: 4px 16px 16px;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
+    color: white;
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s;
+    box-shadow: 0 8px 28px rgba(36,61,43,0.25);
+  }
+  .discover-card:active { transform: scale(0.98); }
+  .discover-card::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    top: -30px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(184,137,62,0.35), transparent 70%);
+    pointer-events: none;
+  }
+  .discover-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(184,137,62,0.25);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(184,137,62,0.4);
+  }
+  .discover-info { flex: 1; min-width: 0; position: relative; z-index: 2; }
+  html[dir="rtl"] .discover-info { text-align: right; }
+  .discover-title { font-size: 16px; font-weight: 600; margin-bottom: 3px; letter-spacing: -0.3px; }
+  .discover-sub { font-size: 12px; opacity: 0.75; line-height: 1.4; }
+  .discover-arrow { color: var(--gold); font-size: 22px; flex-shrink: 0; position: relative; z-index: 2; }
+  html[dir="rtl"] .discover-arrow { transform: scaleX(-1); }
+
+  .city-hero {
+    margin: 16px;
+    background: var(--card);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .city-map { width: 100%; height: 220px; border: none; display: block; }
+  .city-hero-info { padding: 16px 18px; border-top: 1px solid var(--line); }
+  .city-hero-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--gold); font-weight: 700; margin-bottom: 4px;
+  }
+  .city-hero-name { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .city-hero-address { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .city-hero-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .city-hero-btn {
+    flex: 1; padding: 10px 12px; background: var(--bg); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 10px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    text-decoration: none;
+  }
+  .city-hero-btn:active { background: var(--green-soft); }
+  .city-hero-btn.primary { background: var(--ink); color: white; border-color: var(--ink); }
+  .city-section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--ink-soft); padding: 0 20px; margin: 24px 0 12px; font-weight: 600;
+  }
+  .city-quick-row {
+    display: flex; gap: 8px; padding: 0 16px; margin-bottom: 8px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .city-quick-row::-webkit-scrollbar { display: none; }
+  .city-quick-pill {
+    background: var(--card); padding: 10px 14px; border-radius: 12px;
+    font-size: 12px; color: var(--ink-soft); white-space: nowrap;
+    border: 1px solid var(--line); display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+  }
+  .city-quick-pill strong { color: var(--ink); font-weight: 600; }
+  .sights-grid { padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sight-card {
+    background: var(--card); border-radius: 14px; padding: 14px;
+    border: 1px solid var(--line); cursor: pointer; transition: transform 0.15s;
+    text-align: left; display: flex; flex-direction: column; gap: 6px;
+  }
+  html[dir="rtl"] .sight-card { text-align: right; }
+  .sight-card:active { transform: scale(0.97); }
+  .sight-emoji {
+    width: 44px; height: 44px; border-radius: 10px; background: var(--green-soft);
+    display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 4px;
+  }
+  .sight-name { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .sight-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.4; flex: 1; }
+  .sight-meta {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; color: var(--gold); font-weight: 600; margin-top: 4px;
+  }
+  .tour-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+  .tour-card {
+    background: var(--card); border-radius: 14px; padding: 14px 16px;
+    border: 1px solid var(--line); display: flex; align-items: center; gap: 14px;
+    cursor: pointer; transition: transform 0.15s;
+  }
+  .tour-card:active { transform: scale(0.98); }
+  .tour-emoji {
+    width: 48px; height: 48px; border-radius: 12px; background: var(--green-soft);
+    display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
+  }
+  .tour-info { flex: 1; min-width: 0; }
+  html[dir="rtl"] .tour-info { text-align: right; }
+  .tour-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .tour-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+  .tour-price { font-size: 14px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+
   /* ANIMATIONS */
   html { scroll-behavior: smooth; }
 
@@ -1574,6 +1696,16 @@
   <!-- ACTIVE ORDER CARD -->
   <div class="active-order-card" id="activeOrderCard" style="display:none;"></div>
 
+  <!-- DISCOVER BAKU -->
+  <div class="discover-card" onclick="openScreen('city')">
+    <div class="discover-icon">🏛️</div>
+    <div class="discover-info">
+      <div class="discover-title" data-i18n="discoverTitle">Bakını Kəşf Et</div>
+      <div class="discover-sub" data-i18n="discoverSub">Xəritə, görməli yerlər, tur paketləri</div>
+    </div>
+    <div class="discover-arrow">→</div>
+  </div>
+
   <!-- HELP CARD -->
   <div class="help-card" onclick="openChat()">
     <div class="help-icon">💬</div>
@@ -1608,6 +1740,42 @@
     <div class="screen-title" data-i18n="receptionTitle">Resepsion</div>
   </div>
   <div class="screen-content"><div class="item-list" id="receptionList"></div></div>
+</div>
+
+<div class="screen" id="screen-city">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="discoverTitle">Bakını Kəşf Et</div>
+  </div>
+  <div class="screen-content" style="padding: 0;">
+    <div class="city-hero">
+      <iframe class="city-map" src="https://maps.google.com/maps?q=Grand+Hotel+Baku+Central+Park&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="city-hero-info">
+        <div class="city-hero-label" data-i18n="hotelLocation">YERLƏŞMƏ</div>
+        <div class="city-hero-name">Grand Hotel Baku Central Park</div>
+        <div class="city-hero-address" data-i18n="hotelAddress">Mərkəzdə · Park və Bulvara yaxın</div>
+        <div class="city-hero-actions">
+          <a class="city-hero-btn primary" href="https://maps.google.com/?q=Grand+Hotel+Baku+Central+Park" target="_blank">🗺 <span data-i18n="openMaps">Xəritədə aç</span></a>
+          <a class="city-hero-btn" href="https://maps.google.com/?daddr=Grand+Hotel+Baku+Central+Park" target="_blank">🚖 <span data-i18n="getDirections">Yol göstərici</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="city-quick-row">
+      <div class="city-quick-pill">✈️ <strong data-i18n="airportInfo">Hava limanı: 25 km</strong></div>
+      <div class="city-quick-pill">💱 <strong>AZN ₼</strong></div>
+      <div class="city-quick-pill">🚨 <strong data-i18n="emergency">102 polis · 103 təcili</strong></div>
+      <div class="city-quick-pill">⏰ <strong>UTC+4</strong></div>
+    </div>
+
+    <div class="city-section-title" data-i18n="topSights">Görməli Yerlər</div>
+    <div class="sights-grid" id="sightsGrid"></div>
+
+    <div class="city-section-title" data-i18n="dayTrips">Gündəlik Turlar</div>
+    <div class="tour-list" id="tourList"></div>
+
+    <div style="height: 32px;"></div>
+  </div>
 </div>
 
 <div class="screen" id="screen-orders">
@@ -1780,7 +1948,17 @@ const i18n = {
     orderHistory: "Sifariw tarixçəsi",
     minAgo: "dəq əvvəl",
     hourAgo: "saat əvvəl",
-    dayAgo: "gün əvvəl"
+    dayAgo: "gün əvvəl",
+    discoverTitle: "Bakını Kəşf Et",
+    discoverSub: "Xəritə, görməli yerlər, tur paketləri",
+    hotelLocation: "YERLƏŞMƏ",
+    hotelAddress: "Mərkəzdə · Park və Bulvara yaxın",
+    openMaps: "Xəritədə aç",
+    getDirections: "Yol göstərici",
+    airportInfo: "Hava limanı: 25 km",
+    emergency: "102 polis · 103 təcili",
+    topSights: "Görməli Yerlər",
+    dayTrips: "Gündəlik Turlar"
   },
   en: {
     hotelTagline: "CENTRAL PARK · BAKU",
@@ -1841,7 +2019,17 @@ const i18n = {
     orderHistory: "Order history",
     minAgo: "min ago",
     hourAgo: "h ago",
-    dayAgo: "d ago"
+    dayAgo: "d ago",
+    discoverTitle: "Discover Baku",
+    discoverSub: "Map, sights, tour packages",
+    hotelLocation: "LOCATION",
+    hotelAddress: "City center · Near park & boulevard",
+    openMaps: "Open in Maps",
+    getDirections: "Get directions",
+    airportInfo: "Airport: 25 km",
+    emergency: "102 police · 103 ambulance",
+    topSights: "Top Sights",
+    dayTrips: "Day Trips"
   },
   ru: {
     hotelTagline: "CENTRAL PARK · БАКУ",
@@ -1902,7 +2090,17 @@ const i18n = {
     orderHistory: "История заказов",
     minAgo: "мин назад",
     hourAgo: "ч назад",
-    dayAgo: "дн назад"
+    dayAgo: "дн назад",
+    discoverTitle: "Откройте Баку",
+    discoverSub: "Карта, достопримечательности, туры",
+    hotelLocation: "МЕСТОПОЛОЖЕНИЕ",
+    hotelAddress: "Центр города · Рядом с парком и бульваром",
+    openMaps: "Открыть на карте",
+    getDirections: "Маршрут",
+    airportInfo: "Аэропорт: 25 км",
+    emergency: "102 полиция · 103 скорая",
+    topSights: "Достопримечательности",
+    dayTrips: "Однодневные туры"
   },
   tr: {
     hotelTagline: "CENTRAL PARK · BAKÜ",
@@ -1963,7 +2161,17 @@ const i18n = {
     orderHistory: "Sipariş geçmişi",
     minAgo: "dk önce",
     hourAgo: "sa önce",
-    dayAgo: "gün önce"
+    dayAgo: "gün önce",
+    discoverTitle: "Bakü'yü Keşfet",
+    discoverSub: "Harita, gezilecek yerler, turlar",
+    hotelLocation: "KONUM",
+    hotelAddress: "Şehir merkezinde · Park ve sahile yakın",
+    openMaps: "Haritada aç",
+    getDirections: "Yol tarifi",
+    airportInfo: "Havalimanı: 25 km",
+    emergency: "102 polis · 103 ambulans",
+    topSights: "Gezilecek Yerler",
+    dayTrips: "Günlük Turlar"
   },
   ar: {
     hotelTagline: "سنترال بارك · باكو",
@@ -2024,7 +2232,17 @@ const i18n = {
     orderHistory: "سجل الطلبات",
     minAgo: "د",
     hourAgo: "س",
-    dayAgo: "يوم"
+    dayAgo: "يوم",
+    discoverTitle: "اكتشف باكو",
+    discoverSub: "خريطة، معالم، باقات سياحية",
+    hotelLocation: "الموقع",
+    hotelAddress: "وسط المدينة · قرب الحديقة والكورنيش",
+    openMaps: "افتح في الخرائط",
+    getDirections: "احصل على الاتجاهات",
+    airportInfo: "المطار: 25 كم",
+    emergency: "102 شرطة · 103 إسعاف",
+    topSights: "أبرز المعالم",
+    dayTrips: "جولات يومية"
   }
 };
 
@@ -2180,6 +2398,8 @@ function setLang(newLang) {
   renderAllLists();
   renderCart();
   renderCountryMenu();
+  renderSights();
+  renderTours();
   document.getElementById('langMenu')?.classList.remove('show');
   document.getElementById('welcomeLangMenu')?.classList.remove('show');
   const flag = langToFlag[newLang] || '🌐';
@@ -2311,6 +2531,97 @@ function renderCart() {
       <span>${t('confirmOrder')}</span>
     </button>
   `;
+}
+
+const SIGHTS = [
+  { id: 's1', emoji: '🏛️', map: 'Icherisheher+Baku',
+    name: { az: "İçərişəhər", en: "Old City (Icherisheher)", ru: "Старый город", tr: "İçeri Şehir", ar: "المدينة القديمة" },
+    desc: { az: "UNESCO mirası, qədim qala", en: "UNESCO Heritage, ancient fortress", ru: "Наследие ЮНЕСКО", tr: "UNESCO Mirası", ar: "تراث اليونسكو" },
+    dist: '1.5 km' },
+  { id: 's2', emoji: '🗼', map: 'Maiden+Tower+Baku',
+    name: { az: "Qız Qalası", en: "Maiden Tower", ru: "Девичья башня", tr: "Kız Kalesi", ar: "برج العذراء" },
+    desc: { az: "XII əsr, məşhur simvol", en: "12th century landmark", ru: "Башня XII века", tr: "12. yüzyıl simgesi", ar: "معلم القرن الـ12" },
+    dist: '1.8 km' },
+  { id: 's3', emoji: '🔥', map: 'Flame+Towers+Baku',
+    name: { az: "Alov Qüllələri", en: "Flame Towers", ru: "Пламенные башни", tr: "Alev Kuleleri", ar: "أبراج اللهب" },
+    desc: { az: "Bakının ən tanınan simvolu", en: "Baku's iconic skyline", ru: "Символ современного Баку", tr: "Bakü'nün simgesi", ar: "رمز باكو الحديثة" },
+    dist: '2.2 km' },
+  { id: 's4', emoji: '🏟', map: 'Heydar+Aliyev+Center+Baku',
+    name: { az: "Heydər Əliyev Mərkəzi", en: "Heydar Aliyev Center", ru: "Центр Гейдара Алиева", tr: "Haydar Aliyev Merkezi", ar: "مركز حيدر علييف" },
+    desc: { az: "Zaha Hadid memarlığı", en: "Zaha Hadid architecture", ru: "Архитектура Захи Хадид", tr: "Zaha Hadid mimarisi", ar: "تصميم زها حديد" },
+    dist: '3.5 km' },
+  { id: 's5', emoji: '🌊', map: 'Baku+Boulevard',
+    name: { az: "Bakı Bulvarı", en: "Baku Boulevard", ru: "Приморский бульвар", tr: "Bakü Bulvarı", ar: "كورنيش باكو" },
+    desc: { az: "Xəzər sahili gəzinti", en: "Caspian Sea promenade", ru: "Набережная Каспия", tr: "Hazar kıyısı", ar: "ممشى بحر قزوين" },
+    dist: '1.2 km' },
+  { id: 's6', emoji: '🛕', map: 'Shirvanshah+Palace+Baku',
+    name: { az: "Şirvanşahlar Sarayı", en: "Shirvanshahs' Palace", ru: "Дворец Ширваншахов", tr: "Şirvanşahlar Sarayı", ar: "قصر الشروانشاهيين" },
+    desc: { az: "XV əsr saray kompleksi", en: "15th century palace", ru: "Дворец XV века", tr: "15. yüzyıl sarayı", ar: "قصر القرن الـ15" },
+    dist: '1.6 km' },
+  { id: 's7', emoji: '🛍️', map: 'Nizami+Street+Baku',
+    name: { az: "Nizami küçəsi", en: "Nizami Street", ru: "Улица Низами", tr: "Nizami Caddesi", ar: "شارع نظامي" },
+    desc: { az: "Ticarət, restoran, kafe", en: "Shopping & dining street", ru: "Шоппинг улица", tr: "Alışveriş caddesi", ar: "شارع التسوق" },
+    dist: '0.8 km' },
+  { id: 's8', emoji: '🎨', map: 'Carpet+Museum+Baku',
+    name: { az: "Xalça Muzeyi", en: "Carpet Museum", ru: "Музей ковра", tr: "Halı Müzesi", ar: "متحف السجاد" },
+    desc: { az: "Bükülmüş xalça formasında", en: "Rolled carpet building", ru: "Здание-ковёр", tr: "Halı şeklinde bina", ar: "مبنى السجادة" },
+    dist: '1.3 km' }
+];
+
+const TOURS = [
+  { id: 't1', emoji: '🗿', price: 60,
+    name: { az: "Qobustan & Palçıq Vulkanları", en: "Gobustan & Mud Volcanoes", ru: "Гобустан & Грязевые вулканы", tr: "Gobustan & Çamur Volkanları", ar: "قوبستان والبراكين الطينية" },
+    desc: { az: "4 saat · Petroqliflər + vulkanlar", en: "4h · Petroglyphs + volcanoes", ru: "4ч · Петроглифы + вулканы", tr: "4 saat · Kaya çizimleri", ar: "4 ساعات" } },
+  { id: 't2', emoji: '🔥', price: 70,
+    name: { az: "Yanardağ & Atəşgah", en: "Burning Mountain & Fire Temple", ru: "Огненная гора & Храм огня", tr: "Yanardağ & Ateşgah", ar: "جبل النار ومعبد النار" },
+    desc: { az: "4 saat · Daimi alov", en: "4h · Eternal flame", ru: "4ч · Вечное пламя", tr: "4 saat · Sonsuz alev", ar: "4 ساعات · النار الأبدية" } },
+  { id: 't3', emoji: '🏔️', price: 180,
+    name: { az: "Şahdağ", en: "Shahdag Mountain Resort", ru: "Шахдаг", tr: "Şahdağ", ar: "شاهداغ" },
+    desc: { az: "1 gün · Qar/dağ kurortu", en: "Full day · Mountain resort", ru: "День · Горный курорт", tr: "1 gün · Dağ tatil köyü", ar: "يوم كامل · منتجع جبلي" } },
+  { id: 't4', emoji: '🌲', price: 200,
+    name: { az: "Qəbələ", en: "Gabala", ru: "Габала", tr: "Gabala", ar: "قبلة" },
+    desc: { az: "1 gün · Tufandağ, göllər", en: "Full day · Tufandag, lakes", ru: "День · Туфандаг, озёра", tr: "1 gün · Tufandağ, göller", ar: "يوم كامل" } }
+];
+
+function renderSights() {
+  const container = document.getElementById('sightsGrid');
+  if (!container) return;
+  container.innerHTML = SIGHTS.map(s => `
+    <a class="sight-card" href="https://maps.google.com/?q=${s.map}" target="_blank" rel="noopener">
+      <div class="sight-emoji">${s.emoji}</div>
+      <div class="sight-name">${s.name[lang] || s.name.en}</div>
+      <div class="sight-desc">${s.desc[lang] || s.desc.en}</div>
+      <div class="sight-meta">📍 ${s.dist}</div>
+    </a>
+  `).join('');
+}
+
+function renderTours() {
+  const container = document.getElementById('tourList');
+  if (!container) return;
+  container.innerHTML = TOURS.map(t => `
+    <div class="tour-card" onclick="bookTour('${t.id}')">
+      <div class="tour-emoji">${t.emoji}</div>
+      <div class="tour-info">
+        <div class="tour-name">${t.name[lang] || t.name.en}</div>
+        <div class="tour-desc">${t.desc[lang] || t.desc.en}</div>
+      </div>
+      <div class="tour-price">${t.price} ₼</div>
+    </div>
+  `).join('');
+}
+
+function bookTour(tourId) {
+  const tour = TOURS.find(t => t.id === tourId);
+  if (!tour) return;
+  showToast((lang === 'az' ? 'Sifariw resepsiona göndərilir: ' : 'Order sent to reception: ') + (tour.name[lang] || tour.name.en));
+  // Add tour as an order item
+  cart.push({
+    id: tour.id, icon: tour.emoji, price: tour.price, dept: 'reception',
+    name: tour.name, qty: 1
+  });
+  updateCartBar();
+  setTimeout(() => placeOrder(), 600);
 }
 
 const ORDERS_KEY = 'grandhotel_orders';
@@ -2946,6 +3257,8 @@ function resetGuest() {
 }
 
 renderCountryMenu();
+renderSights();
+renderTours();
 applyI18n();
 renderAllLists();
 checkWelcome();
