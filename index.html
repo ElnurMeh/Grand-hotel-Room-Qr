@@ -3172,6 +3172,60 @@ function renderOrdersList() {
   }).join('');
 }
 
+// ESCALATION — keep pinging until accepted
+function checkEscalations() {
+  const orders = loadOrders();
+  const now = Date.now();
+  let changed = false;
+  for (const order of orders) {
+    if (order.steps && order.steps[2]) continue; // already accepted
+    const age = now - order.createdAt;
+    const escLevel = order.escalation || 0;
+    let newLevel = escLevel;
+    let prefix = '';
+    let urgency = '';
+    if (age > 600000 && escLevel < 4) { newLevel = 4; prefix = '🚨🚨🚨 <b>10 DƏQ — KRİTİK</b>'; urgency = 'critical'; }
+    else if (age > 300000 && escLevel < 3) { newLevel = 3; prefix = '🚨🚨 <b>5 DƏQ — TƏCİLİ</b>'; urgency = 'urgent'; }
+    else if (age > 180000 && escLevel < 2) { newLevel = 2; prefix = '⏰⏰ <b>3 DƏQ keçib</b>'; urgency = 'reminder'; }
+    else if (age > 60000 && escLevel < 1) { newLevel = 1; prefix = '⏰ <b>1 DƏQ keçib — cavab yoxdur</b>'; urgency = 'gentle'; }
+    if (newLevel > escLevel) {
+      sendEscalation(order, prefix, urgency);
+      order.escalation = newLevel;
+      changed = true;
+    }
+  }
+  if (changed) saveOrders(orders);
+}
+
+function sendEscalation(order, prefix, urgency) {
+  const room = order.guest?.room || '—';
+  const name = order.guest?.name || '';
+  const phone = order.guest?.phone || '';
+  const items = order.items.map(i => `${i.qty}× ${i.name[lang] || i.name.en}`).join(', ');
+  const total = order.total || 0;
+  const text = `${prefix}\n\n🔔 <b>Sifariw #${order.id}</b>\n👤 ${escapeHtml(name)} · Otaq ${escapeHtml(String(room))}${phone ? '\n📱 ' + escapeHtml(phone) : ''}\n📋 ${escapeHtml(items)}${total > 0 ? '\n💰 ' + total + ' ₼' : ''}\n\n❗ <b>HƏLƏ QƏBUL EDİLMƏYİB</b>`;
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TG_CHAT_ID,
+      text: text,
+      parse_mode: 'HTML',
+      disable_notification: false,
+      reply_markup: {
+        inline_keyboard: [[
+          { text: '✅ Qəbul', callback_data: `accept_${order.id}` },
+          { text: '🚶 Yolda', callback_data: `delivering_${order.id}` },
+          { text: '✓ Tamam', callback_data: `done_${order.id}` }
+        ]]
+      }
+    })
+  }).catch(() => {});
+}
+
+// Check every 30 seconds
+let escalationInterval = setInterval(checkEscalations, 30000);
+
 async function syncOrderStatuses() {
   try {
     const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates`);
