@@ -1363,6 +1363,108 @@
     border: 1px solid var(--line); display: flex; align-items: center; gap: 6px; flex-shrink: 0;
   }
   .city-quick-pill strong { color: var(--ink); font-weight: 600; }
+
+  /* LIVE DATA CARDS */
+  .live-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; margin-bottom: 16px; }
+  .live-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 14px; position: relative; overflow: hidden; min-height: 110px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .live-card.weather {
+    background: linear-gradient(135deg, #243d2b 0%, #3a5e47 100%);
+    color: white; border-color: transparent;
+  }
+  .live-badge {
+    position: absolute; top: 12px; right: 12px;
+    display: flex; align-items: center; gap: 4px;
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    color: rgba(255,255,255,0.7); text-transform: uppercase;
+  }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #16A34A; animation: livePulse 2s ease-in-out infinite; }
+  .live-card:not(.weather) .live-badge { color: var(--ink-soft); }
+  @keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(22,163,74,0); }
+  }
+  .live-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+    font-weight: 700; margin-bottom: 4px; opacity: 0.75;
+  }
+  .weather-icon { font-size: 38px; line-height: 1; margin: 4px 0; }
+  .weather-temp { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; }
+  .weather-temp .deg { font-size: 18px; opacity: 0.7; font-weight: 500; }
+  .weather-desc { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+  .weather-extra { font-size: 10px; opacity: 0.65; margin-top: 6px; }
+  .currency-rate {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; padding: 3px 0; color: var(--ink);
+  }
+  .currency-rate .from { font-weight: 600; }
+  .currency-rate .to { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .currency-loading { font-size: 11px; color: var(--ink-soft); }
+
+  /* EMERGENCY BUTTONS */
+  .emergency-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    padding: 0 16px; margin-bottom: 8px;
+  }
+  .emergency-btn {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 8px; cursor: pointer; transition: transform 0.15s;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    color: var(--ink); text-decoration: none;
+  }
+  .emergency-btn:active { transform: scale(0.96); }
+  .emergency-btn .icon { font-size: 24px; line-height: 1; }
+  .emergency-btn .num { font-size: 16px; font-weight: 700; color: var(--ink); }
+  .emergency-btn .label { font-size: 10px; color: var(--ink-soft); text-align: center; line-height: 1.2; }
+  .emergency-btn.reception .num { color: var(--gold); }
+  .emergency-btn.police { border-color: rgba(37,99,235,0.3); }
+  .emergency-btn.police .num { color: #2563EB; }
+  .emergency-btn.ambulance { border-color: rgba(220,38,38,0.3); }
+  .emergency-btn.ambulance .num { color: #DC2626; }
+
+  /* CALL DIALOG */
+  .call-dialog-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    display: none; align-items: center; justify-content: center;
+    z-index: 500; padding: 20px; backdrop-filter: blur(4px);
+  }
+  .call-dialog-overlay.show { display: flex; animation: fadeIn 0.2s; }
+  .call-dialog {
+    background: var(--card); border-radius: 20px; padding: 28px 24px;
+    max-width: 320px; width: 100%; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: scaleIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .call-icon {
+    width: 72px; height: 72px; margin: 0 auto 14px; border-radius: 50%;
+    background: var(--green-soft); display: flex; align-items: center;
+    justify-content: center; font-size: 36px;
+    animation: phoneRing 1.5s ease-in-out infinite;
+  }
+  @keyframes phoneRing {
+    0%, 100% { transform: rotate(0); }
+    20%, 60% { transform: rotate(-10deg); }
+    40%, 80% { transform: rotate(10deg); }
+  }
+  .call-name { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .call-number {
+    font-size: 22px; font-weight: 700; color: var(--gold);
+    margin-bottom: 6px; font-variant-numeric: tabular-nums; letter-spacing: 1px;
+  }
+  .call-question { font-size: 13px; color: var(--ink-soft); margin-bottom: 20px; }
+  .call-actions { display: flex; gap: 10px; }
+  .call-btn {
+    flex: 1; padding: 14px; border-radius: 12px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    border: none; transition: transform 0.15s;
+  }
+  .call-btn:active { transform: scale(0.97); }
+  .call-btn.cancel { background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
+  .call-btn.confirm { background: #16A34A; color: white; }
+
   .sights-grid { padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .sight-card {
     background: var(--card); border-radius: 14px; padding: 14px;
@@ -1761,11 +1863,41 @@
       </div>
     </div>
 
-    <div class="city-quick-row">
-      <div class="city-quick-pill">✈️ <strong data-i18n="airportInfo">Hava limanı: 25 km</strong></div>
-      <div class="city-quick-pill">💱 <strong>AZN ₼</strong></div>
-      <div class="city-quick-pill">🚨 <strong data-i18n="emergency">102 polis · 103 təcili</strong></div>
-      <div class="city-quick-pill">⏰ <strong>UTC+4</strong></div>
+    <div class="live-row">
+      <div class="live-card weather">
+        <div class="live-badge"><span class="live-dot"></span> <span data-i18n="liveLabel">CANLI</span></div>
+        <div>
+          <div class="live-label" data-i18n="weatherLabel">Bakı · Hava</div>
+          <div class="weather-icon" id="weatherIcon">⏳</div>
+        </div>
+        <div>
+          <div class="weather-temp"><span id="weatherTemp">—</span><span class="deg">°C</span></div>
+          <div class="weather-desc" id="weatherDesc" data-i18n="loading">Yüklənir...</div>
+        </div>
+      </div>
+      <div class="live-card">
+        <div class="live-badge"><span class="live-dot"></span> <span data-i18n="liveLabel">CANLI</span></div>
+        <div class="live-label" data-i18n="currencyLabel">Valyuta · 1 vahid → AZN</div>
+        <div id="currencyList"><div class="currency-loading" data-i18n="loading">Yüklənir...</div></div>
+      </div>
+    </div>
+
+    <div class="emergency-row">
+      <button class="emergency-btn reception" onclick="askCall('+994122000000', 'Resepsion')">
+        <div class="icon">🛎️</div>
+        <div class="num" data-i18n="reception">Resepsion</div>
+        <div class="label" data-i18n="receptionLabel">Otelin daxili</div>
+      </button>
+      <button class="emergency-btn police" onclick="askCall('102', 'Polis')">
+        <div class="icon">🚓</div>
+        <div class="num">102</div>
+        <div class="label" data-i18n="policeLabel">Polis</div>
+      </button>
+      <button class="emergency-btn ambulance" onclick="askCall('103', 'Təcili Yardım')">
+        <div class="icon">🚑</div>
+        <div class="num">103</div>
+        <div class="label" data-i18n="ambulanceLabel">Təcili yardım</div>
+      </button>
     </div>
 
     <div class="city-section-title" data-i18n="topSights">Görməli Yerlər</div>
@@ -1882,6 +2014,20 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- CALL CONFIRMATION DIALOG -->
+<div class="call-dialog-overlay" id="callDialog">
+  <div class="call-dialog">
+    <div class="call-icon">📞</div>
+    <div class="call-name" id="callName">—</div>
+    <div class="call-number" id="callNumber">—</div>
+    <div class="call-question" data-i18n="callQuestion">Zəng etmək istəyirsiniz?</div>
+    <div class="call-actions">
+      <button class="call-btn cancel" onclick="cancelCall()" data-i18n="callCancel">Ləğv et</button>
+      <button class="call-btn confirm" onclick="doCall()" data-i18n="callDo">Zəng et</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let lang = 'az';
 let cart = [];
@@ -1958,7 +2104,18 @@ const i18n = {
     airportInfo: "Hava limanı: 25 km",
     emergency: "102 polis · 103 təcili",
     topSights: "Görməli Yerlər",
-    dayTrips: "Gündəlik Turlar"
+    dayTrips: "Gündəlik Turlar",
+    liveLabel: "CANLI",
+    weatherLabel: "Bakı · Hava",
+    currencyLabel: "Valyuta · 1 vahid → AZN",
+    loading: "Yüklənir...",
+    reception: "Resepsion",
+    receptionLabel: "Otelin daxili",
+    policeLabel: "Polis",
+    ambulanceLabel: "Təcili yardım",
+    callQuestion: "Zəng etmək istəyirsiniz?",
+    callCancel: "Ləğv et",
+    callDo: "Zəng et"
   },
   en: {
     hotelTagline: "CENTRAL PARK · BAKU",
@@ -2029,7 +2186,18 @@ const i18n = {
     airportInfo: "Airport: 25 km",
     emergency: "102 police · 103 ambulance",
     topSights: "Top Sights",
-    dayTrips: "Day Trips"
+    dayTrips: "Day Trips",
+    liveLabel: "LIVE",
+    weatherLabel: "Baku · Weather",
+    currencyLabel: "Currency · 1 unit → AZN",
+    loading: "Loading...",
+    reception: "Reception",
+    receptionLabel: "Hotel internal",
+    policeLabel: "Police",
+    ambulanceLabel: "Ambulance",
+    callQuestion: "Would you like to call?",
+    callCancel: "Cancel",
+    callDo: "Call"
   },
   ru: {
     hotelTagline: "CENTRAL PARK · БАКУ",
@@ -2100,7 +2268,18 @@ const i18n = {
     airportInfo: "Аэропорт: 25 км",
     emergency: "102 полиция · 103 скорая",
     topSights: "Достопримечательности",
-    dayTrips: "Однодневные туры"
+    dayTrips: "Однодневные туры",
+    liveLabel: "ВЖИВУЮ",
+    weatherLabel: "Баку · Погода",
+    currencyLabel: "Валюта · 1 единица → AZN",
+    loading: "Загрузка...",
+    reception: "Ресепшен",
+    receptionLabel: "Внутренний",
+    policeLabel: "Полиция",
+    ambulanceLabel: "Скорая",
+    callQuestion: "Хотите позвонить?",
+    callCancel: "Отмена",
+    callDo: "Звонить"
   },
   tr: {
     hotelTagline: "CENTRAL PARK · BAKÜ",
@@ -2171,7 +2350,18 @@ const i18n = {
     airportInfo: "Havalimanı: 25 km",
     emergency: "102 polis · 103 ambulans",
     topSights: "Gezilecek Yerler",
-    dayTrips: "Günlük Turlar"
+    dayTrips: "Günlük Turlar",
+    liveLabel: "CANLI",
+    weatherLabel: "Bakü · Hava",
+    currencyLabel: "Döviz · 1 birim → AZN",
+    loading: "Yükleniyor...",
+    reception: "Resepsiyon",
+    receptionLabel: "Otel dahili",
+    policeLabel: "Polis",
+    ambulanceLabel: "Ambulans",
+    callQuestion: "Aramak istiyor musunuz?",
+    callCancel: "İptal",
+    callDo: "Ara"
   },
   ar: {
     hotelTagline: "سنترال بارك · باكو",
@@ -2242,7 +2432,18 @@ const i18n = {
     airportInfo: "المطار: 25 كم",
     emergency: "102 شرطة · 103 إسعاف",
     topSights: "أبرز المعالم",
-    dayTrips: "جولات يومية"
+    dayTrips: "جولات يومية",
+    liveLabel: "مباشر",
+    weatherLabel: "باكو · الطقس",
+    currencyLabel: "العملة · 1 وحدة → AZN",
+    loading: "جارٍ التحميل...",
+    reception: "الاستقبال",
+    receptionLabel: "داخلي",
+    policeLabel: "الشرطة",
+    ambulanceLabel: "الإسعاف",
+    callQuestion: "هل تريد الاتصال؟",
+    callCancel: "إلغاء",
+    callDo: "اتصل"
   }
 };
 
@@ -2582,6 +2783,86 @@ const TOURS = [
     name: { az: "Qəbələ", en: "Gabala", ru: "Габала", tr: "Gabala", ar: "قبلة" },
     desc: { az: "1 gün · Tufandağ, göllər", en: "Full day · Tufandag, lakes", ru: "День · Туфандаг, озёра", tr: "1 gün · Tufandağ, göller", ar: "يوم كامل" } }
 ];
+
+// CALL CONFIRMATION
+let pendingCall = null;
+function askCall(number, name) {
+  pendingCall = number;
+  document.getElementById('callName').textContent = name;
+  document.getElementById('callNumber').textContent = number;
+  document.getElementById('callDialog').classList.add('show');
+}
+function cancelCall() {
+  pendingCall = null;
+  document.getElementById('callDialog').classList.remove('show');
+}
+function doCall() {
+  if (pendingCall) {
+    window.location.href = 'tel:' + pendingCall.replace(/\s/g, '');
+  }
+  cancelCall();
+}
+
+// WEATHER
+const WEATHER_CODES = {
+  0: { icon: '☀️', az: 'Aydın', en: 'Clear sky', ru: 'Ясно', tr: 'Açık', ar: 'صافٍ' },
+  1: { icon: '🌤', az: 'Əsasən aydın', en: 'Mostly clear', ru: 'Малооблачно', tr: 'Az bulutlu', ar: 'صحو غالباً' },
+  2: { icon: '⛅', az: 'Qismən buludlu', en: 'Partly cloudy', ru: 'Переменная облачность', tr: 'Parçalı bulutlu', ar: 'غائم جزئياً' },
+  3: { icon: '☁️', az: 'Buludlu', en: 'Overcast', ru: 'Облачно', tr: 'Bulutlu', ar: 'غائم' },
+  45: { icon: '🌫', az: 'Duman', en: 'Foggy', ru: 'Туман', tr: 'Sisli', ar: 'ضباب' },
+  48: { icon: '🌫', az: 'Duman', en: 'Foggy', ru: 'Туман', tr: 'Sisli', ar: 'ضباب' },
+  51: { icon: '🌦', az: 'Yüngül yağış', en: 'Light drizzle', ru: 'Лёгкая морось', tr: 'Hafif çisenti', ar: 'رذاذ خفيف' },
+  53: { icon: '🌦', az: 'Yağış', en: 'Drizzle', ru: 'Морось', tr: 'Çisenti', ar: 'رذاذ' },
+  55: { icon: '🌧', az: 'Güclü yağış', en: 'Heavy drizzle', ru: 'Сильная морось', tr: 'Yoğun çisenti', ar: 'رذاذ كثيف' },
+  61: { icon: '🌧', az: 'Yağış', en: 'Light rain', ru: 'Лёгкий дождь', tr: 'Hafif yağmur', ar: 'مطر خفيف' },
+  63: { icon: '🌧', az: 'Yağış', en: 'Rain', ru: 'Дождь', tr: 'Yağmur', ar: 'مطر' },
+  65: { icon: '🌧', az: 'Güclü yağış', en: 'Heavy rain', ru: 'Сильный дождь', tr: 'Şiddetli yağmur', ar: 'مطر غزير' },
+  71: { icon: '🌨', az: 'Yüngül qar', en: 'Light snow', ru: 'Лёгкий снег', tr: 'Hafif kar', ar: 'ثلج خفيف' },
+  73: { icon: '❄️', az: 'Qar', en: 'Snow', ru: 'Снег', tr: 'Kar', ar: 'ثلج' },
+  75: { icon: '❄️', az: 'Güclü qar', en: 'Heavy snow', ru: 'Сильный снег', tr: 'Yoğun kar', ar: 'ثلج كثيف' },
+  80: { icon: '🌧', az: 'Leysan', en: 'Showers', ru: 'Ливень', tr: 'Sağanak', ar: 'زخات' },
+  95: { icon: '⛈', az: 'Tufan', en: 'Thunderstorm', ru: 'Гроза', tr: 'Fırtına', ar: 'عاصفة رعدية' }
+};
+function weatherInfo(code) {
+  return WEATHER_CODES[code] || WEATHER_CODES[2];
+}
+async function fetchWeather() {
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.4093&longitude=49.8671&current=temperature_2m,weather_code,wind_speed_10m,apparent_temperature');
+    const d = await r.json();
+    if (!d.current) return;
+    const c = d.current;
+    const info = weatherInfo(c.weather_code);
+    document.getElementById('weatherIcon').textContent = info.icon;
+    document.getElementById('weatherTemp').textContent = Math.round(c.temperature_2m);
+    const descEl = document.getElementById('weatherDesc');
+    descEl.textContent = info[lang] || info.en;
+    descEl.removeAttribute('data-i18n');
+  } catch (e) {
+    document.getElementById('weatherDesc').textContent = '—';
+  }
+}
+
+// CURRENCY
+const CURRENCY_LIST = ['USD', 'EUR', 'RUB', 'TRY', 'GBP', 'SAR'];
+const CURRENCY_FLAGS = { USD: '🇺🇸', EUR: '🇪🇺', RUB: '🇷🇺', TRY: '🇹🇷', GBP: '🇬🇧', SAR: '🇸🇦', AED: '🇦🇪' };
+async function fetchCurrency() {
+  try {
+    const r = await fetch('https://latest.currency-api.pages.dev/v1/currencies/azn.json');
+    const d = await r.json();
+    if (!d.azn) return;
+    const azn = d.azn;
+    const container = document.getElementById('currencyList');
+    if (!container) return;
+    container.innerHTML = CURRENCY_LIST.map(code => {
+      const lc = code.toLowerCase();
+      const oneToAzn = azn[lc] ? (1 / azn[lc]).toFixed(2) : '—';
+      return `<div class="currency-rate"><span class="from">${CURRENCY_FLAGS[code]} 1 ${code}</span><span class="to">${oneToAzn} ₼</span></div>`;
+    }).join('');
+  } catch (e) {
+    document.getElementById('currencyList').innerHTML = '<div class="currency-loading">—</div>';
+  }
+}
 
 function renderSights() {
   const container = document.getElementById('sightsGrid');
@@ -3002,6 +3283,7 @@ function handleStatusCallback(cb) {
 
 function openScreen(name) {
   if (name === 'cart') renderCart();
+  if (name === 'city') { fetchWeather(); fetchCurrency(); }
   closeAllScreens();
   document.getElementById('screen-' + name).classList.add('active');
   window.scrollTo(0, 0);
@@ -3278,5 +3560,3 @@ updateNotifBadge();
 
 </body>
 </html>
-// Force redeploy 1778761800
-// Trigger deploy 1778763525
