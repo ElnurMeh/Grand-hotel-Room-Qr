@@ -3180,24 +3180,25 @@ function checkEscalations() {
   for (const order of orders) {
     if (order.steps && order.steps[2]) continue; // already accepted
     const age = now - order.createdAt;
-    const escLevel = order.escalation || 0;
-    let newLevel = escLevel;
-    let prefix = '';
-    let urgency = '';
-    if (age > 600000 && escLevel < 4) { newLevel = 4; prefix = '🚨🚨🚨 <b>10 DƏQ — KRİTİK</b>'; urgency = 'critical'; }
-    else if (age > 300000 && escLevel < 3) { newLevel = 3; prefix = '🚨🚨 <b>5 DƏQ — TƏCİLİ</b>'; urgency = 'urgent'; }
-    else if (age > 180000 && escLevel < 2) { newLevel = 2; prefix = '⏰⏰ <b>3 DƏQ keçib</b>'; urgency = 'reminder'; }
-    else if (age > 60000 && escLevel < 1) { newLevel = 1; prefix = '⏰ <b>1 DƏQ keçib — cavab yoxdur</b>'; urgency = 'gentle'; }
-    if (newLevel > escLevel) {
-      sendEscalation(order, prefix, urgency);
-      order.escalation = newLevel;
+    // Send a ping every 30s — escalating tone
+    const expectedLevel = Math.floor(age / 30000); // 0 at start, 1 after 30s, 2 after 60s, ...
+    const currentLevel = order.escalation || 0;
+    if (expectedLevel > currentLevel && expectedLevel >= 1) {
+      let prefix;
+      const sec = expectedLevel * 30;
+      if (expectedLevel >= 6) prefix = `🚨🚨🚨 <b>${sec} SAN — KRİTİK, CAVAB VER!</b>`;
+      else if (expectedLevel >= 4) prefix = `🚨🚨 <b>${sec} SAN — TƏCİLİ</b>`;
+      else if (expectedLevel >= 2) prefix = `⏰⏰ <b>${sec} SAN keçib</b>`;
+      else prefix = `⏰ <b>${sec} SAN keçib — cavab yoxdur</b>`;
+      sendEscalation(order, prefix);
+      order.escalation = expectedLevel;
       changed = true;
     }
   }
   if (changed) saveOrders(orders);
 }
 
-function sendEscalation(order, prefix, urgency) {
+function sendEscalation(order, prefix) {
   const room = order.guest?.room || '—';
   const name = order.guest?.name || '';
   const phone = order.guest?.phone || '';
@@ -3224,7 +3225,7 @@ function sendEscalation(order, prefix, urgency) {
 }
 
 // Check every 30 seconds
-let escalationInterval = setInterval(checkEscalations, 30000);
+let escalationInterval = setInterval(checkEscalations, 15000);
 
 async function syncOrderStatuses() {
   try {
