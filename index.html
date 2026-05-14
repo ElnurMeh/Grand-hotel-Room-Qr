@@ -1,0 +1,2967 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Grand Hotel Baku Central Park</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #F5F1EA;
+    --card: #FFFFFF;
+    --ink: #243d2b;
+    --ink-2: #3a5e47;
+    --ink-soft: #6B7269;
+    --line: #E5E0D6;
+    --gold: #B8893E;
+    --gold-soft: #F0E4CC;
+    --green-soft: rgba(36,61,43,0.08);
+    --green-very-soft: rgba(36,61,43,0.04);
+    --success: #16A34A;
+    --shadow: 0 1px 3px rgba(36,61,43,0.05), 0 6px 24px rgba(36,61,43,0.08);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Display", "Segoe UI", "Tahoma", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  html[dir="rtl"] body { font-family: -apple-system, "SF Arabic", "Geeza Pro", Tahoma, sans-serif; }
+
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: 100px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    color: white;
+    padding: 18px 20px 36px;
+    position: relative;
+    border-radius: 0 0 24px 24px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 5;
+  }
+  .logo-img {
+    height: 36px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+  }
+  .lang-picker { position: relative; }
+  .lang-toggle {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .lang-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 6px;
+    background: white;
+    color: var(--ink);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+    min-width: 130px;
+    display: none;
+    z-index: 100;
+  }
+  html[dir="rtl"] .lang-menu { right: auto; left: 0; }
+  .lang-menu.show { display: block; }
+  .lang-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+  }
+  html[dir="rtl"] .lang-menu button { text-align: right; }
+  .lang-menu button:hover { background: var(--bg); }
+  .lang-menu button.active { background: var(--green-soft); color: var(--ink); font-weight: 600; }
+  .lang-menu button.active::after { content: "✓"; margin-left: auto; color: var(--gold); }
+  html[dir="rtl"] .lang-menu button.active::after { margin-left: 0; margin-right: auto; }
+
+  .hotel-tagline {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .welcome {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+  .room-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .room-badge:active { opacity: 0.7; }
+
+  /* WIFI CARD */
+  .wifi-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: -20px 16px 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+  }
+  .wifi-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--green-soft);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .wifi-info { flex: 1; min-width: 0; }
+  .wifi-label {
+    font-size: 10px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+  .wifi-pass {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .copy-btn {
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .copy-btn.copied { background: var(--success); }
+
+  /* INFO PILLS */
+  .info-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .info-row::-webkit-scrollbar { display: none; }
+  .info-pill {
+    background: var(--card);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .info-pill strong { color: var(--ink); font-weight: 600; }
+
+  .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--ink-soft);
+    padding: 0 20px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  /* SERVICE GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+  .service-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  html[dir="rtl"] .service-card { text-align: right; }
+  .service-card:active {
+    transform: scale(0.97);
+    border-color: var(--ink);
+  }
+  .service-card.wide { grid-column: 1 / -1; }
+  .service-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--green-soft);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .service-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+  }
+  .service-card p {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* HELP CARD */
+  .help-card {
+    margin: 8px 16px 24px;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+  }
+  .help-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--gold);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .help-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .help-card p { font-size: 12px; opacity: 0.7; }
+
+  /* SCREENS */
+  .screen {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateX(500px);
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    background: var(--bg);
+    transition: transform 0.3s ease-out;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 120px;
+  }
+  html[dir="rtl"] .screen { transform: translateX(-50%) translateX(-500px); }
+  .screen.active { transform: translateX(-50%) translateX(0); }
+
+  .screen-header {
+    background: var(--card);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .back-btn {
+    background: var(--bg);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  html[dir="rtl"] .back-btn { transform: scaleX(-1); }
+  .screen-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+  }
+  .screen-content { padding: 20px 16px; }
+
+  .item-list { display: flex; flex-direction: column; gap: 8px; }
+  .item {
+    background: var(--card);
+    padding: 14px 16px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--line);
+  }
+  .item-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .item-info { flex: 1; min-width: 0; }
+  html[dir="rtl"] .item-info { text-align: right; }
+  .item-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .item-meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+  .item-price {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+  .item-price.free { color: var(--success); }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 4px;
+  }
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: var(--card);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .qty-btn:active { background: var(--green-soft); }
+  .qty-num {
+    min-width: 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .add-btn {
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+  }
+
+  /* CART BAR */
+  .cart-bar {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    width: calc(100% - 32px);
+    max-width: 448px;
+    background: var(--ink);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s;
+    box-shadow: 0 10px 30px rgba(36,61,43,0.3);
+    z-index: 150;
+    cursor: pointer;
+  }
+  .cart-bar.show { transform: translateX(-50%) translateY(0); }
+  #screen-cart.active ~ #cartBar { display: none !important; }
+  #screen-confirmation.active ~ #cartBar { display: none !important; }
+  .cart-bar-left { display: flex; align-items: center; gap: 12px; }
+  .cart-count {
+    background: var(--gold);
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .cart-bar-total { font-size: 15px; font-weight: 600; }
+  .cart-bar-cta { font-size: 12px; opacity: 0.85; }
+
+  /* CONFIRMATION */
+  .confirmation {
+    text-align: center;
+    padding: 60px 20px 32px;
+  }
+  .check-circle {
+    width: 84px;
+    height: 84px;
+    background: var(--success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: white;
+    font-size: 42px;
+    animation: pop 0.5s ease-out;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .confirmation h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+  }
+  .confirmation p {
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .order-id {
+    display: inline-block;
+    background: var(--green-soft);
+    color: var(--ink);
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .status-tracker {
+    background: var(--card);
+    margin: 20px 16px;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--line);
+  }
+  .status-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    opacity: 0.35;
+    transition: opacity 0.4s;
+  }
+  .status-step:last-child { border-bottom: none; }
+  .status-step.done, .status-step.active { opacity: 1; }
+  .status-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    transition: all 0.4s;
+  }
+  .status-step.done .status-dot {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+  }
+  .status-step.active .status-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(184,137,62,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(184,137,62,0); }
+  }
+  .status-info { flex: 1; }
+  html[dir="rtl"] .status-info { text-align: right; }
+  .status-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .status-time { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+  .order-summary {
+    background: var(--card);
+    margin: 0 16px 24px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .summary-row.total {
+    border-top: 1px solid var(--line);
+    margin-top: 6px;
+    padding-top: 12px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .primary-btn {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    padding: 16px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+  }
+  .primary-btn:active { background: var(--ink-2); }
+
+  /* HISTORY FLOAT */
+  .staff-peek {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    background: var(--ink);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(36,61,43,0.3);
+    border: none;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  html[dir="rtl"] .staff-peek { left: auto; right: 16px; }
+  .staff-peek-count {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+  html[dir="rtl"] .staff-peek-count { margin-left: 0; margin-right: 4px; }
+
+  /* TELEGRAM MODAL */
+  .telegram-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    padding: 20px;
+  }
+  .telegram-modal.show { display: flex; }
+  .telegram-box {
+    background: white;
+    border-radius: 18px;
+    max-width: 380px;
+    width: 100%;
+    overflow: hidden;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .tg-header {
+    background: #517DA2;
+    color: white;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tg-header .avatar {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .tg-header h4 { font-size: 14px; }
+  .tg-header p { font-size: 11px; opacity: 0.85; }
+  .tg-tab {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #E2E8F0;
+  }
+  .tg-tab button {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .tg-tab button.on {
+    color: #517DA2;
+    border-bottom-color: #517DA2;
+  }
+  .tg-body {
+    background: #DCE5EC;
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .tg-msg {
+    background: white;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 90%;
+    color: var(--ink);
+    border-bottom-left-radius: 4px;
+  }
+  .tg-msg strong { display: block; margin-bottom: 4px; }
+  .tg-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .tg-btn {
+    background: #F0F4F7;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #517DA2;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tg-time {
+    font-size: 10px;
+    color: #8B96A3;
+    margin-top: 4px;
+    text-align: right;
+  }
+  .tg-close {
+    background: var(--ink);
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  /* WELCOME OVERLAY */
+  .welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 24px;
+    color: white;
+    overflow-y: auto;
+  }
+  .welcome-overlay.hidden { display: none; }
+
+  .welcome-lang {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  html[dir="rtl"] .welcome-lang { right: auto; left: 20px; }
+  .welcome-lang-toggle {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .welcome-lang-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 6px;
+    background: white;
+    color: var(--ink);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    overflow: hidden;
+    min-width: 160px;
+    display: none;
+    z-index: 100;
+  }
+  html[dir="rtl"] .welcome-lang-menu { right: auto; left: 0; }
+  .welcome-lang-menu.show { display: block; }
+  .welcome-lang-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+  }
+  html[dir="rtl"] .welcome-lang-menu button { text-align: right; }
+  .welcome-lang-menu button:hover { background: var(--bg); }
+  .welcome-lang-menu button.active { background: var(--green-soft); font-weight: 600; }
+  .welcome-lang-menu button.active::after { content: "✓"; margin-left: auto; color: var(--gold); }
+  html[dir="rtl"] .welcome-lang-menu button.active::after { margin-left: 0; margin-right: auto; }
+
+  /* COUNTRY PICKER (PHONE) */
+  .phone-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .country-picker {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .country-toggle {
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    color: var(--ink);
+    padding: 14px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 48px;
+    white-space: nowrap;
+  }
+  .country-toggle:focus, .country-picker.open .country-toggle { border-color: var(--ink); }
+  .phone-row .welcome-input { margin-bottom: 0; flex: 1; min-width: 0; }
+  .country-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    overflow-y: auto;
+    max-height: 260px;
+    min-width: 220px;
+    display: none;
+    z-index: 110;
+    border: 1px solid var(--line);
+  }
+  .country-menu.show { display: block; }
+  .country-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .country-menu button:hover { background: var(--bg); }
+  .country-menu button .cc { margin-left: auto; color: var(--ink-soft); font-weight: 600; font-size: 12px; }
+
+  .welcome-logo-img {
+    height: 88px;
+    width: auto;
+    margin-bottom: 16px;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+  }
+  .welcome-tagline {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .welcome-greeting {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+  .welcome-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    margin-bottom: 28px;
+    text-align: center;
+    max-width: 320px;
+    line-height: 1.5;
+  }
+  .welcome-form {
+    background: white;
+    color: var(--ink);
+    border-radius: 20px;
+    padding: 22px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .welcome-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    font-weight: 600;
+    display: block;
+  }
+  .welcome-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    background: var(--bg);
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    color: var(--ink);
+  }
+  .welcome-input:focus { border-color: var(--ink); }
+  .welcome-input.locked {
+    background: var(--green-soft);
+    border-color: var(--ink);
+    font-weight: 700;
+    pointer-events: none;
+  }
+  .locked-hint {
+    font-size: 11px;
+    color: var(--ink);
+    margin-top: -10px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+  .welcome-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+  .welcome-btn:active { background: var(--ink-2); }
+  .welcome-footer {
+    margin-top: 22px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    max-width: 320px;
+    line-height: 1.6;
+  }
+
+  /* ACTIVE ORDER CARD */
+  .active-order-card {
+    margin: 4px 16px 16px;
+    background: var(--card);
+    border: 1.5px solid var(--gold);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s;
+  }
+  .active-order-card:active { transform: scale(0.98); }
+  .active-order-card.done { border-color: var(--success); }
+  .order-card-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--gold-soft);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .active-order-card.done .order-card-icon {
+    background: rgba(22,163,74,0.12);
+  }
+  .order-card-info { flex: 1; min-width: 0; }
+  html[dir="rtl"] .order-card-info { text-align: right; }
+  .order-card-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .order-card-status {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .active-order-card.done .order-card-status { color: var(--success); }
+  .order-card-meta {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 1px;
+  }
+  .order-card-arrow {
+    color: var(--ink-soft);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  html[dir="rtl"] .order-card-arrow { transform: scaleX(-1); }
+
+  /* ORDERS HISTORY */
+  .orders-history-btn {
+    width: calc(100% - 32px);
+    margin: 0 16px 16px;
+    padding: 13px;
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s;
+  }
+  .orders-history-btn:active { transform: scale(0.98); background: var(--green-soft); }
+  .orders-history-btn .count-pill {
+    background: var(--green-soft);
+    color: var(--ink);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .orders-list { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .order-list-item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .order-list-item:active { transform: scale(0.98); }
+  .order-list-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .order-list-info { flex: 1; min-width: 0; }
+  html[dir="rtl"] .order-list-info { text-align: right; }
+  .order-list-id { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .order-list-meta { font-size: 11px; color: var(--ink-soft); margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .order-list-status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--gold-soft);
+    color: var(--gold);
+  }
+  .order-list-status-badge.done { background: rgba(22,163,74,0.12); color: var(--success); }
+  .order-list-time { font-size: 11px; color: var(--ink-soft); flex-shrink: 0; text-align: right; line-height: 1.3; }
+  .orders-empty { text-align: center; color: var(--ink-soft); padding: 60px 20px; font-size: 14px; }
+
+  /* NOTIFICATIONS */
+  .notif-bell {
+    position: relative;
+    margin-right: 8px;
+  }
+  html[dir="rtl"] .notif-bell { margin-right: 0; margin-left: 8px; }
+  .notif-bell-btn {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .notif-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: #DC2626;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--ink);
+    padding: 0 4px;
+  }
+  html[dir="rtl"] .notif-badge { right: auto; left: -3px; }
+  .notif-list { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .notif-item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .notif-item:active { transform: scale(0.98); }
+  .notif-item.unread {
+    border-color: var(--gold);
+    background: linear-gradient(to right, rgba(184,137,62,0.06), white);
+  }
+  html[dir="rtl"] .notif-item.unread { background: linear-gradient(to left, rgba(184,137,62,0.06), white); }
+  .notif-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .notif-item.unread .notif-item-icon { background: var(--gold-soft); }
+  .notif-content { flex: 1; min-width: 0; }
+  html[dir="rtl"] .notif-content { text-align: right; }
+  .notif-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .notif-message { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .notif-time { font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+  .notif-empty { text-align: center; color: var(--ink-soft); padding: 60px 20px; font-size: 14px; }
+  .notif-empty .icon { font-size: 40px; margin-bottom: 12px; display: block; }
+
+  /* CHAT */
+  .chat-screen-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+    padding: 0;
+  }
+  .chat-messages-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: var(--bg);
+  }
+  .chat-msg {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+  .chat-msg.guest { align-items: flex-end; }
+  .chat-msg.staff { align-items: flex-start; }
+  html[dir="rtl"] .chat-msg.guest { align-items: flex-start; }
+  html[dir="rtl"] .chat-msg.staff { align-items: flex-end; }
+  .chat-bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  .chat-msg.guest .chat-bubble {
+    background: var(--ink);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-msg.staff .chat-bubble {
+    background: white;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 4px;
+  }
+  .chat-time {
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    padding: 0 8px;
+  }
+  .chat-input-bar {
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid var(--line);
+    position: sticky;
+    bottom: 0;
+  }
+  .chat-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .chat-input:focus { border-color: var(--ink); }
+  .chat-send {
+    background: var(--ink);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .chat-empty {
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 60px 20px;
+    font-size: 13px;
+  }
+
+  /* ANIMATIONS */
+  html { scroll-behavior: smooth; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(-15px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  @keyframes badgePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220,38,38,0.5); }
+    50% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(220,38,38,0); }
+  }
+  @keyframes successHalo {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.4); }
+    50% { box-shadow: 0 0 0 18px rgba(22,163,74,0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Smoother screen transitions */
+  .screen { transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1); }
+
+  /* Welcome screen sequential entry */
+  .welcome-logo-img {
+    animation: fadeDown 0.7s cubic-bezier(0.32, 0.72, 0, 1), logoFloat 5s ease-in-out 1.5s infinite;
+  }
+  .welcome-tagline { animation: fadeIn 0.6s 0.15s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+  .welcome-greeting { animation: fadeUp 0.6s 0.25s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+  .welcome-sub { animation: fadeUp 0.6s 0.35s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+  .welcome-form {
+    animation: fadeUp 0.7s 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) backwards;
+  }
+  .welcome-footer { animation: fadeIn 0.6s 0.7s ease-out backwards; }
+  .welcome-lang { animation: fadeIn 0.5s 0.2s ease-out backwards; }
+
+  /* Dashboard entry stagger */
+  .header { animation: fadeDown 0.5s cubic-bezier(0.32, 0.72, 0, 1); }
+  .wifi-card { animation: fadeUp 0.5s 0.1s cubic-bezier(0.34, 1.4, 0.64, 1) backwards; }
+  .info-row { animation: fadeIn 0.5s 0.2s ease-out backwards; }
+  .section-title { animation: fadeIn 0.5s 0.3s ease-out backwards; }
+  .grid .service-card {
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+  .grid .service-card:nth-child(1) { animation-delay: 0.35s; }
+  .grid .service-card:nth-child(2) { animation-delay: 0.42s; }
+  .grid .service-card:nth-child(3) { animation-delay: 0.49s; }
+  .grid .service-card:nth-child(4) { animation-delay: 0.56s; }
+  .help-card { animation: fadeUp 0.5s 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) backwards; }
+  .active-order-card {
+    animation: fadeUp 0.5s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+
+  /* Item list stagger */
+  .item-list .item {
+    animation: fadeLeft 0.4s cubic-bezier(0.32, 0.72, 0, 1) backwards;
+  }
+  .item-list .item:nth-child(1) { animation-delay: 0.03s; }
+  .item-list .item:nth-child(2) { animation-delay: 0.06s; }
+  .item-list .item:nth-child(3) { animation-delay: 0.09s; }
+  .item-list .item:nth-child(4) { animation-delay: 0.12s; }
+  .item-list .item:nth-child(5) { animation-delay: 0.15s; }
+  .item-list .item:nth-child(6) { animation-delay: 0.18s; }
+  .item-list .item:nth-child(7) { animation-delay: 0.21s; }
+  .item-list .item:nth-child(8) { animation-delay: 0.24s; }
+  .item-list .item:nth-child(9) { animation-delay: 0.27s; }
+
+  /* Orders/notifs list stagger */
+  .order-list-item, .notif-item {
+    animation: fadeUp 0.4s cubic-bezier(0.32, 0.72, 0, 1) backwards;
+  }
+  .order-list-item:nth-child(2), .notif-item:nth-child(2) { animation-delay: 0.05s; }
+  .order-list-item:nth-child(3), .notif-item:nth-child(3) { animation-delay: 0.1s; }
+  .order-list-item:nth-child(4), .notif-item:nth-child(4) { animation-delay: 0.15s; }
+  .order-list-item:nth-child(5), .notif-item:nth-child(5) { animation-delay: 0.2s; }
+
+  /* Cart bar bouncy */
+  .cart-bar { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+  /* Tap feedback on cards */
+  .service-card { transition: transform 0.18s cubic-bezier(0.4, 0, 0.6, 1), box-shadow 0.2s, border-color 0.2s; }
+  .item { transition: transform 0.15s, box-shadow 0.2s; }
+  .item:active { transform: scale(0.985); }
+  .order-list-item { transition: transform 0.15s, box-shadow 0.2s; }
+
+  /* Notification badge pulse */
+  .notif-badge { animation: badgePulse 2.5s ease-in-out infinite; }
+
+  /* Status dot when active — extra glow */
+  .status-step.active .status-dot {
+    box-shadow: 0 0 0 0 rgba(184,137,62,0.5);
+  }
+
+  /* Success check halo */
+  .check-circle {
+    animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), successHalo 2.5s 0.6s ease-in-out infinite;
+  }
+
+  /* Chat bubble entry */
+  .chat-msg.guest .chat-bubble { animation: fadeLeft 0.3s cubic-bezier(0.32, 0.72, 0, 1) reverse backwards; }
+  .chat-msg.staff .chat-bubble { animation: fadeLeft 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+
+  /* Country/lang menu entry */
+  .country-menu, .lang-menu, .welcome-lang-menu {
+    transform-origin: top right;
+    transition: opacity 0.18s, transform 0.18s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .country-menu:not(.show), .lang-menu:not(.show), .welcome-lang-menu:not(.show) {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  .country-menu.show, .lang-menu.show, .welcome-lang-menu.show {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  /* Primary button hover/press */
+  .primary-btn, .welcome-btn, .add-btn {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.6, 1), background-color 0.2s, box-shadow 0.2s;
+  }
+  .primary-btn:active, .welcome-btn:active, .add-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* Subtle shine on active order card */
+  .active-order-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(184,137,62,0.08) 50%, transparent 100%);
+    background-size: 200% 100%;
+    border-radius: 16px;
+    animation: shimmer 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .active-order-card { position: relative; overflow: hidden; }
+  .active-order-card.done::before { display: none; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-120%);
+    background: var(--ink);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    z-index: 500;
+    transition: transform 0.3s;
+    box-shadow: var(--shadow);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- WELCOME / ONBOARDING -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-lang">
+    <button class="welcome-lang-toggle" onclick="toggleWelcomeLangMenu(event)">
+      <span id="welcomeLangLabel">🇦🇿 AZ</span> ▾
+    </button>
+    <div class="welcome-lang-menu" id="welcomeLangMenu">
+      <button data-lang="az" onclick="setLang('az')">🇦🇿 Azərbaycan</button>
+      <button data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+      <button data-lang="ru" onclick="setLang('ru')">🇷🇺 Русский</button>
+      <button data-lang="tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+      <button data-lang="ar" onclick="setLang('ar')">🇸🇦 العربية</button>
+    </div>
+  </div>
+
+  <img src="logo.svg" alt="Grand Hotel Baku" class="welcome-logo-img">
+  <div class="welcome-tagline" data-i18n="hotelTagline">CENTRAL PARK · BAKU</div>
+  <div class="welcome-greeting" data-i18n="welcomeGreeting" style="margin-bottom: 28px;">Xoş gəlmisiniz</div>
+
+  <div class="welcome-form">
+    <label class="welcome-label" data-i18n="yourName">Ad və Soyad</label>
+    <input class="welcome-input" id="guestName" type="text" placeholder="" autocomplete="name">
+
+    <label class="welcome-label" data-i18n="yourRoom">Otaq nömrəsi</label>
+    <input class="welcome-input" id="guestRoom" type="text" inputmode="numeric" maxlength="5" placeholder="">
+    <div class="locked-hint" id="lockedHint" style="display:none;">
+      🔒 <span data-i18n="lockedFromQr">QR koddan avtomatik dolub</span>
+    </div>
+
+    <label class="welcome-label" data-i18n="yourPhone">Telefon nömrəsi</label>
+    <div class="phone-row">
+      <div class="country-picker" id="countryPicker">
+        <button type="button" class="country-toggle" onclick="toggleCountryMenu(event)">
+          <span id="countryFlag">🇦🇿</span>
+          <span id="countryCode">+994</span> ▾
+        </button>
+        <div class="country-menu" id="countryMenu"></div>
+      </div>
+      <input class="welcome-input" id="guestPhone" type="tel" inputmode="tel" placeholder="" autocomplete="tel">
+    </div>
+    <div style="font-size: 11px; color: var(--ink-soft); margin-top: -8px; margin-bottom: 14px; line-height: 1.4;" data-i18n="phoneHint">Sifariş statusu SMS ilə gələcək, zəng üçün də istifadə olunur</div>
+
+    <button class="welcome-btn" onclick="submitWelcome()" data-i18n="continueBtn">Davam et</button>
+  </div>
+
+  <div class="welcome-footer" data-i18n="welcomeFooter">Hər otaqda QR kod unikaldır — otaq nömrəsi avtomatik dolacaq.</div>
+</div>
+
+<div class="app" id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <img src="logo.svg" alt="Grand Hotel" class="logo-img">
+      <div style="display: flex; align-items: center; gap: 4px;">
+      <div class="notif-bell">
+        <button class="notif-bell-btn" onclick="openNotifs()">🔔</button>
+        <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+      </div>
+      <div class="lang-picker">
+        <button class="lang-toggle" onclick="toggleLangMenu()">
+          <span id="langLabel">AZ</span> ▾
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button data-lang="az" onclick="setLang('az')">🇦🇿 AZ</button>
+          <button data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
+          <button data-lang="ru" onclick="setLang('ru')">🇷🇺 RU</button>
+          <button data-lang="tr" onclick="setLang('tr')">🇹🇷 TR</button>
+          <button data-lang="ar" onclick="setLang('ar')">🇸🇦 AR</button>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="hotel-tagline" data-i18n="hotelTagline">CENTRAL PARK · BAKU</div>
+    <div class="welcome" data-i18n="welcome">Xoş gəldiniz</div>
+    <div class="room-badge" onclick="resetGuest()" title="Reset">Otaq —</div>
+  </div>
+
+  <!-- WIFI -->
+  <div class="wifi-card">
+    <div class="wifi-icon">📶</div>
+    <div class="wifi-info">
+      <div class="wifi-label" data-i18n="wifiLabel">WIFI PAROLU</div>
+      <div class="wifi-pass">Grand@0081</div>
+    </div>
+    <button class="copy-btn" id="copyBtn" onclick="copyWifi()">
+      <span data-i18n="copy">Kopyala</span>
+    </button>
+  </div>
+
+  <!-- INFO PILLS -->
+  <div class="info-row">
+    <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 07:00–11:00</strong></div>
+    <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
+    <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="section-title" data-i18n="services">Xidmətlər</div>
+  <div class="grid">
+    <button class="service-card" onclick="openScreen('housekeeping')">
+      <div class="service-icon">🛏️</div>
+      <h3 data-i18n="housekeeping">Otaq Xidməti</h3>
+      <p data-i18n="housekeepingDesc">Dəsmal, slipper, su</p>
+    </button>
+    <button class="service-card" onclick="openScreen('restaurant')">
+      <div class="service-icon">🍽️</div>
+      <h3 data-i18n="restaurantTitle">Restoran</h3>
+      <p data-i18n="restaurantDesc">Otağa çatdırılma</p>
+    </button>
+    <button class="service-card wide" onclick="openScreen('reception')">
+      <div class="service-icon">🛎️</div>
+      <h3 data-i18n="receptionTitle">Resepsion</h3>
+      <p data-i18n="receptionDesc">Taksi, tur, geç check-out və daha çox</p>
+    </button>
+  </div>
+
+  <!-- ACTIVE ORDER CARD -->
+  <div class="active-order-card" id="activeOrderCard" style="display:none;"></div>
+
+  <!-- HELP CARD -->
+  <div class="help-card" onclick="openChat()">
+    <div class="help-icon">💬</div>
+    <div>
+      <h4 data-i18n="helpTitle">Resepsion ilə Söhbət</h4>
+      <p data-i18n="helpDesc">İstənilən sualı yaz, dərhal cavab al</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- SCREENS -->
+<div class="screen" id="screen-housekeeping">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="housekeeping">Otaq Xidməti</div>
+  </div>
+  <div class="screen-content"><div class="item-list" id="housekeepingList"></div></div>
+</div>
+
+<div class="screen" id="screen-restaurant">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="restaurantTitle">Restoran</div>
+  </div>
+  <div class="screen-content"><div class="item-list" id="restaurantList"></div></div>
+</div>
+
+<div class="screen" id="screen-reception">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="receptionTitle">Resepsion</div>
+  </div>
+  <div class="screen-content"><div class="item-list" id="receptionList"></div></div>
+</div>
+
+<div class="screen" id="screen-orders">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="orderHistory">Sifariw tarixçəsi</div>
+  </div>
+  <div class="screen-content" style="padding: 0;">
+    <div class="orders-list" id="ordersList"></div>
+  </div>
+</div>
+
+<div class="screen" id="screen-notifs">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="notifsTitle">Bildirişlər</div>
+  </div>
+  <div class="screen-content" style="padding: 0;">
+    <div class="notif-list" id="notifList"></div>
+  </div>
+</div>
+
+<div class="screen" id="screen-chat">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeChatScreen()">←</button>
+    <div class="screen-title" data-i18n="helpTitle">Resepsion ilə Söhbət</div>
+  </div>
+  <div class="chat-messages-container" id="chatMessages">
+    <div class="chat-empty" data-i18n="chatEmpty">Mesajınızı yazın, resepsion dərhal cavab verəcək</div>
+  </div>
+  <div class="chat-input-bar">
+    <input type="text" class="chat-input" id="chatInput" data-i18n-placeholder="chatPlaceholder" placeholder="Mesaj yazın..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+    <button class="chat-send" onclick="sendChatMessage()">↑</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-cart">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="cartTitle">Sifarişiniz</div>
+  </div>
+  <div class="screen-content"><div id="cartContent"></div></div>
+</div>
+
+<div class="screen" id="screen-confirmation">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen(); resetOrder();">←</button>
+    <div class="screen-title" data-i18n="orderStatus">Sifariş Statusu</div>
+  </div>
+  <div class="confirmation">
+    <div class="check-circle">✓</div>
+    <h2 data-i18n="orderReceived">Sifarişiniz qəbul edildi</h2>
+    <p data-i18n="staffNotified">Personalımız Telegram-da bildiriş aldı</p>
+    <div class="order-id" id="orderId">#GH-3041</div>
+  </div>
+  <div class="status-tracker" id="statusTracker">
+    <div class="status-step active" data-step="1">
+      <div class="status-dot">✓</div>
+      <div class="status-info">
+        <div class="status-name" data-i18n="step1">Qəbul edildi</div>
+        <div class="status-time" id="time1">İndi</div>
+      </div>
+    </div>
+    <div class="status-step" data-step="2">
+      <div class="status-dot">2</div>
+      <div class="status-info">
+        <div class="status-name" data-i18n="step2">Hazırlanır</div>
+        <div class="status-time" id="time2">—</div>
+      </div>
+    </div>
+    <div class="status-step" data-step="3">
+      <div class="status-dot">3</div>
+      <div class="status-info">
+        <div class="status-name" data-i18n="step3">Çatdırılır</div>
+        <div class="status-time" id="time3">—</div>
+      </div>
+    </div>
+    <div class="status-step" data-step="4">
+      <div class="status-dot">4</div>
+      <div class="status-info">
+        <div class="status-name" data-i18n="step4">Tamamlandı</div>
+        <div class="status-time" id="time4">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="order-summary" id="orderSummary"></div>
+</div>
+
+<div class="cart-bar" id="cartBar" onclick="openScreen('cart')">
+  <div class="cart-bar-left">
+    <div class="cart-count" id="cartCount">0</div>
+    <div>
+      <div class="cart-bar-total" id="cartTotal">0 ₼</div>
+      <div class="cart-bar-cta" data-i18n="viewCart">Sifarişi gör →</div>
+    </div>
+  </div>
+  <div style="font-size: 22px;">🛒</div>
+</div>
+
+<button class="staff-peek" id="historyFloat" onclick="openOrdersList()" style="display:none;">
+  📋 <span data-i18n="orderHistory">Sifariw tarixçəsi</span>
+  <span class="staff-peek-count" id="historyFloatCount">0</span>
+</button>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let lang = 'az';
+let cart = [];
+let currentOrderId = null;
+let statusTimers = [];
+
+const i18n = {
+  az: {
+    hotelTagline: "CENTRAL PARK · BAKU",
+    welcome: "Xoş gəldiniz",
+    welcomeName: "Xoş gəldiniz",
+    roomLabel: "Otaq",
+    wifiLabel: "WIFI PAROLU",
+    copy: "Kopyala", copied: "Kopyalandı",
+    breakfast: "Səhər: 07:00–11:00",
+    restaurant: "Restoran: 24/7",
+    reception24: "Resepsion: 24/7",
+    services: "Xidmətlər",
+    housekeeping: "Otaq Xidməti",
+    housekeepingDesc: "Dəsmal, slipper, su",
+    restaurantTitle: "Restoran",
+    restaurantDesc: "Otağa çatdırılma",
+    receptionTitle: "Resepsion",
+    receptionDesc: "Taksi, tur, geç check-out və daha çox",
+    helpTitle: "Resepsion ilə Söhbət",
+    helpDesc: "İstənilən sualı yaz, dərhal cavab al",
+    cartTitle: "Sifarişiniz",
+    confirmOrder: "Sifarişi Təsdiq Et",
+    orderStatus: "Sifariş Statusu",
+    orderReceived: "Sifarişiniz qəbul edildi",
+    staffNotified: "Personalımız Telegram-da bildiriş aldı",
+    step1: "Qəbul edildi", step2: "Hazırlanır", step3: "Çatdırılır", step4: "Tamamlandı",
+    viewCart: "Sifarişi gör →",
+    free: "Pulsuz", add: "ƏLAVƏ ET",
+    addToCart: "Səbətə əlavə edildi",
+    empty: "Sifariş səbətiniz boşdur",
+    total: "Cəm",
+    chatComing: "Resepsion söhbəti demo-da deaktivdir 🙂",
+    staffPeek: "Resepsion görünüşü",
+    tgSubtitle: "Resepsion qrupu · 8 üzv",
+    tgTab1: "🛎 Resepsion", tgTab2: "🛏 Housekeeping", tgTab3: "🍽 Restoran",
+    tgClose: "Bağla",
+    accept: "✅ Qəbul etdim", done: "✓ Tamamladım",
+    notifBanner: "📱 Sifariş Telegram-a göndərildi",
+    newOrder: "Yeni sifariş — Otaq",
+    welcomeGreeting: "Xoş gəlmisiniz",
+    welcomeSub: "Sizi tanıyaq ki, xidməti sizə uyğun çatdıraq",
+    yourName: "Ad və Soyad",
+    yourRoom: "Otaq nömrəsi",
+    continueBtn: "Davam et",
+    welcomeFooter: "Hər otaqda QR kod unikaldır — otaq nömrəsi avtomatik dolacaq.",
+    lockedFromQr: "QR koddan avtomatik dolub",
+    fillBoth: "Ad və otaq nömrəsi vacibdir",
+    confirmReset: "Daxil etdiyiniz məlumat silinsin?",
+    now: "İndi",
+    yourPhone: "Telefon nömrəsi",
+    phoneHint: "Sifariş statusu SMS ilə gələcək, zəng üçün də istifadə olunur",
+    smsBanner: "💬 SMS bildiriləcək:",
+    chatEmpty: "Mesajınızı yazın, resepsion dərhal cavab verəcək",
+    chatPlaceholder: "Mesaj yazın...",
+    notifsTitle: "Bildirişlər",
+    noNotifs: "Hələ bildiriş yoxdur",
+    noOrders: "Hələ sifariw yoxdur",
+    orderHistory: "Sifariw tarixçəsi",
+    minAgo: "dəq əvvəl",
+    hourAgo: "saat əvvəl",
+    dayAgo: "gün əvvəl"
+  },
+  en: {
+    hotelTagline: "CENTRAL PARK · BAKU",
+    welcome: "Welcome",
+    welcomeName: "Welcome",
+    roomLabel: "Room",
+    wifiLabel: "WIFI PASSWORD",
+    copy: "Copy", copied: "Copied",
+    breakfast: "Breakfast: 07:00–11:00",
+    restaurant: "Restaurant: 24/7",
+    reception24: "Reception: 24/7",
+    services: "Services",
+    housekeeping: "Housekeeping",
+    housekeepingDesc: "Towels, slippers, water",
+    restaurantTitle: "Restaurant",
+    restaurantDesc: "Room service",
+    receptionTitle: "Reception",
+    receptionDesc: "Taxi, tours, late check-out and more",
+    helpTitle: "Chat with Reception",
+    helpDesc: "Ask anything, get instant reply",
+    cartTitle: "Your Order",
+    confirmOrder: "Place Order",
+    orderStatus: "Order Status",
+    orderReceived: "Your order has been received",
+    staffNotified: "Our staff was notified on Telegram",
+    step1: "Received", step2: "Preparing", step3: "On the way", step4: "Completed",
+    viewCart: "View order →",
+    free: "Free", add: "ADD",
+    addToCart: "Added to cart",
+    empty: "Your cart is empty",
+    total: "Total",
+    chatComing: "Reception chat is disabled in demo 🙂",
+    staffPeek: "Reception view",
+    tgSubtitle: "Reception group · 8 members",
+    tgTab1: "🛎 Reception", tgTab2: "🛏 Housekeeping", tgTab3: "🍽 Restaurant",
+    tgClose: "Close",
+    accept: "✅ Accepted", done: "✓ Completed",
+    notifBanner: "📱 Order sent to Telegram",
+    newOrder: "New order — Room",
+    welcomeGreeting: "Welcome",
+    welcomeSub: "Tell us a bit about you so we can tailor your stay",
+    yourName: "Full name",
+    yourRoom: "Room number",
+    continueBtn: "Continue",
+    welcomeFooter: "Each room has a unique QR code — your room number auto-fills.",
+    lockedFromQr: "Auto-filled from QR code",
+    fillBoth: "Name and room number required",
+    confirmReset: "Reset your saved info?",
+    now: "Now",
+    yourPhone: "Phone number",
+    phoneHint: "Order status will be sent via SMS, also used for callbacks",
+    smsBanner: "💬 SMS will be sent to:",
+    chatEmpty: "Type a message, reception will reply right away",
+    chatPlaceholder: "Type a message...",
+    notifsTitle: "Notifications",
+    noNotifs: "No notifications yet",
+    noOrders: "No orders yet",
+    orderHistory: "Order history",
+    minAgo: "min ago",
+    hourAgo: "h ago",
+    dayAgo: "d ago"
+  },
+  ru: {
+    hotelTagline: "CENTRAL PARK · БАКУ",
+    welcome: "Добро пожаловать",
+    welcomeName: "Добро пожаловать",
+    roomLabel: "Номер",
+    wifiLabel: "WIFI ПАРОЛЬ",
+    copy: "Копировать", copied: "Скопировано",
+    breakfast: "Завтрак: 07:00–11:00",
+    restaurant: "Ресторан: 24/7",
+    reception24: "Ресепшен: 24/7",
+    services: "Услуги",
+    housekeeping: "Обслуживание номеров",
+    housekeepingDesc: "Полотенца, тапочки, вода",
+    restaurantTitle: "Ресторан",
+    restaurantDesc: "Доставка в номер",
+    receptionTitle: "Ресепшен",
+    receptionDesc: "Такси, туры, поздний выезд и др.",
+    helpTitle: "Чат с ресепшен",
+    helpDesc: "Напишите вопрос — мгновенный ответ",
+    cartTitle: "Ваш заказ",
+    confirmOrder: "Подтвердить заказ",
+    orderStatus: "Статус заказа",
+    orderReceived: "Ваш заказ принят",
+    staffNotified: "Персонал получил уведомление в Telegram",
+    step1: "Принят", step2: "Готовится", step3: "В пути", step4: "Готово",
+    viewCart: "Посмотреть заказ →",
+    free: "Бесплатно", add: "ДОБАВИТЬ",
+    addToCart: "Добавлено в корзину",
+    empty: "Ваша корзина пуста",
+    total: "Итого",
+    chatComing: "Чат с ресепшен в демо отключён 🙂",
+    staffPeek: "Вид ресепшена",
+    tgSubtitle: "Группа ресепшена · 8 участников",
+    tgTab1: "🛎 Ресепшен", tgTab2: "🛏 Обслуживание", tgTab3: "🍽 Ресторан",
+    tgClose: "Закрыть",
+    accept: "✅ Принял", done: "✓ Готово",
+    notifBanner: "📱 Заказ отправлен в Telegram",
+    newOrder: "Новый заказ — Номер",
+    welcomeGreeting: "Добро пожаловать",
+    welcomeSub: "Расскажите немного о себе, чтобы мы подстроили сервис",
+    yourName: "Имя и фамилия",
+    yourRoom: "Номер комнаты",
+    continueBtn: "Продолжить",
+    welcomeFooter: "Каждый номер имеет уникальный QR — номер комнаты заполнится автоматически.",
+    lockedFromQr: "Заполнено из QR-кода",
+    fillBoth: "Имя и номер комнаты обязательны",
+    confirmReset: "Удалить сохранённые данные?",
+    now: "Сейчас",
+    yourPhone: "Номер телефона",
+    phoneHint: "Статус заказа придёт по SMS, также для обратной связи",
+    smsBanner: "💬 SMS будет отправлено:",
+    chatEmpty: "Напишите сообщение, ресепшен ответит сразу",
+    chatPlaceholder: "Введите сообщение...",
+    notifsTitle: "Уведомления",
+    noNotifs: "Пока нет уведомлений",
+    noOrders: "Пока нет заказов",
+    orderHistory: "История заказов",
+    minAgo: "мин назад",
+    hourAgo: "ч назад",
+    dayAgo: "дн назад"
+  },
+  tr: {
+    hotelTagline: "CENTRAL PARK · BAKÜ",
+    welcome: "Hoş geldiniz",
+    welcomeName: "Hoş geldiniz",
+    roomLabel: "Oda",
+    wifiLabel: "WIFI ŞİFRESİ",
+    copy: "Kopyala", copied: "Kopyalandı",
+    breakfast: "Kahvaltı: 07:00–11:00",
+    restaurant: "Restoran: 24/7",
+    reception24: "Resepsiyon: 24/7",
+    services: "Hizmetler",
+    housekeeping: "Oda Hizmeti",
+    housekeepingDesc: "Havlu, terlik, su",
+    restaurantTitle: "Restoran",
+    restaurantDesc: "Odaya servis",
+    receptionTitle: "Resepsiyon",
+    receptionDesc: "Taksi, tur, geç çıkış ve dahası",
+    helpTitle: "Resepsiyonla Sohbet",
+    helpDesc: "Sorunuzu yazın, anında cevap",
+    cartTitle: "Siparişiniz",
+    confirmOrder: "Siparişi Onayla",
+    orderStatus: "Sipariş Durumu",
+    orderReceived: "Siparişiniz alındı",
+    staffNotified: "Personelimiz Telegram'dan bildirim aldı",
+    step1: "Alındı", step2: "Hazırlanıyor", step3: "Yolda", step4: "Tamamlandı",
+    viewCart: "Siparişi gör →",
+    free: "Ücretsiz", add: "EKLE",
+    addToCart: "Sepete eklendi",
+    empty: "Sepetiniz boş",
+    total: "Toplam",
+    chatComing: "Resepsiyon sohbeti demoda kapalı 🙂",
+    staffPeek: "Resepsiyon görünümü",
+    tgSubtitle: "Resepsiyon grubu · 8 üye",
+    tgTab1: "🛎 Resepsiyon", tgTab2: "🛏 Oda Hizmeti", tgTab3: "🍽 Restoran",
+    tgClose: "Kapat",
+    accept: "✅ Kabul edildi", done: "✓ Tamamlandı",
+    notifBanner: "📱 Sipariş Telegram'a gönderildi",
+    newOrder: "Yeni sipariş — Oda",
+    welcomeGreeting: "Hoş geldiniz",
+    welcomeSub: "Hizmeti size uyarlayabilmemiz için sizi tanıyalım",
+    yourName: "Ad Soyad",
+    yourRoom: "Oda numarası",
+    continueBtn: "Devam et",
+    welcomeFooter: "Her odada QR kod benzersizdir — oda numarası otomatik dolar.",
+    lockedFromQr: "QR koddan otomatik dolduruldu",
+    fillBoth: "Ad ve oda numarası zorunlu",
+    confirmReset: "Kayıtlı bilgileriniz silinsin mi?",
+    now: "Şimdi",
+    yourPhone: "Telefon numarası",
+    phoneHint: "Sipariş durumu SMS ile gelecek, geri arama için de kullanılır",
+    smsBanner: "💬 SMS gönderilecek:",
+    chatEmpty: "Mesajınızı yazın, resepsiyon hemen cevap verecek",
+    chatPlaceholder: "Mesaj yazın...",
+    notifsTitle: "Bildirimler",
+    noNotifs: "Henüz bildirim yok",
+    noOrders: "Henüz sipariş yok",
+    orderHistory: "Sipariş geçmişi",
+    minAgo: "dk önce",
+    hourAgo: "sa önce",
+    dayAgo: "gün önce"
+  },
+  ar: {
+    hotelTagline: "سنترال بارك · باكو",
+    welcome: "مرحباً بكم",
+    welcomeName: "مرحباً",
+    roomLabel: "غرفة",
+    wifiLabel: "كلمة سر واي فاي",
+    copy: "نسخ", copied: "تم النسخ",
+    breakfast: "الإفطار: 07:00–11:00",
+    restaurant: "المطعم: 24/7",
+    reception24: "الاستقبال: 24/7",
+    services: "الخدمات",
+    housekeeping: "خدمة الغرف",
+    housekeepingDesc: "مناشف، نعال، مياه",
+    restaurantTitle: "المطعم",
+    restaurantDesc: "خدمة إلى الغرفة",
+    receptionTitle: "الاستقبال",
+    receptionDesc: "تاكسي، جولات، تأخير المغادرة وأكثر",
+    helpTitle: "دردشة مع الاستقبال",
+    helpDesc: "اكتب سؤالك، رد فوري",
+    cartTitle: "طلبك",
+    confirmOrder: "تأكيد الطلب",
+    orderStatus: "حالة الطلب",
+    orderReceived: "تم استلام طلبك",
+    staffNotified: "تلقى موظفونا الإشعار عبر تيليجرام",
+    step1: "تم الاستلام", step2: "قيد التحضير", step3: "في الطريق", step4: "اكتمل",
+    viewCart: "← عرض الطلب",
+    free: "مجاناً", add: "إضافة",
+    addToCart: "تمت الإضافة",
+    empty: "سلتك فارغة",
+    total: "المجموع",
+    chatComing: "دردشة الاستقبال معطلة في العرض 🙂",
+    staffPeek: "عرض الاستقبال",
+    tgSubtitle: "مجموعة الاستقبال · 8 أعضاء",
+    tgTab1: "🛎 الاستقبال", tgTab2: "🛏 خدمة الغرف", tgTab3: "🍽 المطعم",
+    tgClose: "إغلاق",
+    accept: "✅ تم القبول", done: "✓ اكتمل",
+    notifBanner: "📱 تم إرسال الطلب إلى تيليجرام",
+    newOrder: "طلب جديد — غرفة",
+    welcomeGreeting: "أهلاً وسهلاً",
+    welcomeSub: "تعرّف بنفسك حتى نخصّص لك الخدمة",
+    yourName: "الاسم الكامل",
+    yourRoom: "رقم الغرفة",
+    continueBtn: "متابعة",
+    welcomeFooter: "لكل غرفة رمز QR فريد — رقم الغرفة يتم ملؤه تلقائياً.",
+    lockedFromQr: "تم الملء تلقائياً من QR",
+    fillBoth: "الاسم ورقم الغرفة مطلوبان",
+    confirmReset: "هل تريد حذف بياناتك المحفوظة؟",
+    now: "الآن",
+    yourPhone: "رقم الهاتف",
+    phoneHint: "ستصلك حالة الطلب عبر SMS، ويُستخدم أيضاً للاتصال بك",
+    smsBanner: "💬 سيتم إرسال SMS إلى:",
+    chatEmpty: "اكتب رسالتك، الاستقبال سيرد فوراً",
+    chatPlaceholder: "اكتب رسالة...",
+    notifsTitle: "الإشعارات",
+    noNotifs: "لا توجد إشعارات بعد",
+    noOrders: "لا توجد طلبات بعد",
+    orderHistory: "سجل الطلبات",
+    minAgo: "د",
+    hourAgo: "س",
+    dayAgo: "يوم"
+  }
+};
+
+const menu = {
+  housekeeping: [
+    { id: 'h1', icon: '🧖', price: 0, dept: 'housekeeping',
+      name: { az: "Əlavə dəsmal", en: "Extra towel", ru: "Дополнительное полотенце", tr: "Ekstra havlu", ar: "منشفة إضافية" } },
+    { id: 'h2', icon: '🥿', price: 0, dept: 'housekeeping',
+      name: { az: "Slipper", en: "Slippers", ru: "Тапочки", tr: "Terlik", ar: "نعال" } },
+    { id: 'h3', icon: '🧴', price: 0, dept: 'housekeeping',
+      name: { az: "Şampun və sabun", en: "Shampoo & soap", ru: "Шампунь и мыло", tr: "Şampuan ve sabun", ar: "شامبو وصابون" } },
+    { id: 'h4', icon: '💧', price: 3, dept: 'housekeeping',
+      name: { az: "Mineral su 1.5L", en: "Mineral water 1.5L", ru: "Минеральная вода 1.5L", tr: "Maden suyu 1.5L", ar: "مياه معدنية 1.5 لتر" } },
+    { id: 'h5', icon: '🛏️', price: 0, dept: 'housekeeping',
+      name: { az: "Çarpayı dəyişdirilməsi", en: "Bed linen change", ru: "Смена постельного белья", tr: "Çarşaf değişimi", ar: "تغيير الفراش" } },
+    { id: 'h6', icon: '🧹', price: 0, dept: 'housekeeping',
+      name: { az: "Otaq təmizliyi", en: "Room cleaning", ru: "Уборка номера", tr: "Oda temizliği", ar: "تنظيف الغرفة" } },
+    { id: 'h7', icon: '🌙', price: 0, dept: 'housekeeping',
+      name: { az: "Səs etməyin rejimi", en: "Do not disturb", ru: "Не беспокоить", tr: "Rahatsız etmeyin", ar: "الرجاء عدم الإزعاج" } },
+    { id: 'h8', icon: '🪥', price: 0, dept: 'housekeeping',
+      name: { az: "Diş fırçası və pasta", en: "Toothbrush & paste", ru: "Зубная щётка и паста", tr: "Diş fırçası ve macunu", ar: "فرشاة ومعجون أسنان" } }
+  ],
+  restaurant: [
+    { id: 'r1', icon: '🍳', price: 18, dept: 'restaurant',
+      name: { az: "Azərbaycan səhər yeməyi", en: "Azerbaijani breakfast", ru: "Азербайджанский завтрак", tr: "Azerbaycan kahvaltısı", ar: "إفطار أذربيجاني" } },
+    { id: 'r2', icon: '🥐', price: 22, dept: 'restaurant',
+      name: { az: "Kontinental səhər yeməyi", en: "Continental breakfast", ru: "Континентальный завтрак", tr: "Kontinental kahvaltı", ar: "إفطار كونتيننتال" } },
+    { id: 'r3', icon: '🍖', price: 16, dept: 'restaurant',
+      name: { az: "Tikə kabab", en: "Tikə kebab", ru: "Кебаб тике", tr: "Tike kebap", ar: "كباب تكه" } },
+    { id: 'r4', icon: '🍢', price: 14, dept: 'restaurant',
+      name: { az: "Lülə kabab", en: "Lülə kebab", ru: "Люля-кебаб", tr: "Adana kebap", ar: "كباب لولو" } },
+    { id: 'r5', icon: '🍛', price: 18, dept: 'restaurant',
+      name: { az: "Plov (qoyun)", en: "Lamb plov", ru: "Плов (баранина)", tr: "Pilav (kuzu)", ar: "بلوف لحم الضأن" } },
+    { id: 'r6', icon: '🍲', price: 12, dept: 'restaurant',
+      name: { az: "Piti", en: "Piti (lamb stew)", ru: "Пити (баранина)", tr: "Piti (kuzu çorbası)", ar: "بيتي (طبق لحم الضأن)" } },
+    { id: 'r7', icon: '☕', price: 6, dept: 'restaurant',
+      name: { az: "Türk qəhvəsi", en: "Turkish coffee", ru: "Турецкий кофе", tr: "Türk kahvesi", ar: "قهوة تركية" } },
+    { id: 'r8', icon: '🍵', price: 4, dept: 'restaurant',
+      name: { az: "Azərbaycan çayı", en: "Azerbaijani tea", ru: "Азербайджанский чай", tr: "Azerbaycan çayı", ar: "شاي أذربيجاني" } },
+    { id: 'r9', icon: '🍯', price: 8, dept: 'restaurant',
+      name: { az: "Paxlava", en: "Baklava", ru: "Пахлава", tr: "Baklava", ar: "بقلاوة" } }
+  ],
+  reception: [
+    { id: 'rc1', icon: '🕐', price: 0, dept: 'reception',
+      name: { az: "Geç check-out (2 saat)", en: "Late check-out (2h)", ru: "Поздний выезд (+2 ч)", tr: "Geç çıkış (2 saat)", ar: "تأخير المغادرة (ساعتان)" } },
+    { id: 'rc2', icon: '🌅', price: 30, dept: 'reception',
+      name: { az: "Erkən check-in", en: "Early check-in", ru: "Ранний заезд", tr: "Erken giriş", ar: "تسجيل وصول مبكر" } },
+    { id: 'rc3', icon: '🚖', price: 25, dept: 'reception',
+      name: { az: "Taksi (havalimanı)", en: "Airport taxi", ru: "Такси в аэропорт", tr: "Havalimanı taksisi", ar: "تاكسي إلى المطار" } },
+    { id: 'rc4', icon: '🗿', price: 60, dept: 'reception',
+      name: { az: "Tur: Qobustan (4 saat)", en: "Tour: Qobustan (4h)", ru: "Тур: Гобустан (4 ч)", tr: "Tur: Gobustan (4 saat)", ar: "جولة: قوبستان (4 ساعات)" } },
+    { id: 'rc5', icon: '🏔️', price: 180, dept: 'reception',
+      name: { az: "Tur: Şahdağ (1 gün)", en: "Tour: Shahdag (1 day)", ru: "Тур: Шахдаг (1 день)", tr: "Tur: Şahdağ (1 gün)", ar: "جولة: شاهداغ (يوم كامل)" } },
+    { id: 'rc6', icon: '🌋', price: 90, dept: 'reception',
+      name: { az: "Tur: Abşeron yarımadası", en: "Tour: Absheron peninsula", ru: "Тур: Полуостров Абшерон", tr: "Tur: Abşeron yarımadası", ar: "جولة: شبه جزيرة أبشيرون" } },
+    { id: 'rc7', icon: '🅿️', price: 0, dept: 'reception',
+      name: { az: "Avto-yer rezervi", en: "Parking reservation", ru: "Бронь парковки", tr: "Park yeri rezervi", ar: "حجز موقف سيارة" } }
+  ]
+};
+
+const departmentNames = {
+  az: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restoran", reception: "🛎 Resepsion" },
+  en: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restaurant", reception: "🛎 Reception" },
+  ru: { housekeeping: "🛏 Обслуживание", restaurant: "🍽 Ресторан", reception: "🛎 Ресепшен" },
+  tr: { housekeeping: "🛏 Oda Hizmeti", restaurant: "🍽 Restoran", reception: "🛎 Resepsiyon" },
+  ar: { housekeeping: "🛏 خدمة الغرف", restaurant: "🍽 المطعم", reception: "🛎 الاستقبال" }
+};
+
+function t(key) { return (i18n[lang] && i18n[lang][key]) || key; }
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (i18n[lang][key]) el.placeholder = i18n[lang][key];
+  });
+  if (window.guestData) {
+    const headerWelcome = document.querySelector('.header .welcome');
+    const roomBadge = document.querySelector('.header .room-badge');
+    if (headerWelcome) headerWelcome.textContent = t('welcomeName') + ', ' + window.guestData.name;
+    if (roomBadge) roomBadge.textContent = t('roomLabel') + ' ' + window.guestData.room;
+  }
+  document.querySelectorAll('.welcome-lang button').forEach(btn => {
+    btn.classList.toggle('on', btn.dataset.lang === lang);
+  });
+  document.querySelectorAll('.lang-menu button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.getElementById('langLabel').textContent = lang.toUpperCase();
+}
+
+const countries = [
+  { code: 'AZ', flag: '🇦🇿', cc: '+994', name: 'Azərbaycan' },
+  { code: 'TR', flag: '🇹🇷', cc: '+90', name: 'Türkiye' },
+  { code: 'RU', flag: '🇷🇺', cc: '+7', name: 'Россия' },
+  { code: 'SA', flag: '🇸🇦', cc: '+966', name: 'السعودية' },
+  { code: 'AE', flag: '🇦🇪', cc: '+971', name: 'الإمارات' },
+  { code: 'KW', flag: '🇰🇼', cc: '+965', name: 'الكويت' },
+  { code: 'QA', flag: '🇶🇦', cc: '+974', name: 'قطر' },
+  { code: 'IR', flag: '🇮🇷', cc: '+98', name: 'Iran' },
+  { code: 'GE', flag: '🇬🇪', cc: '+995', name: 'საქართველო' },
+  { code: 'UA', flag: '🇺🇦', cc: '+380', name: 'Україна' },
+  { code: 'GB', flag: '🇬🇧', cc: '+44', name: 'United Kingdom' },
+  { code: 'DE', flag: '🇩🇪', cc: '+49', name: 'Deutschland' },
+  { code: 'FR', flag: '🇫🇷', cc: '+33', name: 'France' },
+  { code: 'US', flag: '🇺🇸', cc: '+1', name: 'USA' },
+  { code: 'IL', flag: '🇮🇱', cc: '+972', name: 'Israel' },
+  { code: 'IN', flag: '🇮🇳', cc: '+91', name: 'India' }
+];
+const langToCountry = { az: 'AZ', tr: 'TR', ru: 'RU', ar: 'SA', en: 'GB' };
+const langToFlag = { az: '🇦🇿', en: '🇬🇧', ru: '🇷🇺', tr: '🇹🇷', ar: '🇸🇦' };
+let selectedCountry = countries[0];
+
+function renderCountryMenu() {
+  const menu = document.getElementById('countryMenu');
+  if (!menu) return;
+  menu.innerHTML = countries.map(c => `
+    <button type="button" onclick="setCountry('${c.code}')">
+      <span>${c.flag}</span><span>${c.name}</span><span class="cc">${c.cc}</span>
+    </button>
+  `).join('');
+}
+
+function setCountry(code) {
+  const c = countries.find(x => x.code === code);
+  if (!c) return;
+  selectedCountry = c;
+  const flagEl = document.getElementById('countryFlag');
+  const codeEl = document.getElementById('countryCode');
+  if (flagEl) flagEl.textContent = c.flag;
+  if (codeEl) codeEl.textContent = c.cc;
+  document.getElementById('countryMenu')?.classList.remove('show');
+}
+
+function toggleCountryMenu(e) {
+  e?.stopPropagation();
+  document.getElementById('countryMenu')?.classList.toggle('show');
+}
+
+function toggleWelcomeLangMenu(e) {
+  e?.stopPropagation();
+  document.getElementById('welcomeLangMenu')?.classList.toggle('show');
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  applyI18n();
+  renderAllLists();
+  renderCart();
+  renderCountryMenu();
+  document.getElementById('langMenu')?.classList.remove('show');
+  document.getElementById('welcomeLangMenu')?.classList.remove('show');
+  const flag = langToFlag[newLang] || '🌐';
+  const lblEl = document.getElementById('welcomeLangLabel');
+  if (lblEl) lblEl.textContent = `${flag} ${newLang.toUpperCase()}`;
+  if (langToCountry[newLang]) setCountry(langToCountry[newLang]);
+}
+
+function toggleLangMenu() {
+  document.getElementById('langMenu').classList.toggle('show');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.lang-picker')) {
+    document.getElementById('langMenu')?.classList.remove('show');
+  }
+  if (!e.target.closest('.welcome-lang')) {
+    document.getElementById('welcomeLangMenu')?.classList.remove('show');
+  }
+  if (!e.target.closest('.country-picker')) {
+    document.getElementById('countryMenu')?.classList.remove('show');
+  }
+});
+
+function copyWifi() {
+  navigator.clipboard?.writeText('Grand@0081');
+  const btn = document.getElementById('copyBtn');
+  btn.classList.add('copied');
+  btn.querySelector('span').textContent = t('copied');
+  setTimeout(() => {
+    btn.classList.remove('copied');
+    btn.querySelector('span').textContent = t('copy');
+  }, 1500);
+}
+
+function renderList(category) {
+  const container = document.getElementById(category + 'List');
+  if (!container) return;
+  container.innerHTML = menu[category].map(item => {
+    const inCart = cart.find(c => c.id === item.id);
+    const qty = inCart ? inCart.qty : 0;
+    return `
+      <div class="item">
+        <div class="item-icon">${item.icon}</div>
+        <div class="item-info">
+          <div class="item-name">${item.name[lang] || item.name.en}</div>
+          <div class="item-price ${item.price === 0 ? 'free' : ''}">
+            ${item.price === 0 ? t('free') : item.price + ' ₼'}
+          </div>
+        </div>
+        ${qty === 0
+          ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
+          : `<div class="qty-control">
+              <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+             </div>`
+        }
+      </div>
+    `;
+  }).join('');
+}
+
+function renderAllLists() {
+  Object.keys(menu).forEach(renderList);
+}
+
+function addToCart(itemId, category) {
+  const item = menu[category].find(i => i.id === itemId);
+  cart.push({ ...item, qty: 1 });
+  updateCartBar();
+  renderList(category);
+  showToast(t('addToCart'));
+}
+
+function changeQty(itemId, delta) {
+  const idx = cart.findIndex(c => c.id === itemId);
+  if (idx === -1) return;
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  updateCartBar();
+  renderAllLists();
+  renderCart();
+}
+
+function updateCartBar() {
+  const bar = document.getElementById('cartBar');
+  const count = cart.reduce((s, c) => s + c.qty, 0);
+  const total = cart.reduce((s, c) => s + c.qty * c.price, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = total === 0 ? t('free') : total + ' ₼';
+  if (count > 0) bar.classList.add('show');
+  else bar.classList.remove('show');
+}
+
+function renderCart() {
+  const c = document.getElementById('cartContent');
+  if (cart.length === 0) {
+    c.innerHTML = `<div class="empty-cart">${t('empty')}</div>`;
+    return;
+  }
+  const total = cart.reduce((s, item) => s + item.qty * item.price, 0);
+  c.innerHTML = `
+    <div class="item-list">
+      ${cart.map(item => `
+        <div class="item">
+          <div class="item-icon">${item.icon}</div>
+          <div class="item-info">
+            <div class="item-name">${item.name[lang] || item.name.en} × ${item.qty}</div>
+            <div class="item-price ${item.price === 0 ? 'free' : ''}">
+              ${item.price === 0 ? t('free') : (item.qty * item.price) + ' ₼'}
+            </div>
+          </div>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="order-summary" style="margin: 20px 0 0;">
+      <div class="summary-row total">
+        <span>${t('total')}</span>
+        <span>${total === 0 ? t('free') : total + ' ₼'}</span>
+      </div>
+    </div>
+    <button class="primary-btn" onclick="placeOrder()" style="width: 100%; margin: 20px 0 40px;">
+      <span>${t('confirmOrder')}</span>
+    </button>
+  `;
+}
+
+const ORDERS_KEY = 'grandhotel_orders';
+
+function loadOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveOrders(orders) {
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+}
+
+function upsertOrder(order) {
+  const orders = loadOrders();
+  const idx = orders.findIndex(o => o.id === order.id);
+  if (idx >= 0) orders[idx] = order;
+  else orders.unshift(order);
+  saveOrders(orders);
+}
+
+function getOrderById(id) {
+  return loadOrders().find(o => o.id === id);
+}
+
+function getLatestOrder() {
+  const orders = loadOrders();
+  return orders.length > 0 ? orders[0] : null;
+}
+
+function getOrderCurrentStep(order) {
+  let step = 1;
+  for (let i = 2; i <= 4; i++) if (order.steps[i]) step = i;
+  return step;
+}
+
+function renderActiveOrderCard() {
+  const card = document.getElementById('activeOrderCard');
+  const floatBtn = document.getElementById('historyFloat');
+  const floatCount = document.getElementById('historyFloatCount');
+  if (!card) return;
+  const orders = loadOrders();
+  if (floatBtn) {
+    if (orders.length > 0) {
+      floatBtn.style.display = 'flex';
+      if (floatCount) floatCount.textContent = orders.length;
+    } else {
+      floatBtn.style.display = 'none';
+    }
+  }
+  const latest = orders[0];
+  if (!latest) { card.style.display = 'none'; return; }
+  const age = Date.now() - latest.createdAt;
+  if (age > 24 * 60 * 60 * 1000) { card.style.display = 'none'; return; }
+  const step = getOrderCurrentStep(latest);
+  const statusText = t('step' + step);
+  const isDone = step === 4;
+  const icon = isDone ? '✅' : (step === 1 ? '🛎️' : (step === 2 ? '👨‍🍳' : '🚶'));
+  const items = latest.items.map(i => `${i.qty}× ${i.name[lang] || i.name.en}`).join(', ');
+  card.className = 'active-order-card' + (isDone ? ' done' : '');
+  card.innerHTML = `
+    <div class="order-card-icon">${icon}</div>
+    <div class="order-card-info">
+      <div class="order-card-label">#${latest.id}</div>
+      <div class="order-card-status">${statusText}</div>
+      <div class="order-card-meta">${items}</div>
+    </div>
+    <div class="order-card-arrow">→</div>
+  `;
+  card.style.display = 'flex';
+  card.onclick = () => openOrderDetail(latest.id);
+}
+
+function openOrderDetail(orderId) {
+  const order = getOrderById(orderId);
+  if (!order) return;
+  currentOrderId = order.id;
+  document.getElementById('orderId').textContent = '#' + order.id;
+  document.getElementById('orderSummary').innerHTML = `
+    ${order.items.map(item => `
+      <div class="summary-row">
+        <span>${item.name[lang] || item.name.en} × ${item.qty}</span>
+        <span>${item.price === 0 ? t('free') : (item.qty * item.price) + ' ₼'}</span>
+      </div>
+    `).join('')}
+    <div class="summary-row total">
+      <span>${t('total')}</span>
+      <span>${order.total === 0 ? t('free') : order.total + ' ₼'}</span>
+    </div>
+  `;
+  for (let i = 1; i <= 4; i++) {
+    const step = document.querySelector(`[data-step="${i}"]`);
+    const dot = step.querySelector('.status-dot');
+    const timeEl = document.getElementById(`time${i}`);
+    step.classList.remove('done', 'active');
+    if (order.steps[i]) {
+      timeEl.textContent = new Date(order.steps[i]).toTimeString().slice(0, 5);
+      dot.textContent = '✓';
+    } else {
+      timeEl.textContent = '—';
+      dot.textContent = i;
+    }
+  }
+  const currentStep = getOrderCurrentStep(order);
+  updateStatusStep(currentStep);
+  closeAllScreens();
+  document.getElementById('screen-confirmation').classList.add('active');
+}
+
+const NOTIFS_KEY = 'grandhotel_notifs';
+
+function loadNotifs() {
+  try { return JSON.parse(localStorage.getItem(NOTIFS_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveNotifs(notifs) {
+  localStorage.setItem(NOTIFS_KEY, JSON.stringify(notifs));
+}
+
+function addNotif(n) {
+  const notifs = loadNotifs();
+  n.id = 'n-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5);
+  n.timestamp = Date.now();
+  n.read = false;
+  notifs.unshift(n);
+  if (notifs.length > 50) notifs.length = 50;
+  saveNotifs(notifs);
+  updateNotifBadge();
+}
+
+function markAllNotifsRead() {
+  const notifs = loadNotifs();
+  let changed = false;
+  notifs.forEach(x => { if (!x.read) { x.read = true; changed = true; } });
+  if (changed) { saveNotifs(notifs); updateNotifBadge(); }
+}
+
+function updateNotifBadge() {
+  const badge = document.getElementById('notifBadge');
+  if (!badge) return;
+  const unread = loadNotifs().filter(x => !x.read).length;
+  if (unread > 0) {
+    badge.textContent = unread > 99 ? '99+' : unread;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function formatTimeAgo(ts) {
+  const diff = Date.now() - ts;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return t('now');
+  if (mins < 60) return `${mins} ${t('minAgo')}`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} ${t('hourAgo')}`;
+  const days = Math.floor(hrs / 24);
+  return `${days} ${t('dayAgo')}`;
+}
+
+function openNotifs() {
+  renderNotifList();
+  closeAllScreens();
+  document.getElementById('screen-notifs').classList.add('active');
+  setTimeout(markAllNotifsRead, 1500);
+}
+
+function renderNotifList() {
+  const container = document.getElementById('notifList');
+  if (!container) return;
+  const notifs = loadNotifs();
+  if (notifs.length === 0) {
+    container.innerHTML = `<div class="notif-empty"><span class="icon">🔔</span>${t('noNotifs')}</div>`;
+    return;
+  }
+  container.innerHTML = notifs.map(n => `
+    <div class="notif-item ${n.read ? '' : 'unread'}"${n.orderId ? ` onclick="openOrderDetail('${n.orderId}')"` : ''}>
+      <div class="notif-item-icon">${n.icon || '🔔'}</div>
+      <div class="notif-content">
+        <div class="notif-title">${escapeHtml(n.title)}</div>
+        <div class="notif-message">${escapeHtml(n.message)}</div>
+        <div class="notif-time">${formatTimeAgo(n.timestamp)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openOrdersList() {
+  renderOrdersList();
+  closeAllScreens();
+  document.getElementById('screen-orders').classList.add('active');
+}
+
+function renderOrdersList() {
+  const container = document.getElementById('ordersList');
+  if (!container) return;
+  const orders = loadOrders();
+  if (orders.length === 0) {
+    container.innerHTML = `<div class="orders-empty">${t('noOrders')}</div>`;
+    return;
+  }
+  container.innerHTML = orders.map(order => {
+    const step = getOrderCurrentStep(order);
+    const statusText = t('step' + step);
+    const isDone = step === 4;
+    const icon = isDone ? '✅' : (step === 1 ? '🛎️' : (step === 2 ? '👨‍🍳' : '🚶'));
+    const items = order.items.map(i => `${i.qty}× ${i.name[lang] || i.name.en}`).join(', ');
+    const time = new Date(order.createdAt).toTimeString().slice(0, 5);
+    return `
+      <div class="order-list-item" onclick="openOrderDetail('${order.id}')">
+        <div class="order-list-icon">${icon}</div>
+        <div class="order-list-info">
+          <div class="order-list-id">#${order.id}</div>
+          <div class="order-list-meta">${items}</div>
+          <span class="order-list-status-badge${isDone ? ' done' : ''}">${statusText}</span>
+        </div>
+        <div class="order-list-time">${time}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function syncOrderStatuses() {
+  try {
+    const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates`);
+    const data = await resp.json();
+    if (data.ok && data.result.length > 0) {
+      data.result.forEach(update => {
+        if (update.update_id > lastUpdateId) lastUpdateId = update.update_id;
+        if (update.callback_query) handleStatusCallback(update.callback_query);
+      });
+    }
+  } catch (e) {}
+}
+
+function placeOrder() {
+  if (cart.length === 0) return;
+  currentOrderId = 'GH-' + (window.guestData?.room || '000') + Math.floor(Math.random() * 9 + 1);
+  document.getElementById('orderId').textContent = '#' + currentOrderId;
+
+  const total = cart.reduce((s, item) => s + item.qty * item.price, 0);
+  document.getElementById('orderSummary').innerHTML = `
+    ${cart.map(item => `
+      <div class="summary-row">
+        <span>${item.name[lang] || item.name.en} × ${item.qty}</span>
+        <span>${item.price === 0 ? t('free') : (item.qty * item.price) + ' ₼'}</span>
+      </div>
+    `).join('')}
+    <div class="summary-row total">
+      <span>${t('total')}</span>
+      <span>${total === 0 ? t('free') : total + ' ₼'}</span>
+    </div>
+  `;
+
+  upsertOrder({
+    id: currentOrderId,
+    createdAt: Date.now(),
+    items: cart.map(c => ({ id: c.id, icon: c.icon, name: c.name, price: c.price, qty: c.qty, dept: c.dept })),
+    total: total,
+    guest: { ...window.guestData },
+    steps: { 1: Date.now() }
+  });
+  renderActiveOrderCard();
+
+  closeAllScreens();
+  document.getElementById('screen-confirmation').classList.add('active');
+  startStatusProgression();
+  sendToTelegram(cart);
+  setTimeout(() => showToast(t('notifBanner')), 400);
+  if (window.guestData?.phone) {
+    setTimeout(() => showToast(t('smsBanner') + ' ' + window.guestData.phone), 2600);
+  }
+}
+
+function resetOrder() {
+  cart = [];
+  currentOrderId = null;
+  statusTimers.forEach(clearTimeout);
+  statusTimers = [];
+  document.querySelectorAll('.status-step').forEach((el, i) => {
+    el.classList.remove('done', 'active');
+    if (i === 0) el.classList.add('active');
+    const dot = el.querySelector('.status-dot');
+    dot.textContent = i === 0 ? '✓' : (i + 1);
+  });
+  ['time1','time2','time3','time4'].forEach((id, i) => {
+    document.getElementById(id).textContent = i === 0 ? t('now') : '—';
+  });
+  updateCartBar();
+  renderAllLists();
+}
+
+async function startStatusProgression() {
+  const fmt = (d) => d.toTimeString().slice(0, 5);
+  document.getElementById('time1').textContent = fmt(new Date());
+  if (lastUpdateId === 0) {
+    try {
+      const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates`);
+      const data = await resp.json();
+      if (data.ok && data.result.length > 0) {
+        lastUpdateId = Math.max(...data.result.map(u => u.update_id));
+      }
+    } catch (e) {}
+  }
+  if (!chatPollInterval) {
+    chatPollInterval = setInterval(pollChatMessages, 2000);
+  }
+}
+
+function updateStatusStep(targetStep) {
+  const fmt = (d) => d.toTimeString().slice(0, 5);
+  const now = fmt(new Date());
+  for (let i = 1; i <= 4; i++) {
+    const step = document.querySelector(`[data-step="${i}"]`);
+    if (!step) continue;
+    const dot = step.querySelector('.status-dot');
+    const timeEl = document.getElementById(`time${i}`);
+    if (i < targetStep) {
+      step.classList.add('done');
+      step.classList.remove('active');
+      dot.textContent = '✓';
+      if (timeEl.textContent === '—') timeEl.textContent = now;
+    } else if (i === targetStep) {
+      dot.textContent = '✓';
+      if (timeEl.textContent === '—') timeEl.textContent = now;
+      if (i === 4) {
+        step.classList.add('done');
+        step.classList.remove('active');
+      } else {
+        step.classList.add('active');
+        step.classList.remove('done');
+      }
+    } else {
+      step.classList.remove('active', 'done');
+      dot.textContent = i;
+    }
+  }
+}
+
+function handleStatusCallback(cb) {
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/answerCallbackQuery`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ callback_query_id: cb.id, text: '✅' })
+  }).catch(() => {});
+  const data = cb.data || '';
+  const idx = data.indexOf('_');
+  if (idx < 0) return;
+  const action = data.substring(0, idx);
+  const orderId = data.substring(idx + 1);
+  const steps = { accept: 2, delivering: 3, done: 4 };
+  const targetStep = steps[action];
+  if (!targetStep) return;
+
+  const order = getOrderById(orderId);
+  if (order) {
+    const alreadyAtStep = order.steps[targetStep];
+    for (let i = 1; i <= targetStep; i++) {
+      if (!order.steps[i]) order.steps[i] = Date.now();
+    }
+    upsertOrder(order);
+    renderActiveOrderCard();
+    if (!alreadyAtStep) {
+      const icons = { 2: '👨‍🍳', 3: '🚶', 4: '✅' };
+      addNotif({
+        type: 'order_status',
+        title: '#' + orderId,
+        message: t('step' + targetStep),
+        icon: icons[targetStep] || '🔔',
+        orderId: orderId
+      });
+    }
+  }
+
+  if (orderId === currentOrderId) updateStatusStep(targetStep);
+}
+
+function openScreen(name) {
+  if (name === 'cart') renderCart();
+  closeAllScreens();
+  document.getElementById('screen-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function closeScreen() { closeAllScreens(); }
+function closeAllScreens() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+}
+
+const TG_TOKEN = '8191561035:AAFPWOq0tlH8XmxeUfhp1fpzIQdQK-JXYuo';
+const TG_CHAT_ID = '1690259101';
+
+function sendToTelegram(items) {
+  const groups = {};
+  items.forEach(item => {
+    if (!groups[item.dept]) groups[item.dept] = [];
+    groups[item.dept].push(item);
+  });
+  const msgs = [];
+  const time = new Date().toTimeString().slice(0, 5);
+  const room = window.guestData?.room || '—';
+  const phone = window.guestData?.phone || '';
+  const guestName = window.guestData?.name || '';
+  Object.entries(groups).forEach(([dept, dItems]) => {
+    const itemsList = dItems.map(i => `${i.qty}× ${i.name[lang] || i.name.en}`).join(', ');
+    const total = dItems.reduce((s, i) => s + i.qty * i.price, 0);
+
+    msgs.push({
+      dept,
+      text: `🔔 <strong>${t('newOrder')} ${room}</strong>
+${departmentNames[lang][dept]}<br>
+👤 ${guestName}${phone ? ' · 📱 ' + phone : ''}<br>
+${itemsList}<br>
+${total > 0 ? '💰 ' + total + ' ₼' : ''}`,
+      time
+    });
+
+    const tgText = `🔔 <b>${t('newOrder')} ${room}</b>
+${departmentNames[lang][dept]}
+👤 ${guestName}${phone ? ' · 📱 ' + phone : ''}
+📋 ${itemsList}${total > 0 ? '\n💰 ' + total + ' ₼' : ''}`;
+
+    fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TG_CHAT_ID,
+        text: tgText,
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [[
+            { text: '✅ Qəbul', callback_data: `accept_${currentOrderId}` },
+            { text: '🚶 Yolda', callback_data: `delivering_${currentOrderId}` },
+            { text: '✓ Tamam', callback_data: `done_${currentOrderId}` }
+          ]]
+        }
+      })
+    }).catch(e => console.error('TG error:', e));
+  });
+  window._pendingTgMsgs = msgs;
+}
+
+let chatMessages = [];
+let lastUpdateId = 0;
+let chatPollInterval = null;
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function openChat() {
+  closeAllScreens();
+  document.getElementById('screen-chat').classList.add('active');
+  renderChat();
+  if (lastUpdateId === 0) {
+    try {
+      const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates`);
+      const data = await resp.json();
+      if (data.ok && data.result.length > 0) {
+        lastUpdateId = Math.max(...data.result.map(u => u.update_id));
+      }
+    } catch (e) {}
+  }
+  if (!chatPollInterval) {
+    chatPollInterval = setInterval(pollChatMessages, 2500);
+  }
+  setTimeout(() => document.getElementById('chatInput').focus(), 300);
+}
+
+function closeChatScreen() {
+  closeAllScreens();
+}
+
+async function pollChatMessages() {
+  try {
+    const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=0`);
+    const data = await resp.json();
+    if (data.ok && data.result.length > 0) {
+      data.result.forEach(update => {
+        if (update.update_id > lastUpdateId) lastUpdateId = update.update_id;
+        const m = update.message;
+        if (m && m.text && !m.from.is_bot && !m.text.startsWith('/')) {
+          addChatMessage('staff', m.text);
+        }
+        if (update.callback_query) {
+          handleStatusCallback(update.callback_query);
+        }
+      });
+    }
+  } catch (e) { console.error('Poll error:', e); }
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addChatMessage('guest', text);
+
+  const room = window.guestData?.room || '?';
+  const name = window.guestData?.name || 'Guest';
+  const phone = window.guestData?.phone || '';
+  const tgText = `💬 <b>Otaq ${room} — ${escapeHtml(name)}</b>${phone ? '\n📱 ' + escapeHtml(phone) : ''}\n\n${escapeHtml(text)}`;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT_ID, text: tgText, parse_mode: 'HTML' })
+    });
+  } catch (e) { console.error('Send error:', e); }
+}
+
+function addChatMessage(from, text) {
+  const time = new Date().toTimeString().slice(0, 5);
+  chatMessages.push({ from, text, time });
+  renderChat();
+  if (from === 'staff') {
+    addNotif({
+      type: 'chat',
+      title: t('helpTitle'),
+      message: text,
+      icon: '💬'
+    });
+  }
+}
+
+function renderChat() {
+  const container = document.getElementById('chatMessages');
+  if (chatMessages.length === 0) {
+    container.innerHTML = `<div class="chat-empty">${t('chatEmpty')}</div>`;
+    return;
+  }
+  container.innerHTML = chatMessages.map(m => `
+    <div class="chat-msg ${m.from}">
+      <div class="chat-bubble">${escapeHtml(m.text)}</div>
+      <div class="chat-time">${m.time}</div>
+    </div>
+  `).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTelegram() {
+  document.getElementById('telegramModal').classList.add('show');
+  const body = document.getElementById('tgMessages');
+  const msgs = window._pendingTgMsgs || [];
+  if (msgs.length === 0) {
+    body.innerHTML = `<div style="text-align:center; color:#8B96A3; padding:40px 20px; font-size:13px;">
+      ${t('empty')}
+    </div>`;
+    return;
+  }
+  body.innerHTML = msgs.map(m => `
+    <div class="tg-msg">
+      ${m.text}
+      <div class="tg-buttons">
+        <button class="tg-btn">${t('accept')}</button>
+        <button class="tg-btn">${t('done')}</button>
+      </div>
+      <div class="tg-time">${m.time}</div>
+    </div>
+  `).join('');
+}
+
+function hideTelegram() {
+  document.getElementById('telegramModal').classList.remove('show');
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+function checkWelcome() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('reset') === '1') {
+    localStorage.removeItem('grandhotel_guest');
+  }
+  const urlRoom = params.get('room');
+  if (urlRoom) {
+    const r = document.getElementById('guestRoom');
+    r.value = urlRoom;
+    r.classList.add('locked');
+    document.getElementById('lockedHint').style.display = 'flex';
+  }
+
+  const saved = localStorage.getItem('grandhotel_guest');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (data.name && data.room) {
+        window.guestData = data;
+        document.getElementById('welcomeOverlay').classList.add('hidden');
+        applyI18n();
+        return;
+      }
+    } catch (e) {}
+  }
+
+  document.getElementById('welcomeOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('guestName').focus(), 300);
+  ['guestName', 'guestRoom'].forEach(id => {
+    document.getElementById(id).addEventListener('keypress', e => {
+      if (e.key === 'Enter') submitWelcome();
+    });
+  });
+}
+
+function submitWelcome() {
+  const name = document.getElementById('guestName').value.trim();
+  const room = document.getElementById('guestRoom').value.trim();
+  const localPhone = document.getElementById('guestPhone').value.trim();
+  if (!name || !room) {
+    showToast(t('fillBoth'));
+    return;
+  }
+  const phone = localPhone ? `${selectedCountry.cc} ${localPhone}` : '';
+  window.guestData = { name, room, phone };
+  localStorage.setItem('grandhotel_guest', JSON.stringify({ name, room, phone }));
+  document.getElementById('welcomeOverlay').classList.add('hidden');
+  applyI18n();
+}
+
+function resetGuest() {
+  if (confirm(t('confirmReset'))) {
+    localStorage.removeItem('grandhotel_guest');
+    location.reload();
+  }
+}
+
+renderCountryMenu();
+applyI18n();
+renderAllLists();
+checkWelcome();
+renderActiveOrderCard();
+updateNotifBadge();
+(async () => {
+  const orders = loadOrders();
+  if (orders.length === 0) return;
+  await syncOrderStatuses();
+  renderActiveOrderCard();
+  const hasActive = orders.some(o => !o.steps[4]);
+  if (hasActive && !chatPollInterval) {
+    chatPollInterval = setInterval(pollChatMessages, 2000);
+  }
+})();
+</script>
+
+</body>
+</html>
