@@ -3223,9 +3223,9 @@ function sendEscalation(order, prefix) {
   const room = order.guest?.room || '—';
   const name = order.guest?.name || '';
   const phone = order.guest?.phone || '';
-  const items = order.items.map(i => `${i.qty}× ${i.name[lang] || i.name.en}`).join(', ');
+  const items = order.items.map(i => `• ${i.qty}× ${i.name[lang] || i.name.en}`).join('\n');
   const total = order.total || 0;
-  const text = `${prefix}\n\n🔔 <b>Sifariw #${order.id}</b>\n👤 ${escapeHtml(name)} · Otaq ${escapeHtml(String(room))}${phone ? '\n📱 ' + escapeHtml(phone) : ''}\n📋 ${escapeHtml(items)}${total > 0 ? '\n💰 ' + total + ' ₼' : ''}\n\n❗ <b>HƏLƏ QƏBUL EDİLMƏYİB</b>`;
+  const text = `${prefix}\n\n🔔 <b>Sifariw #${order.id}</b>\n👤 ${escapeHtml(name)} · Otaq ${escapeHtml(String(room))}${phone ? '\n📱 ' + escapeHtml(phone) : ''}\n\n📋 <b>Məhsullar:</b>\n${escapeHtml(items)}${total > 0 ? '\n\n💰 ' + total + ' ₼' : ''}\n\n❗ <b>HƏLƏ QƏBUL EDİLMƏYİB</b>`;
   fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -3431,7 +3431,7 @@ function sendToTelegram(items) {
   const phone = window.guestData?.phone || '';
   const guestName = window.guestData?.name || '';
   Object.entries(groups).forEach(([dept, dItems]) => {
-    const itemsList = dItems.map(i => `${i.qty}× ${i.name[lang] || i.name.en}`).join(', ');
+    const itemsList = dItems.map(i => `• ${i.qty}× ${i.name[lang] || i.name.en}`).join('\n');
     const total = dItems.reduce((s, i) => s + i.qty * i.price, 0);
 
     msgs.push({
@@ -3447,7 +3447,9 @@ ${total > 0 ? '💰 ' + total + ' ₼' : ''}`,
     const tgText = `🔔 <b>${t('newOrder')} ${room}</b>
 ${departmentNames[lang][dept]}
 👤 ${guestName}${phone ? ' · 📱 ' + phone : ''}
-📋 ${itemsList}${total > 0 ? '\n💰 ' + total + ' ₼' : ''}`;
+
+📋 <b>Məhsullar:</b>
+${itemsList}${total > 0 ? '\n\n💰 <b>' + total + ' ₼</b>' : ''}`;
 
     fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
       method: 'POST',
