@@ -2061,10 +2061,10 @@
     <div class="wifi-icon">📶</div>
     <div class="wifi-info">
       <div class="wifi-label" data-i18n="wifiLabel">WIFI PAROLU</div>
-      <div class="wifi-pass">Grand@0081</div>
+      <div class="wifi-pass" id="wifiPass">••••••••••</div>
     </div>
-    <button class="copy-btn" id="copyBtn" onclick="copyWifi()">
-      <span data-i18n="copy">Kopyala</span>
+    <button class="copy-btn" id="copyBtn" onclick="toggleWifi()">
+      <span id="wifiBtnLabel" data-i18n="show">Göstər</span>
     </button>
   </div>
 
@@ -2499,7 +2499,7 @@ const i18n = {
     welcomeName: "Welcome",
     roomLabel: "Room",
     wifiLabel: "WIFI PASSWORD",
-    copy: "Copy", copied: "Copied",
+    copy: "Copy", copied: "Copied", show: "Show",
     breakfast: "Breakfast: 07:00–11:00",
     restaurant: "Restaurant: 24/7",
     reception24: "Reception: 24/7",
@@ -2598,7 +2598,7 @@ const i18n = {
     welcomeName: "Добро пожаловать",
     roomLabel: "Номер",
     wifiLabel: "WIFI ПАРОЛЬ",
-    copy: "Копировать", copied: "Скопировано",
+    copy: "Копировать", copied: "Скопировано", show: "Показать",
     breakfast: "Завтрак: 07:00–11:00",
     restaurant: "Ресторан: 24/7",
     reception24: "Ресепшен: 24/7",
@@ -2697,7 +2697,7 @@ const i18n = {
     welcomeName: "Hoş geldiniz",
     roomLabel: "Oda",
     wifiLabel: "WIFI ŞİFRESİ",
-    copy: "Kopyala", copied: "Kopyalandı",
+    copy: "Kopyala", copied: "Kopyalandı", show: "Göster",
     breakfast: "Kahvaltı: 07:00–11:00",
     restaurant: "Restoran: 24/7",
     reception24: "Resepsiyon: 24/7",
@@ -2796,7 +2796,7 @@ const i18n = {
     welcomeName: "مرحباً",
     roomLabel: "غرفة",
     wifiLabel: "كلمة سر واي فاي",
-    copy: "نسخ", copied: "تم النسخ",
+    copy: "نسخ", copied: "تم النسخ", show: "إظهار",
     breakfast: "الإفطار: 07:00–11:00",
     restaurant: "المطعم: 24/7",
     reception24: "الاستقبال: 24/7",
@@ -3084,14 +3084,29 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
+let wifiRevealed = false;
+const WIFI_PASSWORD = 'Grand@0081';
+
+function toggleWifi() {
+  if (!wifiRevealed) {
+    document.getElementById('wifiPass').textContent = WIFI_PASSWORD;
+    document.getElementById('wifiBtnLabel').textContent = t('copy');
+    document.getElementById('wifiBtnLabel').removeAttribute('data-i18n');
+    document.getElementById('wifiBtnLabel').setAttribute('data-i18n', 'copy');
+    wifiRevealed = true;
+  } else {
+    copyWifi();
+  }
+}
+
 function copyWifi() {
-  navigator.clipboard?.writeText('Grand@0081');
+  navigator.clipboard?.writeText(WIFI_PASSWORD);
   const btn = document.getElementById('copyBtn');
   btn.classList.add('copied');
-  btn.querySelector('span').textContent = t('copied');
+  document.getElementById('wifiBtnLabel').textContent = t('copied');
   setTimeout(() => {
     btn.classList.remove('copied');
-    btn.querySelector('span').textContent = t('copy');
+    document.getElementById('wifiBtnLabel').textContent = t('copy');
   }, 1500);
 }
 
