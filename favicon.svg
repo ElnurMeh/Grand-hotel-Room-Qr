@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgFv" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0F2347"/>
+      <stop offset="1" stop-color="#061129"/>
+    </linearGradient>
+    <linearGradient id="gFv" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E0B765"/>
+      <stop offset="1" stop-color="#9C7330"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#bgFv)"/>
+  <text x="32" y="44" text-anchor="middle"
+        font-family="Didot, 'Bodoni 72', Georgia, serif"
+        font-size="38" font-weight="700"
+        fill="#F5F1EA"
+        letter-spacing="-2">EK</text>
+  <circle cx="32" cy="54" r="1.6" fill="url(#gFv)"/>
+</svg>
