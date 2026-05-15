@@ -1137,6 +1137,22 @@
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     border: 1px solid rgba(255,255,255,0.12);
   }
+  .welcome-hero {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 28px 24px 20px;
+    margin-bottom: 14px;
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+  .welcome-hero .welcome-logo-wrap { margin-bottom: 12px; width: auto; height: auto; }
+  .welcome-hero .welcome-logo-wrap::before { width: 180px; height: 180px; }
+  .welcome-hero .welcome-logo-img { height: 100px; }
+  .welcome-hero .welcome-tagline { margin-bottom: 8px; }
+  .welcome-hero .welcome-greeting { margin-bottom: 0 !important; font-size: 22px; }
   .welcome-label {
     font-size: 10px;
     text-transform: uppercase;
@@ -1943,9 +1959,11 @@
     </div>
   </div>
 
-  <div class="welcome-logo-wrap"><img src="logo.svg" alt="Grand Hotel Baku" class="welcome-logo-img"></div>
-  <div class="welcome-tagline" data-i18n="hotelTagline">CENTRAL PARK · BAKU</div>
-  <div class="welcome-greeting" data-i18n="welcomeGreeting" style="margin-bottom: 28px;">Xoş gəlmisiniz</div>
+  <div class="welcome-hero">
+    <div class="welcome-logo-wrap"><img src="logo.svg" alt="Grand Hotel Baku" class="welcome-logo-img"></div>
+    <div class="welcome-tagline" data-i18n="hotelTagline">CENTRAL PARK · BAKU</div>
+    <div class="welcome-greeting" data-i18n="welcomeGreeting">Xoş gəlmisiniz</div>
+  </div>
 
   <div class="welcome-form">
     <label class="welcome-label" data-i18n="yourName">Ad və Soyad</label>
