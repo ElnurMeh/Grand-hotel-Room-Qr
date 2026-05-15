@@ -3796,6 +3796,7 @@ function sendEscalation(order, prefix) {
       }
     })
   }).catch(() => {});
+  sendToAdmin(text);
 }
 
 // Check every 30 seconds
@@ -3943,6 +3944,7 @@ function handleStatusCallback(cb) {
     renderActiveOrderCard();
     if (!alreadyAtStep) {
       const icons = { 2: '👨‍🍳', 3: '🚶', 4: '✅' };
+      const labels = { 2: 'Qəbul edildi', 3: 'Yolda', 4: 'Tamamlandı' };
       addNotif({
         type: 'order_status',
         title: '#' + orderId,
@@ -3950,6 +3952,7 @@ function handleStatusCallback(cb) {
         icon: icons[targetStep] || '🔔',
         orderId: orderId
       });
+      sendToAdmin(`${icons[targetStep]} <b>Status dəyişdi — #${orderId}</b>\nOtaq ${order.guest?.room || '—'}\n→ <b>${labels[targetStep]}</b>`);
     }
   }
 
@@ -4043,6 +4046,7 @@ async function submitReport() {
       method: 'POST',
       body: formData
     });
+    sendToAdmin(caption, reportPhotoBlob);
     showToast(t('reportThanks'));
     setTimeout(() => { closeAllScreens(); resetReport(); }, 1500);
   } catch (e) {
@@ -4129,6 +4133,7 @@ async function submitReview() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'HTML' })
   }).catch(() => {});
+  sendToAdmin(text);
   showToast(t('reviewThanks'));
   setTimeout(() => { closeAllScreens(); resetReview(); }, 1500);
 }
@@ -4179,6 +4184,7 @@ async function submitSupport() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'HTML' })
   }).catch(() => {});
+  sendToAdmin(text);
   showToast(t('supportThanks'));
   setTimeout(() => { closeAllScreens(); resetSupport(); }, 1500);
 }
@@ -4189,7 +4195,32 @@ function closeAllScreens() {
 }
 
 const TG_TOKEN = '8191561035:AAFPWOq0tlH8XmxeUfhp1fpzIQdQK-JXYuo';
-const TG_CHAT_ID = '7297296553';
+const TG_CHAT_ID = '7297296553';        // Reception (handles orders)
+const TG_ADMIN_CHAT_ID = '1690259101';  // Admin monitoring (Elnur + Kamran later)
+
+function sendToAdmin(text, photoBlob) {
+  try {
+    if (photoBlob) {
+      const fd = new FormData();
+      fd.append('chat_id', TG_ADMIN_CHAT_ID);
+      fd.append('photo', photoBlob);
+      fd.append('caption', '📡 <b>ADMİN İZLƏMƏ</b>\n\n' + text);
+      fd.append('parse_mode', 'HTML');
+      fd.append('disable_notification', 'true');
+      return fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+    }
+    return fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TG_ADMIN_CHAT_ID,
+        text: '📡 <b>ADMİN İZLƏMƏ</b>\n\n' + text,
+        parse_mode: 'HTML',
+        disable_notification: true
+      })
+    }).catch(() => {});
+  } catch (e) {}
+}
 
 function sendToTelegram(items) {
   const groups = {};
@@ -4239,6 +4270,7 @@ ${itemsList}${total > 0 ? '\n\n💰 <b>' + total + ' ₼</b>' : ''}`;
         }
       })
     }).catch(e => console.error('TG error:', e));
+    sendToAdmin(tgText);
   });
   window._pendingTgMsgs = msgs;
 }
@@ -4311,6 +4343,7 @@ async function sendChatMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: TG_CHAT_ID, text: tgText, parse_mode: 'HTML' })
     });
+    sendToAdmin(tgText);
   } catch (e) { console.error('Send error:', e); }
 }
 
