@@ -907,26 +907,50 @@
 
   .welcome-logo-wrap {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 260px;
+    height: 200px;
   }
   .welcome-logo-wrap::before {
     content: "";
     position: absolute;
-    width: 220px; height: 220px;
+    inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,137,62,0.22) 0%, rgba(184,137,62,0.06) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(184,137,62,0.32) 0%, rgba(184,137,62,0.1) 40%, transparent 70%);
     z-index: 0;
+    animation: haloBreath 8s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+  .welcome-logo-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 25%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,137,62,0.18) 0%, transparent 60%);
+    z-index: 0;
+    animation: haloBreath 8s ease-in-out infinite 2s;
+    will-change: transform, opacity;
+  }
+  @keyframes haloBreath {
+    0%, 100% { transform: scale(0.92); opacity: 0.65; }
+    50% { transform: scale(1.08); opacity: 1; }
   }
   .welcome-logo-img {
-    height: 135px;
+    height: 170px;
     width: auto;
-    filter: brightness(0) invert(1) drop-shadow(0 4px 28px rgba(184,137,62,0.7));
+    filter: brightness(0) invert(1) drop-shadow(0 6px 32px rgba(184,137,62,0.8));
     opacity: 1;
     position: relative;
     z-index: 1;
+    animation: logoFloat 6s ease-in-out infinite;
+    will-change: transform;
+  }
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
   }
   .welcome-tagline {
     font-size: 10px;
@@ -1561,10 +1585,6 @@
     from { opacity: 0; transform: scale(0.92); }
     to { opacity: 1; transform: scale(1); }
   }
-  @keyframes logoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-  }
   @keyframes badgePulse {
     0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220,38,38,0.5); }
     50% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(220,38,38,0); }
@@ -1583,8 +1603,9 @@
 
   /* Welcome screen sequential entry */
   .welcome-logo-img {
-    animation: fadeDown 0.7s cubic-bezier(0.32, 0.72, 0, 1), logoFloat 5s ease-in-out 1.5s infinite;
+    animation: fadeDown 0.7s cubic-bezier(0.32, 0.72, 0, 1), logoFloat 6s ease-in-out 1s infinite;
   }
+  .welcome-logo-wrap { animation: fadeIn 0.7s ease-out backwards; }
   .welcome-tagline { animation: fadeIn 0.6s 0.15s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
   .welcome-greeting { animation: fadeUp 0.6s 0.25s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
   .welcome-sub { animation: fadeUp 0.6s 0.35s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
