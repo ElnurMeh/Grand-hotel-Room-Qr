@@ -292,6 +292,151 @@
     color: var(--ink-soft);
   }
 
+  /* MINI CARDS (review + support) */
+  .mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+  .mini-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: transform 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mini-card:active { transform: scale(0.97); }
+  .mini-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--green-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .mini-info { flex: 1; min-width: 0; }
+  html[dir="rtl"] .mini-info { text-align: right; }
+  .mini-title { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+  .mini-sub { font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+
+  /* REVIEW SCREEN */
+  .review-content { padding: 20px 16px 40px; }
+  .review-hero {
+    text-align: center;
+    padding: 20px 12px 24px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+  .review-hero h2 { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .review-hero p { font-size: 13px; color: var(--ink-soft); margin-bottom: 18px; }
+  .stars-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .star {
+    font-size: 36px;
+    cursor: pointer;
+    filter: grayscale(1) opacity(0.3);
+    transition: filter 0.15s, transform 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .star.on { filter: none; }
+  .star:active { transform: scale(1.2); }
+  .stars-label {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 600;
+    height: 16px;
+  }
+  .review-category {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .review-category-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .review-stars-small {
+    display: flex;
+    gap: 4px;
+  }
+  .review-stars-small .star { font-size: 20px; }
+  .review-comment {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--card);
+    color: var(--ink);
+    resize: vertical;
+    margin-top: 14px;
+    outline: none;
+  }
+  .review-comment:focus { border-color: var(--ink); }
+  .review-submit {
+    width: 100%;
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .review-submit:active { transform: scale(0.98); }
+  .review-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* SUPPORT SCREEN */
+  .support-content { padding: 20px 16px 40px; }
+  .support-topic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .topic-btn {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .topic-btn .icon { font-size: 24px; }
+  .topic-btn.on {
+    border-color: var(--ink);
+    background: var(--green-soft);
+    font-weight: 700;
+  }
+
   /* HELP CARD */
   .help-card {
     margin: 8px 16px 24px;
@@ -1867,6 +2012,24 @@
     <div class="discover-arrow">→</div>
   </div>
 
+  <!-- REVIEW + SUPPORT -->
+  <div class="mini-grid">
+    <div class="mini-card" onclick="openScreen('review')">
+      <div class="mini-icon">⭐</div>
+      <div class="mini-info">
+        <div class="mini-title" data-i18n="reviewTitle">Rey ver</div>
+        <div class="mini-sub" data-i18n="reviewSub">Təcrübən necə oldu?</div>
+      </div>
+    </div>
+    <div class="mini-card" onclick="openScreen('support')">
+      <div class="mini-icon">🛠️</div>
+      <div class="mini-info">
+        <div class="mini-title" data-i18n="supportTitle">Texniki dəstək</div>
+        <div class="mini-sub" data-i18n="supportSub">App-də problem var?</div>
+      </div>
+    </div>
+  </div>
+
   <!-- HELP CARD -->
   <div class="help-card" onclick="openChat()">
     <div class="help-icon">💬</div>
@@ -1901,6 +2064,46 @@
     <div class="screen-title" data-i18n="receptionTitle">Resepsion</div>
   </div>
   <div class="screen-content"><div class="item-list" id="receptionList"></div></div>
+</div>
+
+<div class="screen" id="screen-review">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="reviewTitle">Rey ver</div>
+  </div>
+  <div class="screen-content review-content">
+    <div class="review-hero">
+      <h2 data-i18n="reviewHeroTitle">Təcrübən necə oldu?</h2>
+      <p data-i18n="reviewHeroSub">Rəyiniz bizim üçün dəyərlidir</p>
+      <div class="stars-row" id="mainStars">
+        <span class="star" data-v="1" onclick="setMainStar(1)">⭐</span>
+        <span class="star" data-v="2" onclick="setMainStar(2)">⭐</span>
+        <span class="star" data-v="3" onclick="setMainStar(3)">⭐</span>
+        <span class="star" data-v="4" onclick="setMainStar(4)">⭐</span>
+        <span class="star" data-v="5" onclick="setMainStar(5)">⭐</span>
+      </div>
+      <div class="stars-label" id="mainStarsLabel">&nbsp;</div>
+    </div>
+    <div id="reviewCategories"></div>
+    <textarea class="review-comment" id="reviewComment" data-i18n-placeholder="reviewCommentPh" placeholder="Şərh yaz (ixtiyari)"></textarea>
+    <button class="review-submit" id="reviewSubmitBtn" onclick="submitReview()" data-i18n="reviewSubmit">Reyi göndər</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-support">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="supportTitle">Texniki dəstək</div>
+  </div>
+  <div class="screen-content support-content">
+    <div style="background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;">
+      <div style="font-size: 13px; color: var(--ink); font-weight: 600; margin-bottom: 4px;" data-i18n="supportIntroTitle">Problem nədir?</div>
+      <div style="font-size: 12px; color: var(--ink-soft);" data-i18n="supportIntroSub">Mövzu seç, qısa təsvir et — texniki komandamız cavab verəcək</div>
+    </div>
+    <div class="support-topic" id="supportTopic"></div>
+    <textarea class="review-comment" id="supportDesc" data-i18n-placeholder="supportDescPh" placeholder="Problemi qısa təsvir et..."></textarea>
+    <button class="review-submit" onclick="submitSupport()" data-i18n="supportSubmit">Göndər</button>
+  </div>
 </div>
 
 <div class="screen" id="screen-city">
@@ -2174,7 +2377,24 @@ const i18n = {
     ambulanceLabel: "Təcili yardım",
     callQuestion: "Zəng etmək istəyirsiniz?",
     callCancel: "Ləğv et",
-    callDo: "Zəng et"
+    callDo: "Zəng et",
+    reviewTitle: "Rey ver",
+    reviewSub: "Təcrübən necə oldu?",
+    reviewHeroTitle: "Təcrübən necə oldu?",
+    reviewHeroSub: "Rəyiniz bizim üçün dəyərlidir",
+    reviewCommentPh: "Şərh yaz (ixtiyari)",
+    reviewSubmit: "Reyi göndər",
+    reviewThanks: "Reyinizi aldıq, təşəkkürlər! ⭐",
+    reviewNeedRating: "Ulduz vermək vacibdir",
+    supportTitle: "Texniki dəstək",
+    supportSub: "App-də problem var?",
+    supportIntroTitle: "Problem nədir?",
+    supportIntroSub: "Mövzu seç, qısa təsvir et — texniki komandamız cavab verəcək",
+    supportDescPh: "Problemi qısa təsvir et...",
+    supportSubmit: "Göndər",
+    supportThanks: "Sorğunuzu aldıq, tezliklə cavab veririk 🛠️",
+    supportNeedTopic: "Mövzu seç",
+    supportNeedDesc: "Problemi yaz"
   },
   en: {
     hotelTagline: "CENTRAL PARK · BAKU",
@@ -2256,7 +2476,24 @@ const i18n = {
     ambulanceLabel: "Ambulance",
     callQuestion: "Would you like to call?",
     callCancel: "Cancel",
-    callDo: "Call"
+    callDo: "Call",
+    reviewTitle: "Leave review",
+    reviewSub: "How was your stay?",
+    reviewHeroTitle: "How was your stay?",
+    reviewHeroSub: "Your feedback matters to us",
+    reviewCommentPh: "Add a comment (optional)",
+    reviewSubmit: "Submit review",
+    reviewThanks: "Got your review, thanks! ⭐",
+    reviewNeedRating: "Please rate first",
+    supportTitle: "Tech support",
+    supportSub: "App issue?",
+    supportIntroTitle: "What's the problem?",
+    supportIntroSub: "Pick a topic, describe briefly — our tech team will reply",
+    supportDescPh: "Describe the problem briefly...",
+    supportSubmit: "Send",
+    supportThanks: "Got your request, we'll reply soon 🛠️",
+    supportNeedTopic: "Pick a topic",
+    supportNeedDesc: "Describe the problem"
   },
   ru: {
     hotelTagline: "CENTRAL PARK · БАКУ",
@@ -2338,7 +2575,24 @@ const i18n = {
     ambulanceLabel: "Скорая",
     callQuestion: "Хотите позвонить?",
     callCancel: "Отмена",
-    callDo: "Звонить"
+    callDo: "Звонить",
+    reviewTitle: "Оставить отзыв",
+    reviewSub: "Как прошло пребывание?",
+    reviewHeroTitle: "Как прошло пребывание?",
+    reviewHeroSub: "Ваш отзыв важен для нас",
+    reviewCommentPh: "Комментарий (по желанию)",
+    reviewSubmit: "Отправить отзыв",
+    reviewThanks: "Спасибо за отзыв! ⭐",
+    reviewNeedRating: "Поставьте оценку",
+    supportTitle: "Тех-поддержка",
+    supportSub: "Проблема с приложением?",
+    supportIntroTitle: "В чём проблема?",
+    supportIntroSub: "Выберите тему и опишите кратко",
+    supportDescPh: "Опишите проблему...",
+    supportSubmit: "Отправить",
+    supportThanks: "Запрос принят, ответим скоро 🛠️",
+    supportNeedTopic: "Выберите тему",
+    supportNeedDesc: "Опишите проблему"
   },
   tr: {
     hotelTagline: "CENTRAL PARK · BAKÜ",
@@ -2420,7 +2674,24 @@ const i18n = {
     ambulanceLabel: "Ambulans",
     callQuestion: "Aramak istiyor musunuz?",
     callCancel: "İptal",
-    callDo: "Ara"
+    callDo: "Ara",
+    reviewTitle: "Değerlendir",
+    reviewSub: "Konaklamanız nasıl geçti?",
+    reviewHeroTitle: "Konaklamanız nasıl geçti?",
+    reviewHeroSub: "Yorumunuz bizim için değerli",
+    reviewCommentPh: "Yorum yazın (opsiyonel)",
+    reviewSubmit: "Gönder",
+    reviewThanks: "Yorumunuz alındı, teşekkürler! ⭐",
+    reviewNeedRating: "Lütfen önce puan verin",
+    supportTitle: "Teknik destek",
+    supportSub: "Uygulamada sorun mu?",
+    supportIntroTitle: "Sorun nedir?",
+    supportIntroSub: "Konuyu seçin ve kısaca anlatın",
+    supportDescPh: "Sorunu kısaca anlatın...",
+    supportSubmit: "Gönder",
+    supportThanks: "İsteğiniz alındı, en kısa zamanda yanıtlayacağız 🛠️",
+    supportNeedTopic: "Konu seçin",
+    supportNeedDesc: "Sorunu yazın"
   },
   ar: {
     hotelTagline: "سنترال بارك · باكو",
@@ -2502,7 +2773,24 @@ const i18n = {
     ambulanceLabel: "الإسعاف",
     callQuestion: "هل تريد الاتصال؟",
     callCancel: "إلغاء",
-    callDo: "اتصل"
+    callDo: "اتصل",
+    reviewTitle: "اكتب تقييماً",
+    reviewSub: "كيف كانت إقامتك؟",
+    reviewHeroTitle: "كيف كانت إقامتك؟",
+    reviewHeroSub: "رأيك يهمنا",
+    reviewCommentPh: "أضف تعليقاً (اختياري)",
+    reviewSubmit: "إرسال التقييم",
+    reviewThanks: "شكراً لتقييمك! ⭐",
+    reviewNeedRating: "الرجاء التقييم أولاً",
+    supportTitle: "الدعم الفني",
+    supportSub: "هل لديك مشكلة؟",
+    supportIntroTitle: "ما هي المشكلة؟",
+    supportIntroSub: "اختر الموضوع، اشرح باختصار",
+    supportDescPh: "اشرح المشكلة باختصار...",
+    supportSubmit: "إرسال",
+    supportThanks: "تم استلام طلبك، سنرد قريباً 🛠️",
+    supportNeedTopic: "اختر الموضوع",
+    supportNeedDesc: "اشرح المشكلة"
   }
 };
 
@@ -3409,9 +3697,144 @@ function handleStatusCallback(cb) {
 function openScreen(name) {
   if (name === 'cart') renderCart();
   if (name === 'city') { fetchWeather(); fetchCurrency(); }
+  if (name === 'review') resetReview();
+  if (name === 'support') resetSupport();
   closeAllScreens();
   document.getElementById('screen-' + name).classList.add('active');
   window.scrollTo(0, 0);
+}
+
+// REVIEW
+const REVIEW_CATS = [
+  { id: 'room', icon: '🛏', name: { az: "Otaq", en: "Room", ru: "Номер", tr: "Oda", ar: "الغرفة" } },
+  { id: 'food', icon: '🍽', name: { az: "Yemək", en: "Food", ru: "Еда", tr: "Yemek", ar: "الطعام" } },
+  { id: 'service', icon: '🛎', name: { az: "Xidmət", en: "Service", ru: "Сервис", tr: "Hizmet", ar: "الخدمة" } },
+  { id: 'clean', icon: '🧹', name: { az: "Təmizlik", en: "Cleanliness", ru: "Чистота", tr: "Temizlik", ar: "النظافة" } }
+];
+const STAR_LABELS = {
+  az: ['', 'Pis', 'Babat', 'Yaxşı', 'Çox yaxşı', 'Mükəmməl'],
+  en: ['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'],
+  ru: ['', 'Плохо', 'Средне', 'Хорошо', 'Очень хорошо', 'Отлично'],
+  tr: ['', 'Kötü', 'Vasat', 'İyi', 'Çok iyi', 'Mükemmel'],
+  ar: ['', 'سيء', 'مقبول', 'جيد', 'جيد جداً', 'ممتاز']
+};
+let reviewMain = 0;
+let reviewCatRatings = {};
+
+function resetReview() {
+  reviewMain = 0;
+  reviewCatRatings = {};
+  document.getElementById('reviewComment').value = '';
+  document.getElementById('mainStarsLabel').innerHTML = '&nbsp;';
+  document.querySelectorAll('#mainStars .star').forEach(s => s.classList.remove('on'));
+  renderReviewCategories();
+}
+
+function setMainStar(v) {
+  reviewMain = v;
+  document.querySelectorAll('#mainStars .star').forEach(s => {
+    s.classList.toggle('on', parseInt(s.dataset.v) <= v);
+  });
+  const labels = STAR_LABELS[lang] || STAR_LABELS.en;
+  document.getElementById('mainStarsLabel').textContent = labels[v];
+}
+
+function setCatStar(catId, v) {
+  reviewCatRatings[catId] = v;
+  document.querySelectorAll(`[data-cat="${catId}"] .star`).forEach(s => {
+    s.classList.toggle('on', parseInt(s.dataset.v) <= v);
+  });
+}
+
+function renderReviewCategories() {
+  const container = document.getElementById('reviewCategories');
+  if (!container) return;
+  container.innerHTML = REVIEW_CATS.map(c => {
+    const stars = [1,2,3,4,5].map(v =>
+      `<span class="star ${(reviewCatRatings[c.id]||0) >= v ? 'on' : ''}" data-v="${v}" onclick="setCatStar('${c.id}', ${v})">⭐</span>`
+    ).join('');
+    return `
+      <div class="review-category" data-cat="${c.id}">
+        <span class="review-category-name">${c.icon} ${c.name[lang] || c.name.en}</span>
+        <span class="review-stars-small">${stars}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+async function submitReview() {
+  if (reviewMain === 0) {
+    showToast(t('reviewNeedRating'));
+    return;
+  }
+  const comment = document.getElementById('reviewComment').value.trim();
+  const room = window.guestData?.room || '—';
+  const name = window.guestData?.name || '';
+  const phone = window.guestData?.phone || '';
+  const stars = '⭐'.repeat(reviewMain) + '☆'.repeat(5 - reviewMain);
+  let catText = '';
+  REVIEW_CATS.forEach(c => {
+    const r = reviewCatRatings[c.id];
+    if (r) catText += `\n${c.icon} ${c.name[lang] || c.name.en}: ${'⭐'.repeat(r)}`;
+  });
+  const text = `⭐ <b>YENİ REY — Otaq ${escapeHtml(String(room))}</b>\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}\n\n<b>Ümumi:</b> ${stars} (${reviewMain}/5)${catText ? '\n\n<b>Kateqoriyalar:</b>' + catText : ''}${comment ? '\n\n💬 <i>' + escapeHtml(comment) + '</i>' : ''}`;
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'HTML' })
+  }).catch(() => {});
+  showToast(t('reviewThanks'));
+  setTimeout(() => { closeAllScreens(); resetReview(); }, 1500);
+}
+
+// SUPPORT
+const SUPPORT_TOPICS = [
+  { id: 'wifi', icon: '📶', name: { az: "WiFi", en: "WiFi", ru: "WiFi", tr: "WiFi", ar: "واي فاي" } },
+  { id: 'qr', icon: '📱', name: { az: "QR kod", en: "QR code", ru: "QR-код", tr: "QR kodu", ar: "رمز QR" } },
+  { id: 'order', icon: '📋', name: { az: "Sifariw", en: "Order", ru: "Заказ", tr: "Sipariş", ar: "الطلب" } },
+  { id: 'display', icon: '🎨', name: { az: "Görünüş", en: "Display", ru: "Отображение", tr: "Görüntü", ar: "العرض" } },
+  { id: 'other', icon: '❓', name: { az: "Başqa", en: "Other", ru: "Другое", tr: "Diğer", ar: "أخرى" } }
+];
+let supportSelectedTopic = null;
+
+function resetSupport() {
+  supportSelectedTopic = null;
+  document.getElementById('supportDesc').value = '';
+  renderSupportTopics();
+}
+
+function selectSupportTopic(id) {
+  supportSelectedTopic = id;
+  renderSupportTopics();
+}
+
+function renderSupportTopics() {
+  const container = document.getElementById('supportTopic');
+  if (!container) return;
+  container.innerHTML = SUPPORT_TOPICS.map(t =>
+    `<button class="topic-btn ${supportSelectedTopic === t.id ? 'on' : ''}" onclick="selectSupportTopic('${t.id}')">
+      <span class="icon">${t.icon}</span>
+      <span>${t.name[lang] || t.name.en}</span>
+    </button>`
+  ).join('');
+}
+
+async function submitSupport() {
+  if (!supportSelectedTopic) { showToast(t('supportNeedTopic')); return; }
+  const desc = document.getElementById('supportDesc').value.trim();
+  if (!desc) { showToast(t('supportNeedDesc')); return; }
+  const topic = SUPPORT_TOPICS.find(x => x.id === supportSelectedTopic);
+  const room = window.guestData?.room || '—';
+  const name = window.guestData?.name || '';
+  const phone = window.guestData?.phone || '';
+  const text = `🛠️ <b>TEXNİKİ DƏSTƏK — Otaq ${escapeHtml(String(room))}</b>\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}\n\n<b>Mövzu:</b> ${topic.icon} ${escapeHtml(topic.name[lang] || topic.name.en)}\n\n<b>Təsvir:</b>\n${escapeHtml(desc)}`;
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'HTML' })
+  }).catch(() => {});
+  showToast(t('supportThanks'));
+  setTimeout(() => { closeAllScreens(); resetSupport(); }, 1500);
 }
 
 function closeScreen() { closeAllScreens(); }
