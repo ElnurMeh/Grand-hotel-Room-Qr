@@ -69,11 +69,14 @@
     z-index: 5;
   }
   .logo-img {
-    height: 36px;
+    height: 64px;
     width: auto;
-    filter: brightness(0) invert(1);
-    opacity: 0.95;
+    filter: brightness(0) invert(1) drop-shadow(0 4px 16px rgba(184,137,62,0.55));
+    opacity: 1;
+    transition: filter 0.3s, transform 0.3s;
   }
+  .logo-img:active { transform: scale(0.95); }
+  .header-top { padding: 4px 0; }
   .lang-picker { position: relative; }
   .lang-toggle {
     background: rgba(255,255,255,0.12);
