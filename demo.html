@@ -298,6 +298,58 @@
     color: var(--ink-soft);
   }
 
+  /* REPORT WITH PHOTO */
+  .report-card {
+    margin: 4px 16px 16px;
+    background: linear-gradient(135deg, #B8893E 0%, #9C7330 100%);
+    color: white;
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(184,137,62,0.25);
+    transition: transform 0.15s;
+  }
+  .report-card:active { transform: scale(0.98); }
+  .report-icon {
+    width: 52px; height: 52px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(255,255,255,0.3);
+  }
+  .report-info { flex: 1; min-width: 0; }
+  html[dir="rtl"] .report-info { text-align: right; }
+  .report-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .report-sub { font-size: 12px; opacity: 0.85; line-height: 1.4; }
+  .report-arrow { font-size: 22px; flex-shrink: 0; }
+  .photo-capture {
+    background: var(--card);
+    border: 2px dashed var(--line);
+    border-radius: 16px;
+    padding: 40px 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .photo-capture:active { transform: scale(0.98); }
+  .photo-capture.has-photo { padding: 0; border-style: solid; overflow: hidden; }
+  .photo-capture .upload-icon { font-size: 48px; display: block; margin-bottom: 8px; opacity: 0.5; }
+  .photo-capture .upload-hint { font-size: 14px; color: var(--ink-soft); font-weight: 500; }
+  .photo-preview { width: 100%; display: block; border-radius: 14px; }
+  .photo-actions { display: flex; gap: 8px; margin-bottom: 16px; }
+  .photo-action-btn {
+    flex: 1; padding: 10px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    font-size: 12px; font-weight: 600; cursor: pointer; color: var(--ink);
+  }
+  .photo-action-btn.danger { color: #DC2626; border-color: rgba(220,38,38,0.3); }
+
   /* MINI CARDS (review + support) */
   .mini-grid {
     display: grid;
@@ -2108,6 +2160,16 @@
     <div class="discover-arrow">→</div>
   </div>
 
+  <!-- REPORT WITH PHOTO -->
+  <div class="report-card" onclick="openScreen('report')">
+    <div class="report-icon">📸</div>
+    <div class="report-info">
+      <div class="report-title" data-i18n="reportTitle">Problemi bildir</div>
+      <div class="report-sub" data-i18n="reportSub">Şəkil çək, göndər — komandamız gəlir</div>
+    </div>
+    <div class="report-arrow">→</div>
+  </div>
+
   <!-- REVIEW + SUPPORT -->
   <div class="mini-grid">
     <div class="mini-card" onclick="openScreen('review')">
@@ -2161,6 +2223,30 @@
     <div class="screen-title" data-i18n="receptionTitle">Resepsion</div>
   </div>
   <div class="screen-content"><div class="item-list" id="receptionList"></div></div>
+</div>
+
+<div class="screen" id="screen-report">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="reportTitle">Problemi bildir</div>
+  </div>
+  <div class="screen-content">
+    <div style="background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;">
+      <div style="font-size: 13px; color: var(--ink); font-weight: 600; margin-bottom: 4px;" data-i18n="reportIntroTitle">📸 Otaqda problem?</div>
+      <div style="font-size: 12px; color: var(--ink-soft); line-height: 1.4;" data-i18n="reportIntroSub">Şəkil çək (stakan qırığı, lampa yanmır, sızma...), 30 saniyəyə komandamız gəlir.</div>
+    </div>
+    <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoCapture(event)">
+    <div class="photo-capture" id="photoCapture" onclick="document.getElementById('photoInput').click()">
+      <span class="upload-icon">📷</span>
+      <span class="upload-hint" data-i18n="tapToCapture">Şəkil çəkmək üçün toxun</span>
+    </div>
+    <div class="photo-actions" id="photoActions" style="display:none;">
+      <button class="photo-action-btn" onclick="document.getElementById('photoInput').click()" data-i18n="retake">Yenidən çək</button>
+      <button class="photo-action-btn danger" onclick="clearPhoto()" data-i18n="removePhoto">Sil</button>
+    </div>
+    <textarea class="review-comment" id="reportDesc" data-i18n-placeholder="reportDescPh" placeholder="Problemi qısa təsvir et..."></textarea>
+    <button class="review-submit" onclick="submitReport()" data-i18n="reportSubmit">Göndər</button>
+  </div>
 </div>
 
 <div class="screen" id="screen-review">
@@ -2491,7 +2577,19 @@ const i18n = {
     supportSubmit: "Göndər",
     supportThanks: "Sorğunuzu aldıq, tezliklə cavab veririk 🛠️",
     supportNeedTopic: "Mövzu seç",
-    supportNeedDesc: "Problemi yaz"
+    supportNeedDesc: "Problemi yaz",
+    reportTitle: "Problemi bildir",
+    reportSub: "Şəkil çək, göndər — komandamız gəlir",
+    reportIntroTitle: "📸 Otaqda problem?",
+    reportIntroSub: "Şəkil çək (stakan qırığı, lampa yanmır, sızma...), 30 saniyəyə komandamız gəlir.",
+    tapToCapture: "Şəkil çəkmək üçün toxun",
+    retake: "Yenidən çək",
+    removePhoto: "Sil",
+    reportDescPh: "Problemi qısa təsvir et (məs: stakan qırılıb)...",
+    reportSubmit: "Göndər",
+    reportThanks: "Bildirişiniz alındı, gəlirik 🛠",
+    needPhoto: "Əvvəlcə şəkil çəkin",
+    sending: "Göndərilir..."
   },
   en: {
     hotelTagline: "CENTRAL PARK · BAKU",
@@ -2590,7 +2688,19 @@ const i18n = {
     supportSubmit: "Send",
     supportThanks: "Got your request, we'll reply soon 🛠️",
     supportNeedTopic: "Pick a topic",
-    supportNeedDesc: "Describe the problem"
+    supportNeedDesc: "Describe the problem",
+    reportTitle: "Report a problem",
+    reportSub: "Take a photo, our team is on the way",
+    reportIntroTitle: "📸 Issue in your room?",
+    reportIntroSub: "Take a photo (broken glass, light not working, leak...), our team arrives in 30 seconds.",
+    tapToCapture: "Tap to take a photo",
+    retake: "Retake",
+    removePhoto: "Remove",
+    reportDescPh: "Briefly describe the problem (e.g. broken glass)...",
+    reportSubmit: "Send",
+    reportThanks: "Report received, we're on it 🛠",
+    needPhoto: "Please take a photo first",
+    sending: "Sending..."
   },
   ru: {
     hotelTagline: "CENTRAL PARK · БАКУ",
@@ -2689,7 +2799,19 @@ const i18n = {
     supportSubmit: "Отправить",
     supportThanks: "Запрос принят, ответим скоро 🛠️",
     supportNeedTopic: "Выберите тему",
-    supportNeedDesc: "Опишите проблему"
+    supportNeedDesc: "Опишите проблему",
+    reportTitle: "Сообщить о проблеме",
+    reportSub: "Сфотографируйте — мы идём",
+    reportIntroTitle: "📸 Проблема в номере?",
+    reportIntroSub: "Сфотографируйте (разбит стакан, не работает свет, протечка...), наша команда придёт через 30 секунд.",
+    tapToCapture: "Нажмите чтобы сфотографировать",
+    retake: "Перефотографировать",
+    removePhoto: "Удалить",
+    reportDescPh: "Кратко опишите проблему...",
+    reportSubmit: "Отправить",
+    reportThanks: "Сообщение получено, идём 🛠",
+    needPhoto: "Сначала сфотографируйте",
+    sending: "Отправка..."
   },
   tr: {
     hotelTagline: "CENTRAL PARK · BAKÜ",
@@ -2788,7 +2910,19 @@ const i18n = {
     supportSubmit: "Gönder",
     supportThanks: "İsteğiniz alındı, en kısa zamanda yanıtlayacağız 🛠️",
     supportNeedTopic: "Konu seçin",
-    supportNeedDesc: "Sorunu yazın"
+    supportNeedDesc: "Sorunu yazın",
+    reportTitle: "Sorun bildir",
+    reportSub: "Fotoğraf çek, gönder — ekibimiz geliyor",
+    reportIntroTitle: "📸 Odanızda sorun mu?",
+    reportIntroSub: "Fotoğraf çekin (bardak kırığı, lamba yanmıyor, sızıntı...), ekibimiz 30 saniyede geliyor.",
+    tapToCapture: "Fotoğraf çekmek için dokunun",
+    retake: "Tekrar çek",
+    removePhoto: "Sil",
+    reportDescPh: "Sorunu kısaca anlatın...",
+    reportSubmit: "Gönder",
+    reportThanks: "Bildiriminiz alındı, geliyoruz 🛠",
+    needPhoto: "Önce fotoğraf çekin",
+    sending: "Gönderiliyor..."
   },
   ar: {
     hotelTagline: "سنترال بارك · باكو",
@@ -2887,7 +3021,19 @@ const i18n = {
     supportSubmit: "إرسال",
     supportThanks: "تم استلام طلبك، سنرد قريباً 🛠️",
     supportNeedTopic: "اختر الموضوع",
-    supportNeedDesc: "اشرح المشكلة"
+    supportNeedDesc: "اشرح المشكلة",
+    reportTitle: "أبلغ عن مشكلة",
+    reportSub: "التقط صورة وأرسلها، فريقنا قادم",
+    reportIntroTitle: "📸 مشكلة في الغرفة؟",
+    reportIntroSub: "التقط صورة (كوب مكسور، إضاءة لا تعمل، تسريب...)، فريقنا يصل خلال 30 ثانية.",
+    tapToCapture: "اضغط لالتقاط صورة",
+    retake: "إعادة التقاط",
+    removePhoto: "حذف",
+    reportDescPh: "اشرح المشكلة باختصار...",
+    reportSubmit: "إرسال",
+    reportThanks: "تم استلام بلاغك، نحن قادمون 🛠",
+    needPhoto: "الرجاء التقاط صورة أولاً",
+    sending: "جارٍ الإرسال..."
   }
 };
 
@@ -3815,9 +3961,93 @@ function openScreen(name) {
   if (name === 'city') { fetchWeather(); fetchCurrency(); }
   if (name === 'review') resetReview();
   if (name === 'support') resetSupport();
+  if (name === 'report') resetReport();
   closeAllScreens();
   document.getElementById('screen-' + name).classList.add('active');
   window.scrollTo(0, 0);
+}
+
+// REPORT WITH PHOTO
+let reportPhotoBlob = null;
+
+function resetReport() {
+  reportPhotoBlob = null;
+  document.getElementById('reportDesc').value = '';
+  document.getElementById('photoInput').value = '';
+  const cap = document.getElementById('photoCapture');
+  cap.classList.remove('has-photo');
+  cap.innerHTML = '<span class="upload-icon">📷</span><span class="upload-hint">' + t('tapToCapture') + '</span>';
+  document.getElementById('photoActions').style.display = 'none';
+}
+
+function clearPhoto() {
+  reportPhotoBlob = null;
+  document.getElementById('photoInput').value = '';
+  const cap = document.getElementById('photoCapture');
+  cap.classList.remove('has-photo');
+  cap.innerHTML = '<span class="upload-icon">📷</span><span class="upload-hint">' + t('tapToCapture') + '</span>';
+  document.getElementById('photoActions').style.display = 'none';
+}
+
+function handlePhotoCapture(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      // Compress to max 1280px on long edge
+      const maxDim = 1280;
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = h * maxDim / w; w = maxDim; }
+        else { w = w * maxDim / h; h = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      canvas.toBlob((blob) => {
+        reportPhotoBlob = blob;
+        const cap = document.getElementById('photoCapture');
+        cap.classList.add('has-photo');
+        cap.innerHTML = `<img class="photo-preview" src="${canvas.toDataURL('image/jpeg', 0.85)}">`;
+        document.getElementById('photoActions').style.display = 'flex';
+      }, 'image/jpeg', 0.85);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function submitReport() {
+  if (!reportPhotoBlob) {
+    showToast(t('needPhoto'));
+    return;
+  }
+  const desc = document.getElementById('reportDesc').value.trim();
+  const room = window.guestData?.room || '—';
+  const name = window.guestData?.name || '';
+  const phone = window.guestData?.phone || '';
+  const caption = `🛠 <b>PROBLEM BİLDİRİŞİ — Otaq ${room}</b>\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}${desc ? '\n\n📝 ' + escapeHtml(desc) : ''}`;
+
+  const formData = new FormData();
+  formData.append('chat_id', TG_CHAT_ID);
+  formData.append('photo', reportPhotoBlob, 'report.jpg');
+  formData.append('caption', caption);
+  formData.append('parse_mode', 'HTML');
+
+  try {
+    showToast(t('sending'));
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, {
+      method: 'POST',
+      body: formData
+    });
+    showToast(t('reportThanks'));
+    setTimeout(() => { closeAllScreens(); resetReport(); }, 1500);
+  } catch (e) {
+    showToast('❌ ' + (e.message || 'Error'));
+  }
 }
 
 // REVIEW
