@@ -1710,6 +1710,31 @@
   .tour-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
   .tour-price { font-size: 14px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
 
+  /* EKSPLORE BADGE */
+  .eksplore-badge {
+    text-align: center;
+    margin: 28px auto 8px;
+    opacity: 0.55;
+    user-select: none;
+  }
+  .eksplore-badge .powered {
+    font-size: 9px;
+    letter-spacing: 5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .eksplore-badge .name {
+    font-family: Didot, 'Bodoni 72', 'Bodoni MT', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 6px;
+  }
+  .eksplore-badge.light, .eksplore-badge.light .powered, .eksplore-badge.light .name { color: #F5F1EA; }
+  .eksplore-badge.dark, .eksplore-badge.dark .powered, .eksplore-badge.dark .name { color: var(--ink); }
+  .eksplore-badge .dot { color: #B8893E; }
+
   /* ANIMATIONS */
   html { scroll-behavior: smooth; }
 
@@ -1928,6 +1953,11 @@
   </div>
 
   <div class="welcome-footer" data-i18n="welcomeFooter">Hər otaqda QR kod unikaldır — otaq nömrəsi avtomatik dolacaq.</div>
+
+  <div class="eksplore-badge light">
+    <div class="powered">Powered by</div>
+    <div class="name">EK<span class="dot">·</span>SPLORE</div>
+  </div>
 </div>
 
 <div class="app" id="app">
@@ -2037,6 +2067,12 @@
       <h4 data-i18n="helpTitle">Resepsion ilə Söhbət</h4>
       <p data-i18n="helpDesc">İstənilən sualı yaz, dərhal cavab al</p>
     </div>
+  </div>
+
+  <!-- EKSPLORE BADGE (dashboard footer) -->
+  <div class="eksplore-badge dark" style="margin: 32px auto 24px;">
+    <div class="powered">Powered by</div>
+    <div class="name">EK<span class="dot">·</span>SPLORE</div>
   </div>
 
 </div>
