@@ -1128,19 +1128,20 @@
     line-height: 1.5;
   }
   .welcome-form {
-    background: white;
-    color: var(--ink);
+    background: rgba(255,255,255,0.06);
+    color: #F5F1EA;
     border-radius: 20px;
     padding: 22px;
     width: 100%;
     max-width: 360px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.12);
   }
   .welcome-label {
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--ink-soft);
+    letter-spacing: 1.2px;
+    color: rgba(245,241,234,0.7);
     margin-bottom: 6px;
     font-weight: 600;
     display: block;
@@ -1148,22 +1149,28 @@
   .welcome-input {
     width: 100%;
     padding: 14px 16px;
-    border: 1.5px solid var(--line);
+    border: 1.5px solid rgba(255,255,255,0.15);
     border-radius: 12px;
     font-size: 15px;
     font-family: inherit;
-    background: var(--bg);
+    background: rgba(255,255,255,0.08);
     margin-bottom: 16px;
     outline: none;
-    transition: border-color 0.2s;
-    color: var(--ink);
+    transition: border-color 0.2s, background 0.2s;
+    color: #F5F1EA;
+    caret-color: #B8893E;
   }
-  .welcome-input:focus { border-color: var(--ink); }
+  .welcome-input::placeholder { color: rgba(245,241,234,0.4); }
+  .welcome-input:focus {
+    border-color: #B8893E;
+    background: rgba(255,255,255,0.12);
+  }
   .welcome-input.locked {
-    background: var(--green-soft);
-    border-color: var(--ink);
+    background: rgba(184,137,62,0.18);
+    border-color: rgba(184,137,62,0.6);
     font-weight: 700;
     pointer-events: none;
+    color: #F5F1EA;
   }
   .locked-hint {
     font-size: 11px;
