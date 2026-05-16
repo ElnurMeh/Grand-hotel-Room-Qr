@@ -1893,19 +1893,15 @@
   /* Smoother screen transitions */
   .screen { transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1); }
 
-  /* Welcome screen sequential entry */
-  .welcome-logo-img {
-    animation: fadeDown 0.7s cubic-bezier(0.32, 0.72, 0, 1), logoFloat 6s ease-in-out 1s infinite;
-  }
-  .welcome-logo-wrap { animation: fadeIn 0.7s ease-out backwards; }
-  .welcome-tagline { animation: fadeIn 0.6s 0.15s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-  .welcome-greeting { animation: fadeUp 0.6s 0.25s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-  .welcome-sub { animation: fadeUp 0.6s 0.35s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
-  .welcome-form {
-    animation: fadeUp 0.7s 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) backwards;
-  }
-  .welcome-footer { animation: fadeIn 0.6s 0.7s ease-out backwards; }
-  .welcome-lang { animation: fadeIn 0.5s 0.2s ease-out backwards; }
+  /* Welcome screen — no continuous animations, just static */
+  .welcome-logo-img { animation: none; }
+  .welcome-logo-wrap { animation: none; }
+  .welcome-tagline { animation: none; }
+  .welcome-greeting { animation: none; }
+  .welcome-sub { animation: none; }
+  .welcome-form { animation: none; }
+  .welcome-footer { animation: none; }
+  .welcome-lang { animation: none; }
 
   /* Dashboard entry stagger */
   .header { animation: fadeDown 0.5s cubic-bezier(0.32, 0.72, 0, 1); }
