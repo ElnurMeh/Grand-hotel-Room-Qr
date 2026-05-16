@@ -2614,6 +2614,8 @@ const i18n = {
     receptionDesc: "Taksi, tur, geç check-out",
     technicalTitle: "Texniki Xidmət",
     technicalDesc: "TV, klimat, işıq, su",
+    report: "Bildir",
+    issueReported: "✅ Bildirildi, gəlirik",
     helpTitle: "Resepsion ilə Söhbət",
     helpDesc: "İstənilən sualı yaz, dərhal cavab al",
     cartTitle: "Sifarişiniz",
@@ -2727,6 +2729,8 @@ const i18n = {
     receptionDesc: "Taxi, tours, late check-out",
     technicalTitle: "Technical Service",
     technicalDesc: "TV, AC, lights, water",
+    report: "Report",
+    issueReported: "✅ Reported, on our way",
     helpTitle: "Chat with Reception",
     helpDesc: "Ask anything, get instant reply",
     cartTitle: "Your Order",
@@ -2840,6 +2844,8 @@ const i18n = {
     receptionDesc: "Такси, туры, поздний выезд",
     technicalTitle: "Тех. служба",
     technicalDesc: "ТВ, кондиционер, свет, вода",
+    report: "Сообщить",
+    issueReported: "✅ Сообщено, идём",
     helpTitle: "Чат с ресепшен",
     helpDesc: "Напишите вопрос — мгновенный ответ",
     cartTitle: "Ваш заказ",
@@ -2953,6 +2959,8 @@ const i18n = {
     receptionDesc: "Taksi, tur, geç çıkış",
     technicalTitle: "Teknik Servis",
     technicalDesc: "TV, klima, ışık, su",
+    report: "Bildir",
+    issueReported: "✅ Bildirildi, geliyoruz",
     helpTitle: "Resepsiyonla Sohbet",
     helpDesc: "Sorunuzu yazın, anında cevap",
     cartTitle: "Siparişiniz",
@@ -3066,6 +3074,8 @@ const i18n = {
     receptionDesc: "تاكسي، جولات، تأخير المغادرة",
     technicalTitle: "الصيانة",
     technicalDesc: "تلفاز، مكيف، إضاءة، ماء",
+    report: "أبلغ",
+    issueReported: "✅ تم الإبلاغ، نحن قادمون",
     helpTitle: "دردشة مع الاستقبال",
     helpDesc: "اكتب سؤالك، رد فوري",
     cartTitle: "طلبك",
@@ -3397,13 +3407,15 @@ function renderList(category) {
           <div class="item-name">${item.name[lang] || item.name.en}</div>
           ${category === 'technical' ? '' : `<div class="item-price ${item.price === 0 ? 'free' : ''}">${item.price === 0 ? t('free') : item.price + ' ₼'}</div>`}
         </div>
-        ${qty === 0
-          ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
-          : `<div class="qty-control">
-              <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
-              <span class="qty-num">${qty}</span>
-              <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
-             </div>`
+        ${category === 'technical'
+          ? `<button class="add-btn" onclick="sendTechIssue('${item.id}')">${t('report')}</button>`
+          : (qty === 0
+              ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
+              : `<div class="qty-control">
+                  <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+                  <span class="qty-num">${qty}</span>
+                  <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                 </div>`)
         }
       </div>
     `;
@@ -3412,6 +3424,33 @@ function renderList(category) {
 
 function renderAllLists() {
   Object.keys(menu).forEach(renderList);
+}
+
+function sendTechIssue(itemId) {
+  const item = menu.technical.find(i => i.id === itemId);
+  if (!item) return;
+  const room = window.guestData?.room || '—';
+  const name = window.guestData?.name || '';
+  const phone = window.guestData?.phone || '';
+  const itemName = item.name[lang] || item.name.en;
+  const text = `🛠 <b>TEXNİKİ BİLDİRİŞ — Otaq ${escapeHtml(String(room))}</b>\n${item.icon} <b>${escapeHtml(itemName)}</b>\n\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}`;
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TG_CHAT_ID,
+      text,
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard: [[
+          { text: '✅ Qəbul', callback_data: `tech_accept_${item.id}` },
+          { text: '✓ Tamam', callback_data: `tech_done_${item.id}` }
+        ]]
+      }
+    })
+  }).catch(() => {});
+  sendToAdmin(text);
+  showToast(t('issueReported'));
 }
 
 function addToCart(itemId, category) {
