@@ -2311,20 +2311,21 @@
     <div class="screen-title" data-i18n="receptionTitle">Resepsion</div>
   </div>
   <div class="screen-content">
-    <div class="help-card" onclick="openChat()" style="margin: 0 0 10px;">
-      <div class="help-icon">💬</div>
-      <div>
-        <h4 data-i18n="helpTitle">Resepsion ilə Söhbət</h4>
-        <p data-i18n="helpDesc">İstənilən sualı yaz, dərhal cavab al</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+      <div class="mini-card" style="background: linear-gradient(135deg, var(--ink), var(--ink-2)); border-color: transparent;" onclick="openChat()">
+        <div class="mini-icon" style="background: rgba(255,255,255,0.15);">💬</div>
+        <div class="mini-info">
+          <div class="mini-title" style="color: white;" data-i18n="chatShort">Söhbət</div>
+          <div class="mini-sub" style="color: rgba(255,255,255,0.7);" data-i18n="chatShortSub">Yaz, cavab al</div>
+        </div>
       </div>
-    </div>
-    <div class="report-card" onclick="openScreen('report')" style="margin: 0 0 16px;">
-      <div class="report-icon">📸</div>
-      <div class="report-info">
-        <div class="report-title" data-i18n="reportTitle">Problemi bildir</div>
-        <div class="report-sub" data-i18n="reportSub">Şəkil çək, göndər — komandamız gəlir</div>
+      <div class="mini-card" style="background: linear-gradient(135deg, #C49449, #9C7330); border-color: transparent;" onclick="openScreen('report')">
+        <div class="mini-icon" style="background: rgba(255,255,255,0.2);">📸</div>
+        <div class="mini-info">
+          <div class="mini-title" style="color: white;" data-i18n="photoShort">Şəkil</div>
+          <div class="mini-sub" style="color: rgba(255,255,255,0.85);" data-i18n="photoShortSub">Çək, göndər</div>
+        </div>
       </div>
-      <div class="report-arrow">→</div>
     </div>
     <div class="item-list" id="receptionList"></div>
   </div>
@@ -2708,6 +2709,10 @@ const i18n = {
     reviewCommentPh: "Şərh yaz (ixtiyari)",
     reviewSubmit: "Reyi göndər",
     reviewThanks: "Reyinizi aldıq, təşəkkürlər! ⭐",
+    chatShort: "Söhbət",
+    chatShortSub: "Yaz, cavab al",
+    photoShort: "Şəkil",
+    photoShortSub: "Çək, göndər",
     reviewNeedRating: "Ulduz vermək vacibdir",
     supportTitle: "Texniki dəstək",
     supportSub: "App-də problem var?",
@@ -2823,6 +2828,10 @@ const i18n = {
     reviewCommentPh: "Add a comment (optional)",
     reviewSubmit: "Submit review",
     reviewThanks: "Got your review, thanks! ⭐",
+    chatShort: "Chat",
+    chatShortSub: "Ask, get reply",
+    photoShort: "Photo",
+    photoShortSub: "Capture, send",
     reviewNeedRating: "Please rate first",
     supportTitle: "Tech support",
     supportSub: "App issue?",
@@ -2938,6 +2947,10 @@ const i18n = {
     reviewCommentPh: "Комментарий (по желанию)",
     reviewSubmit: "Отправить отзыв",
     reviewThanks: "Спасибо за отзыв! ⭐",
+    chatShort: "Чат",
+    chatShortSub: "Спросите, ответим",
+    photoShort: "Фото",
+    photoShortSub: "Снимок, отправить",
     reviewNeedRating: "Поставьте оценку",
     supportTitle: "Тех-поддержка",
     supportSub: "Проблема с приложением?",
@@ -3053,6 +3066,10 @@ const i18n = {
     reviewCommentPh: "Yorum yazın (opsiyonel)",
     reviewSubmit: "Gönder",
     reviewThanks: "Yorumunuz alındı, teşekkürler! ⭐",
+    chatShort: "Sohbet",
+    chatShortSub: "Sor, cevap al",
+    photoShort: "Fotoğraf",
+    photoShortSub: "Çek, gönder",
     reviewNeedRating: "Lütfen önce puan verin",
     supportTitle: "Teknik destek",
     supportSub: "Uygulamada sorun mu?",
@@ -3168,6 +3185,10 @@ const i18n = {
     reviewCommentPh: "أضف تعليقاً (اختياري)",
     reviewSubmit: "إرسال التقييم",
     reviewThanks: "شكراً لتقييمك! ⭐",
+    chatShort: "محادثة",
+    chatShortSub: "اسأل، نجيب",
+    photoShort: "صورة",
+    photoShortSub: "التقط، أرسل",
     reviewNeedRating: "الرجاء التقييم أولاً",
     supportTitle: "الدعم الفني",
     supportSub: "هل لديك مشكلة؟",
