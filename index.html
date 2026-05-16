@@ -738,6 +738,56 @@
     padding-top: 2px;
   }
   html[dir="rtl"] .menu-item { flex-direction: row-reverse; }
+
+  .menu-add-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(6,17,41,0.18);
+    transition: transform 0.15s;
+  }
+  .menu-add-btn:active { transform: scale(0.92); }
+  .menu-qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .menu-qty-btn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    background: var(--card);
+    color: var(--ink);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .menu-qty-num {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 18px;
+    text-align: center;
+    color: var(--ink);
+  }
+  .menu-item-price {
+    margin-top: 4px;
+  }
+  /* Override block-level price for menu items */
+  .menu-item .menu-item-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    white-space: nowrap;
+  }
   .photo-capture {
     background: var(--card);
     border: 2px dashed var(--line);
@@ -3032,6 +3082,8 @@ const i18n = {
     addToCart: "Səbətə əlavə edildi",
     empty: "Sifariş səbətiniz boşdur",
     total: "Cəm",
+    subtotal: "Yekun",
+    serviceFee: "Servis ({p}%)",
     chatComing: "Resepsion söhbəti demo-da deaktivdir 🙂",
     staffPeek: "Resepsion görünüşü",
     tgSubtitle: "Resepsion qrupu · 8 üzv",
@@ -3170,6 +3222,8 @@ const i18n = {
     addToCart: "Added to cart",
     empty: "Your cart is empty",
     total: "Total",
+    subtotal: "Subtotal",
+    serviceFee: "Service ({p}%)",
     chatComing: "Reception chat is disabled in demo 🙂",
     staffPeek: "Reception view",
     tgSubtitle: "Reception group · 8 members",
@@ -3308,6 +3362,8 @@ const i18n = {
     addToCart: "Добавлено в корзину",
     empty: "Ваша корзина пуста",
     total: "Итого",
+    subtotal: "Сумма",
+    serviceFee: "Сервис ({p}%)",
     chatComing: "Чат с ресепшен в демо отключён 🙂",
     staffPeek: "Вид ресепшена",
     tgSubtitle: "Группа ресепшена · 8 участников",
@@ -3446,6 +3502,8 @@ const i18n = {
     addToCart: "Sepete eklendi",
     empty: "Sepetiniz boş",
     total: "Toplam",
+    subtotal: "Ara toplam",
+    serviceFee: "Servis ({p}%)",
     chatComing: "Resepsiyon sohbeti demoda kapalı 🙂",
     staffPeek: "Resepsiyon görünümü",
     tgSubtitle: "Resepsiyon grubu · 8 üye",
@@ -3584,6 +3642,8 @@ const i18n = {
     addToCart: "تمت الإضافة",
     empty: "سلتك فارغة",
     total: "المجموع",
+    subtotal: "المجموع الفرعي",
+    serviceFee: "خدمة ({p}%)",
     chatComing: "دردشة الاستقبال معطلة في العرض 🙂",
     staffPeek: "عرض الاستقبال",
     tgSubtitle: "مجموعة الاستقبال · 8 أعضاء",
@@ -3897,16 +3957,36 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-const RESTAURANT_MENU = [{"name":"Setlər","categories":[{"name":"Xəngəl Set","items":[{"name":"2 Nəfərlik Xəngəl Set","price":45.0,"weight":"","desc":""},{"name":"4 nəfərlik Xəngəl Set","price":80.0,"weight":"","desc":""},{"name":"Yarpaq Xəngəli","price":10.0,"weight":"","desc":""},{"name":"Gürcü Xəngəli","price":1.5,"weight":"","desc":""}]},{"name":"Kombo menyu","items":[{"name":"Toyuq kombo menyu","price":14.0,"weight":"","desc":"Burger, nuqqets, fri, cola/fanta/sprite, sous"},{"name":"Ət kombo menyu","price":16.0,"weight":"","desc":"Burger, nuqqets, fri, cola/fanta/sprite, sous"},{"name":"Ət kombo menyu","price":16.0,"weight":"","desc":"Burger, nuqqets, fri, cola/fanta/sprite, sous"}]},{"name":"Səhər yeməyi (09:00 - 13:00)","items":[{"name":"Səhər yeməyi Seti (2 nəfərlik)","price":30.0,"weight":"2 nəfərlik","desc":""},{"name":"Səhər yeməyi Seti (3 nəfərlik)","price":44.0,"weight":"3 nəfərlik","desc":""},{"name":"Səhər yeməyi Seti (4 nəfərlik)","price":56.0,"weight":"","desc":""}]},{"name":"Kabab set","items":[{"name":"Kabab set (2 nəfərlik)","price":55.0,"weight":"","desc":""},{"name":"Kabab set (4 nəfərlik)","price":100.0,"weight":"","desc":""}]},{"name":"Çay seti","items":[{"name":"4 nəfərlik Çay seti","price":55.0,"weight":"","desc":"4 nəfərlik çay seti\n\nLimitsiz çay, 4 ədəd Bakı paxlavası, 4 ədəd türk paxlavası,"},{"name":"2 nəfərlik Çay seti","price":35.0,"weight":"","desc":"2 nəfərlik Çay seti\n\nLimitsiz çay, 2 ədəd Bakı paxlavası, 2 ədəd türk paxlavası,"}]},{"name":"Balıq Set","items":[{"name":"Balıq set 2 nəfərlik","price":55.0,"weight":"","desc":""},{"name":"Balıq set 4 nəfərlik","price":100.0,"weight":"","desc":""}]}]},{"name":"Food","categories":[{"name":"Soyuq qəlyanaltılar","items":[{"name":"Pendir Assorti","price":9.0,"weight":"","desc":""},{"name":"Ağ Pendir","price":4.4,"weight":"","desc":""},{"name":"Tərəvəz Buketi","price":7.5,"weight":"","desc":""},{"name":"Turşu Assorti","price":7.5,"weight":"","desc":""},{"name":"Zeytun Assorti","price":4.4,"weight":"","desc":""}]},{"name":"Salatlar","items":[{"name":"Dil salatı","price":14.5,"weight":"","desc":""},{"name":"Avakado Salatı","price":13.5,"weight":"","desc":""},{"name":"Acılı ürək salatı","price":10.0,"weight":"","desc":""},{"name":"Xırt-Xırt Badımcan Salatı","price":9.0,"weight":"","desc":""},{"name":"Ciyər Salatı","price":10.0,"weight":"","desc":""},{"name":"Toyuq bluze","price":9.0,"weight":"","desc":""},{"name":"Sezar — Toyuq","price":12.5,"weight":"","desc":""},{"name":"Sezar — Krevetka","price":14.0,"weight":"","desc":""},{"name":"Çoban Salatı","price":7.0,"weight":"","desc":""},{"name":"Pomidor Salatı","price":7.0,"weight":"","desc":""},{"name":"Ət Salatı","price":13.0,"weight":"","desc":""},{"name":"Krivetka Salatı","price":14.0,"weight":"","desc":""}]},{"name":"İsti Qəlyanaltılar","items":[{"name":"Chicken Popcorn","price":7.0,"weight":"","desc":""},{"name":"Toyuq qanadları BBQ sousu ilə","price":7.5,"weight":"","desc":""},{"name":"Pendirli Qrenki","price":5.0,"weight":"","desc":""},{"name":"Krevetka Suxaridə","price":13.0,"weight":"","desc":""},{"name":"Naggets Kartof Fri ilə","price":8.5,"weight":"","desc":""},{"name":"Mozarella Çubuğu","price":7.0,"weight":"","desc":""},{"name":"Boğaz BBQ Sousu ilə","price":6.0,"weight":"","desc":""},{"name":"Saçaq Pendiri Qızardılmış","price":4.5,"weight":"","desc":""},{"name":"Saçaq Pendiri Qızardılmış — Sadə","price":4.0,"weight":"","desc":""},{"name":"Pətənək BBQ Sousu ilə","price":5.0,"weight":"","desc":""}]},{"name":"Şorbalar","items":[{"name":"Mərci Şorbası","price":5.0,"weight":"","desc":""},{"name":"Göbələk Şorbası","price":5.0,"weight":"","desc":""},{"name":"Tomat Şorbası","price":5.0,"weight":"","desc":""},{"name":"Düşbərə","price":6.0,"weight":"","desc":""},{"name":"Toyuq Şorbası","price":5.0,"weight":"","desc":""}]},{"name":"Fast Food","items":[{"name":"SEZAR ROLL COMBO","price":14.0,"weight":"","desc":"COLA/FANTA/SPRITE  SECIM"},{"name":"SEZAR ROLL COMBO — SEZAR FISH ROLL KOMBO","price":17.0,"weight":"","desc":"COLA/FANTA/SPRITE  SECIM"},{"name":"BURITTOS  CAN ETI  COMBO","price":20.0,"weight":"","desc":"CAN ETI RENGLI BIBER QIRMIZI LOBYA OZELL SOUS TORTILLA LAVSH KARTOF FRI NUGETS \n"},{"name":"GRAND BURGER COMBO","price":17.0,"weight":"","desc":"MAL ETİ AYSBERG HOLLAND PENDİRİ YUMURTA POMİDOR \nOZEL SOUS XİYAR DUZLU \nKARTOF F"},{"name":"ENCHILADAS COMBO","price":18.0,"weight":"","desc":"COLA/FANTA/SPRITE SECIM"},{"name":"ENCHILADAS","price":15.0,"weight":"","desc":""},{"name":"Fish burger","price":15.0,"weight":"","desc":""},{"name":"Club Sandwich","price":10.5,"weight":"","desc":""},{"name":"Burger — Toyuq burger","price":10.5,"weight":"","desc":""},{"name":"Burger — Ət burger","price":12.5,"weight":"","desc":""},{"name":"Burger — Şef Burger","price":15.0,"weight":"","desc":""},{"name":"Cripsy Wrap","price":11.0,"weight":"","desc":""},{"name":"Şaurma","price":9.5,"weight":"","desc":""}]},{"name":"Pastalar","items":[{"name":"Pasta  with shimps","price":14.5,"weight":"","desc":""},{"name":"Spaqetti Bolonyeze","price":12.0,"weight":"","desc":""},{"name":"Fettuçine Alfredo","price":12.0,"weight":"","desc":""},{"name":"Spagetti Pomoddoro","price":9.0,"weight":"","desc":""},{"name":"Tagliatelle","price":11.0,"weight":"","desc":""}]},{"name":"Əsas Yeməklər","items":[{"name":"Salmon limon souzunda","price":22.0,"weight":"","desc":""},{"name":"Stake","price":29.0,"weight":"","desc":""},{"name":"BBQ souslu Quzu Maça","price":22.0,"weight":"","desc":""},{"name":"Vişnəli Can əti","price":22.0,"weight":"","desc":""},{"name":"Göbələk sousu Dil","price":14.3,"weight":"","desc":""},{"name":"Xüsusi Dəniz Ləzzəti","price":24.0,"weight":"","desc":""},{"name":"Tərəvəzli Kalmar","price":15.0,"weight":"","desc":""},{"name":"Çərəzli Farel Balığı","price":19.5,"weight":"","desc":""},{"name":"Tərəvəzli Farel","price":19.5,"weight":"","desc":""},{"name":"İspanaqlı qaymaqlı Toyuq filesi","price":14.5,"weight":"","desc":""},{"name":"Teriyaki souslu Toyuq filesi","price":13.5,"weight":"","desc":""},{"name":"Tabaka","price":17.0,"weight":"","desc":""},{"name":"Quzu Qovurma","price":15.5,"weight":"","desc":""},{"name":"Toyuq Filesi Çərəzli","price":13.5,"weight":"","desc":""},{"name":"Toyuq Sote Xəmirdə","price":14.5,"weight":"","desc":""},{"name":"Beef Strogannof","price":14.5,"weight":"","desc":""},{"name":"Darado tərəvəz qızartması ilə","price":22.0,"weight":"","desc":""},{"name":"Can Əti Kartofla","price":17.0,"weight":"","desc":""},{"name":"Dolma","price":12.0,"weight":"","desc":""},{"name":"Çolpa Sacı","price":27.0,"weight":"","desc":""},{"name":"Quzu Sacı","price":33.0,"weight":"","desc":""},{"name":"Can Əti Sac","price":45.0,"weight":"","desc":""}]},{"name":"Kabablar","items":[{"name":"Antrikot","price":12.0,"weight":"","desc":""},{"name":"Le Grand Kabab Özəl","price":12.0,"weight":"","desc":""},{"name":"Xan kababı","price":7.0,"weight":"","desc":""},{"name":"Çərəzli Toyuq kababı","price":11.0,"weight":"","desc":""},{"name":"Tikə Kabab","price":12.0,"weight":"","desc":""},{"name":"Lülə Kabab","price":9.0,"weight":"","desc":""},{"name":"Toyuq Kabab","price":6.5,"weight":"","desc":""},{"name":"Kartof Külləmə","price":4.0,"weight":"","desc":""},{"name":"Tərəvəz Assorti","price":4.0,"weight":"","desc":""},{"name":"Tərəvəz Ədəd","price":2.0,"weight":"","desc":""}]},{"name":"Desertlər","items":[{"name":"San Sebastian","price":7.0,"weight":"","desc":""},{"name":"Şokalad Vulkan","price":9.0,"weight":"","desc":""},{"name":"Ballı Tort","price":7.0,"weight":"","desc":""},{"name":"Künəfə","price":8.0,"weight":"","desc":""},{"name":"Dondurma","price":5.5,"weight":"","desc":""},{"name":"Meyvə Assorti","price":15.0,"weight":"","desc":""}]},{"name":"Qarnirlər","items":[{"name":"Fri","price":4.0,"weight":"","desc":""},{"name":"Düyü","price":4.0,"weight":"","desc":""},{"name":"Püre","price":4.0,"weight":"","desc":""},{"name":"Ev Sayağı Kartof","price":5.0,"weight":"","desc":""},{"name":"Göbələk","price":6.0,"weight":"","desc":""}]}]},{"name":"Drinks","categories":[{"name":"Soft Drinks","items":[{"name":"Coca-Cola","price":4.0,"weight":"","desc":""},{"name":"Fanta","price":4.0,"weight":"","desc":""},{"name":"Sprite","price":4.0,"weight":"","desc":""},{"name":"Red Bull","price":8.0,"weight":"","desc":""},{"name":"Qazlı su","price":3.0,"weight":"","desc":""},{"name":"Qazsız su","price":3.0,"weight":"","desc":""},{"name":"Kompot","price":6.0,"weight":"","desc":""},{"name":"Meyvə Şirəsi","price":6.0,"weight":"","desc":""},{"name":"Duşes","price":4.0,"weight":"","desc":""},{"name":"Tərxum","price":4.0,"weight":"","desc":""}]},{"name":"Fresh juice","items":[{"name":"Apple fresh","price":7.0,"weight":"","desc":""},{"name":"Carrot fresh","price":7.0,"weight":"","desc":""},{"name":"Orange fresh","price":7.0,"weight":"","desc":""}]},{"name":"Limonad","items":[{"name":"Basıl","price":9.0,"weight":"","desc":""},{"name":"Passion Fruit","price":9.0,"weight":"","desc":""},{"name":"Apple Kiwi","price":9.0,"weight":"","desc":""},{"name":"Pear","price":9.0,"weight":"","desc":""},{"name":"Bubble Gum","price":9.0,"weight":"","desc":""},{"name":"Milkshake","price":9.0,"weight":"","desc":""}]},{"name":"Hot Drinks","items":[{"name":"Americano","price":5.0,"weight":"","desc":""},{"name":"Espresso","price":4.0,"weight":"","desc":""},{"name":"Double Espresso","price":6.0,"weight":"","desc":""},{"name":"Cappucino","price":7.0,"weight":"","desc":""},{"name":"İrish Coffee","price":10.0,"weight":"","desc":""},{"name":"Black Tea","price":7.0,"weight":"","desc":""},{"name":"Black tea","price":15.0,"weight":"","desc":"Mürrəbə ilə"}]}]},{"name":"Alcohol","categories":[{"name":"wine","items":[{"name":"Chabiant — Bottle","price":45.0,"weight":"","desc":""},{"name":"Chabiant — Glass","price":10.0,"weight":"","desc":""},{"name":"Chabian Bayan — Bottle","price":50.0,"weight":"","desc":""},{"name":"Chabian Bayan — Glass","price":12.0,"weight":"","desc":""},{"name":"Chabiant Madrasa — Bottle","price":50.0,"weight":"","desc":""},{"name":"Chabiant Madrasa — Glass","price":12.0,"weight":"","desc":""},{"name":"Chabiant Madrasa Rose — Bottle","price":50.0,"weight":"","desc":""},{"name":"Chabiant Madrasa Rose — Glass","price":12.0,"weight":"","desc":""},{"name":"Chabiant Rkatsiteli — Bottle","price":50.0,"weight":"","desc":""},{"name":"Chabiant Rkatsiteli — Glass","price":12.0,"weight":"","desc":""},{"name":"Chabiant Seperavi Caberuent — Bottle","price":50.0,"weight":"","desc":""},{"name":"Chabiant Seperavi Caberuent — Glass","price":12.0,"weight":"","desc":""},{"name":"Chabiant Vino Nuovo — Bottle","price":65.0,"weight":"","desc":""},{"name":"Chabiant Vino Nuovo — Glass","price":15.0,"weight":"","desc":""},{"name":"Chabiant Vino Raro — Bottle","price":70.0,"weight":"","desc":""},{"name":"Chabiant Vino Raro — Glass","price":16.0,"weight":"","desc":""}]},{"name":"Alcoholic Cocktails","items":[{"name":"Long İsland","price":15.0,"weight":"","desc":""},{"name":"Mai-Tai","price":12.0,"weight":"","desc":""},{"name":"Mojito","price":12.0,"weight":"","desc":""},{"name":"Sex on the Beach","price":12.0,"weight":"","desc":""},{"name":"Tequila Sunrise","price":12.0,"weight":"","desc":""},{"name":"Negroni","price":10.0,"weight":"","desc":""}]},{"name":"Beer","items":[{"name":"Xırdalan","price":5.5,"weight":"","desc":"0.5ml"},{"name":"Efes","price":7.0,"weight":"","desc":"Pilsener"},{"name":"Efes","price":6.0,"weight":"","desc":"Zero"},{"name":"Efes Draf","price":8.0,"weight":"","desc":""},{"name":"Corona","price":10.0,"weight":"","desc":""}]},{"name":"Vodka","items":[{"name":"Finlanida — 0.7ml","price":65.0,"weight":"","desc":""},{"name":"Finlanida — 0.50ml","price":7.0,"weight":"","desc":""},{"name":"Absolut — 0.7ml","price":70.0,"weight":"","desc":""},{"name":"Absolut — 0.50ml","price":7.0,"weight":"","desc":""},{"name":"Local — 0.7ml","price":45.0,"weight":"","desc":""},{"name":"Local — 0.50ml","price":5.0,"weight":"","desc":""}]}]}];
+const RESTAURANT_MENU = [{"name":{"az":"Setlər","en":"set","ru":"set","tr":"Setlər","ar":"Setlər"},"categories":[{"name":{"az":"Xəngəl Set","en":"Xəngəl Set","ru":"Xəngəl Set","tr":"Xəngəl Set","ar":"Xəngəl Set"},"items":[{"id":"r1","name":{"az":"2 Nəfərlik Xəngəl Set","en":"2 Nəfərlik Xəngəl Set","ru":"2 Nəfərlik Xəngəl Set","tr":"2 Nəfərlik Xəngəl Set","ar":"2 Nəfərlik Xəngəl Set"},"price":45.0},{"id":"r2","name":{"az":"4 nəfərlik Xəngəl Set","en":"4 nəfərlik Xəngəl Set","ru":"4 nəfərlik Xəngəl Set","tr":"4 nəfərlik Xəngəl Set","ar":"4 nəfərlik Xəngəl Set"},"price":80.0},{"id":"r3","name":{"az":"Yarpaq Xəngəli","en":"Yarpaq Xəngəli","ru":"Yarpaq Xəngəli","tr":"Yarpaq Xəngəli","ar":"Yarpaq Xəngəli"},"price":10.0},{"id":"r4","name":{"az":"Gürcü Xəngəli","en":"Gürcü Xəngəli","ru":"Gürcü Xəngəli","tr":"Gürcü Xəngəli","ar":"Gürcü Xəngəli"},"price":1.5}]},{"name":{"az":"Kombo menyu","en":"Combo menu","ru":"Комбо-меню","tr":"Kombo menyu","ar":"Kombo menyu"},"items":[{"id":"r5","name":{"az":"Toyuq kombo menyu","en":"Chicken combo menu","ru":"Комбо-меню с курицей","tr":"Toyuq kombo menyu","ar":"Toyuq kombo menyu"},"price":14.0,"desc":{"az":"Burger, nuqqets, fri, cola/fanta/sprite, sous","en":"Burger, nuggets, fries, cola/fanta/sprite, sauce","ru":"Бургер, наггетсы, картофель фри, кола/фанта/спрайт, соус","tr":"Burger, nuqqets, fri, cola/fanta/sprite, sous","ar":"Burger, nuqqets, fri, cola/fanta/sprite, sous"}},{"id":"r6","name":{"az":"Ət kombo menyu","en":"Meat combo menu","ru":"Мясное комбо-меню","tr":"Ət kombo menyu","ar":"Ət kombo menyu"},"price":16.0,"desc":{"az":"Burger, nuqqets, fri, cola/fanta/sprite, sous","en":"Burger, nuggets, fries, cola/fanta/sprite, sauce","ru":"Бургер, наггетсы, картофель фри, кола/фанта/спрайт, соус","tr":"Burger, nuqqets, fri, cola/fanta/sprite, sous","ar":"Burger, nuqqets, fri, cola/fanta/sprite, sous"}},{"id":"r7","name":{"az":"Ət kombo menyu","en":"Meat combo menu","ru":"Мясное комбо-меню","tr":"Ət kombo menyu","ar":"Ət kombo menyu"},"price":16.0,"desc":{"az":"Burger, nuqqets, fri, cola/fanta/sprite, sous","en":"Burger, nuggets, fries, cola/fanta/sprite, sauce","ru":"Бургер, наггетсы, картофель фри, кола/фанта/спрайт, соус","tr":"Burger, nuqqets, fri, cola/fanta/sprite, sous","ar":"Burger, nuqqets, fri, cola/fanta/sprite, sous"}}]},{"name":{"az":"Səhər yeməyi (09:00 - 13:00)","en":"Breakfast","ru":"Завтрак","tr":"Səhər yeməyi (09:00 - 13:00)","ar":"Səhər yeməyi (09:00 - 13:00)"},"items":[{"id":"r8","name":{"az":"Səhər yeməyi Seti (2 nəfərlik)","en":"Səhər yeməyi Seti (2 nəfərlik)","ru":"Səhər yeməyi Seti (2 nəfərlik)","tr":"Səhər yeməyi Seti (2 nəfərlik)","ar":"Səhər yeməyi Seti (2 nəfərlik)"},"price":30.0,"weight":"2 nəfərlik"},{"id":"r9","name":{"az":"Səhər yeməyi Seti (3 nəfərlik)","en":"Səhər yeməyi Seti (3 nəfərlik)","ru":"Səhər yeməyi Seti (3 nəfərlik)","tr":"Səhər yeməyi Seti (3 nəfərlik)","ar":"Səhər yeməyi Seti (3 nəfərlik)"},"price":44.0,"weight":"3 nəfərlik"},{"id":"r10","name":{"az":"Səhər yeməyi Seti (4 nəfərlik)","en":"Səhər yeməyi Seti (4 nəfərlik)","ru":"Səhər yeməyi Seti (4 nəfərlik)","tr":"Səhər yeməyi Seti (4 nəfərlik)","ar":"Səhər yeməyi Seti (4 nəfərlik)"},"price":56.0}]},{"name":{"az":"Kabab set","en":"kabab","ru":"kabab","tr":"Kabab set","ar":"Kabab set"},"items":[{"id":"r11","name":{"az":"Kabab set (2 nəfərlik)","en":"Kabab set (2 nəfərlik)","ru":"Kabab set (2 nəfərlik)","tr":"Kabab set (2 nəfərlik)","ar":"Kabab set (2 nəfərlik)"},"price":55.0},{"id":"r12","name":{"az":"Kabab set (4 nəfərlik)","en":"Kabab set (4 nəfərlik)","ru":"Kabab set (4 nəfərlik)","tr":"Kabab set (4 nəfərlik)","ar":"Kabab set (4 nəfərlik)"},"price":100.0}]},{"name":{"az":"Çay seti","en":"Tea Set","ru":"Чай Сети","tr":"Чай Сети","ar":"Чай Сети"},"items":[{"id":"r13","name":{"az":"4 nəfərlik Çay seti","en":"Tea Set for 4 People","ru":"Чайный набор на 4 человека","tr":"4 nəfərlik Çay seti","ar":"4 nəfərlik Çay seti"},"price":55.0,"desc":{"az":"4 nəfərlik çay seti\n\nLimitsiz çay, 4 ədəd Bakı paxlavası, 4 ədəd türk paxlavası, 4 ədəd mütəkkə, 4 ədəd şəkərbura, yazlıq təzə meyvələr, 2 növ mürəbbə, çərəzlər və meyvə quruları, şokolad və nabatdan ibarət zəngin çay süfrəsi.","en":"Tea Set for 4 People\n\nA rich tea table including unlimited tea, 4 pieces of Baku pakhlava, 4 pieces of Turkish baklava, 4 mutekka pastries, 4 shekerbura sweets, fresh seasonal fruits, 2 types of jam, assorted nuts and dried fruits, chocolate, and rock sugar (nabat).","ru":"Чайный набор на 4 человека\n\nБогатый чайный стол: безлимитный чай, 4 бакинские пахлавы, 4 турецкие баклавы, 4 мутякя, 4 шекербура, свежие сезонные фрукты, 2 вида варенья, орехи и сушёные фрукты, шоколад и набат.","tr":"4 nəfərlik çay seti\n\nLimitsiz çay, 4 ədəd Bakı paxlavası, 4 ədəd türk paxlavası, 4 ədəd mütəkkə, 4 ədəd şəkərbura, yazlıq təzə meyvələr, 2 növ mürəbbə, çərəzlər və meyvə quruları, şokolad və nabatdan ibarət zəngin çay süfrəsi.","ar":"4 nəfərlik çay seti\n\nLimitsiz çay, 4 ədəd Bakı paxlavası, 4 ədəd türk paxlavası, 4 ədəd mütəkkə, 4 ədəd şəkərbura, yazlıq təzə meyvələr, 2 növ mürəbbə, çərəzlər və meyvə quruları, şokolad və nabatdan ibarət zəngin çay süfrəsi."}},{"id":"r14","name":{"az":"2 nəfərlik Çay seti","en":"Tea Set for 2 People","ru":"Чайный набор на 2 человека","tr":"2 nəfərlik Çay seti","ar":"2 nəfərlik Çay seti"},"price":35.0,"desc":{"az":"2 nəfərlik Çay seti\n\nLimitsiz çay, 2 ədəd Bakı paxlavası, 2 ədəd türk paxlavası, 2 ədəd mütəkkə, 2 ədəd şəkərbura, yazlıq təzə meyvələr, 1 növ mürəbbə, çərəzlər və meyvə quruları, şokolad və nabatdan ibarət zəngin çay süfrəsi.","en":"Tea Set for 2 People\n\nA rich tea table including unlimited tea, 2 pieces of Baku pakhlava, 2 pieces of Turkish baklava, 2 mutekka pastries, 2 shekerbura sweets, fresh seasonal fruits, 1 types of jam, assorted nuts and dried fruits, chocolate, and rock sugar (nabat).","ru":"Чайный набор на 2 человека\n\nБогатый чайный стол: безлимитный чай, 2 бакинские пахлавы, 2 турецкие баклавы, 2 мутякя, 2 шекербура, свежие сезонные фрукты, 1 вида варенья, орехи и сушёные фрукты, шоколад и набат.","tr":"2 nəfərlik Çay seti\n\nLimitsiz çay, 2 ədəd Bakı paxlavası, 2 ədəd türk paxlavası, 2 ədəd mütəkkə, 2 ədəd şəkərbura, yazlıq təzə meyvələr, 1 növ mürəbbə, çərəzlər və meyvə quruları, şokolad və nabatdan ibarət zəngin çay süfrəsi.","ar":"2 nəfərlik Çay seti\n\nLimitsiz çay, 2 ədəd Bakı paxlavası, 2 ədəd türk paxlavası, 2 ədəd mütəkkə, 2 ədəd şəkərbura, yazlıq təzə meyvələr, 1 növ mürəbbə, çərəzlər və meyvə quruları, şokolad və nabatdan ibarət zəngin çay süfrəsi."}}]},{"name":{"az":"Balıq Set","en":"Balıq Set","ru":"Balıq Set","tr":"Balıq Set","ar":"Balıq Set"},"items":[{"id":"r15","name":{"az":"Balıq set 2 nəfərlik","en":"Balıq set 2 nəfərlik","ru":"Balıq set 2 nəfərlik","tr":"Balıq set 2 nəfərlik","ar":"Balıq set 2 nəfərlik"},"price":55.0},{"id":"r16","name":{"az":"Balıq set 4 nəfərlik","en":"Balıq set 4 nəfərlik","ru":"Balıq set 4 nəfərlik","tr":"Balıq set 4 nəfərlik","ar":"Balıq set 4 nəfərlik"},"price":100.0}]}]},{"name":{"az":"Food","en":"Food","ru":"Food","tr":"Food","ar":"Food"},"categories":[{"name":{"az":"Soyuq qəlyanaltılar","en":"Soyuq qəlyanaltılar","ru":"Soyuq qəlyanaltılar","tr":"Soyuq qəlyanaltılar","ar":"Soyuq qəlyanaltılar"},"items":[{"id":"r17","name":{"az":"Pendir Assorti","en":"Pendir Assorti","ru":"Pendir Assorti","tr":"Pendir Assorti","ar":"Pendir Assorti"},"price":9.0,"desc":{"en":"Description of how good this pizza is or a list of ingredients it contains\r\n\r\nNote that this example 3 variants","ru":"Description of how good this pizza is or a list of ingredients it contains\r\n\r\nNote that this example 3 variants"}},{"id":"r18","name":{"az":"Ağ Pendir","en":"Ağ Pendir","ru":"Ağ Pendir","tr":"Ağ Pendir","ar":"Ağ Pendir"},"price":4.4},{"id":"r19","name":{"az":"Tərəvəz Buketi","en":"Tərəvəz Buketi","ru":"Tərəvəz Buketi","tr":"Tərəvəz Buketi","ar":"Tərəvəz Buketi"},"price":7.5},{"id":"r20","name":{"az":"Turşu Assorti","en":"Turşu Assorti","ru":"Turşu Assorti","tr":"Turşu Assorti","ar":"Turşu Assorti"},"price":7.5},{"id":"r21","name":{"az":"Zeytun Assorti","en":"Zeytun Assorti","ru":"Zeytun Assorti","tr":"Zeytun Assorti","ar":"Zeytun Assorti"},"price":4.4}]},{"name":{"az":"Salatlar","en":"Salads","ru":"Salads","tr":"Salatlar","ar":"Salatlar"},"items":[{"id":"r22","name":{"az":"Dil salatı","en":"Dil salatı","ru":"Dil salatı","tr":"Dil salatı","ar":"Dil salatı"},"price":14.5},{"id":"r23","name":{"az":"Avakado Salatı","en":"Avakado Salatı","ru":"Avakado Salatı","tr":"Avakado Salatı","ar":"Avakado Salatı"},"price":13.5},{"id":"r24","name":{"az":"Acılı ürək salatı","en":"Acılı ürək salatı","ru":"Acılı ürək salatı","tr":"Acılı ürək salatı","ar":"Acılı ürək salatı"},"price":10.0},{"id":"r25","name":{"az":"Xırt-Xırt Badımcan Salatı","en":"Xırt-Xırt Badımcan Salatı","ru":"Xırt-Xırt Badımcan Salatı","tr":"Xırt-Xırt Badımcan Salatı","ar":"Xırt-Xırt Badımcan Salatı"},"price":9.0},{"id":"r26","name":{"az":"Ciyər Salatı","en":"Ciyər Salatı","ru":"Ciyər Salatı","tr":"Ciyər Salatı","ar":"Ciyər Salatı"},"price":10.0},{"id":"r27","name":{"az":"Toyuq bluze","en":"Toyuq bluze","ru":"Toyuq bluze","tr":"Toyuq bluze","ar":"Toyuq bluze"},"price":9.0},{"id":"r28","name":{"az":"Sezar — Toyuq","en":"Sezar Salatı Toyuqlu","ru":"Sezar Salatı Toyuqlu","tr":"Sezar — Toyuq","ar":"Sezar — Toyuq"},"price":12.5},{"id":"r29","name":{"az":"Sezar — Krevetka","en":"Sezar Salatı Toyuqlu — Krevetka","ru":"Sezar Salatı Toyuqlu — Krevetka","tr":"Sezar — Krevetka","ar":"Sezar — Krevetka"},"price":14.0},{"id":"r30","name":{"az":"Çoban Salatı","en":"Çoban Salatı","ru":"Çoban Salatı","tr":"Çoban Salatı","ar":"Çoban Salatı"},"price":7.0},{"id":"r31","name":{"az":"Pomidor Salatı","en":"Pomidor Salatı","ru":"Pomidor Salatı","tr":"Pomidor Salatı","ar":"Pomidor Salatı"},"price":7.0},{"id":"r32","name":{"az":"Ət Salatı","en":"Ət Salatı","ru":"Ət Salatı","tr":"Ət Salatı","ar":"Ət Salatı"},"price":13.0},{"id":"r33","name":{"az":"Krivetka Salatı","en":"Krivetka Salatı","ru":"Krivetka Salatı","tr":"Krivetka Salatı","ar":"Krivetka Salatı"},"price":14.0}]},{"name":{"az":"İsti Qəlyanaltılar","en":"İsti Qəlyanaltılar","ru":"İsti Qəlyanaltılar","tr":"İsti Qəlyanaltılar","ar":"İsti Qəlyanaltılar"},"items":[{"id":"r34","name":{"az":"Chicken Popcorn","en":"Chicken Popcorn","ru":"Chicken Popcorn","tr":"Chicken Popcorn","ar":"Chicken Popcorn"},"price":7.0},{"id":"r35","name":{"az":"Toyuq qanadları BBQ sousu ilə","en":"Chicken wings with BBQ sauce","ru":"Chicken wings with BBQ sauce","tr":"Toyuq qanadları BBQ sousu ilə","ar":"Toyuq qanadları BBQ sousu ilə"},"price":7.5},{"id":"r36","name":{"az":"Pendirli Qrenki","en":"Pendirli Qrenki","ru":"Pendirli Qrenki","tr":"Pendirli Qrenki","ar":"Pendirli Qrenki"},"price":5.0},{"id":"r37","name":{"az":"Krevetka Suxaridə","en":"Krevetka Suxaridə","ru":"Krevetka Suxaridə","tr":"Krevetka Suxaridə","ar":"Krevetka Suxaridə"},"price":13.0},{"id":"r38","name":{"az":"Naggets Kartof Fri ilə","en":"Naggets Kartof Fri ilə","ru":"Naggets Kartof Fri ilə","tr":"Naggets Kartof Fri ilə","ar":"Naggets Kartof Fri ilə"},"price":8.5},{"id":"r39","name":{"az":"Mozarella Çubuğu","en":"Mozarella Çubuğu","ru":"Mozarella Çubuğu","tr":"Mozarella Çubuğu","ar":"Mozarella Çubuğu"},"price":7.0},{"id":"r40","name":{"az":"Boğaz BBQ Sousu ilə","en":"Boğaz BBQ Sousu ilə","ru":"Boğaz BBQ Sousu ilə","tr":"Boğaz BBQ Sousu ilə","ar":"Boğaz BBQ Sousu ilə"},"price":6.0},{"id":"r41","name":{"az":"Saçaq Pendiri Qızardılmış","en":"Saçaq Pendiri Qızardılmış","ru":"Saçaq Pendiri Qızardılmış","tr":"Saçaq Pendiri Qızardılmış","ar":"Saçaq Pendiri Qızardılmış"},"price":4.5},{"id":"r42","name":{"az":"Saçaq Pendiri Qızardılmış — Sadə","en":"Saçaq Pendiri Qızardılmış — Sadə","ru":"Saçaq Pendiri Qızardılmış — Sadə","tr":"Saçaq Pendiri Qızardılmış — Sadə","ar":"Saçaq Pendiri Qızardılmış — Sadə"},"price":4.0},{"id":"r43","name":{"az":"Pətənək BBQ Sousu ilə","en":"Pətənək BBQ Sousu ilə","ru":"Pətənək BBQ Sousu ilə","tr":"Pətənək BBQ Sousu ilə","ar":"Pətənək BBQ Sousu ilə"},"price":5.0}]},{"name":{"az":"Şorbalar","en":"Şorbalar","ru":"Şorbalar","tr":"Şorbalar","ar":"Şorbalar"},"items":[{"id":"r44","name":{"az":"Mərci Şorbası","en":"Mərci Şorbası","ru":"Mərci Şorbası","tr":"Mərci Şorbası","ar":"Mərci Şorbası"},"price":5.0},{"id":"r45","name":{"az":"Göbələk Şorbası","en":"Göbələk Şorbası","ru":"Göbələk Şorbası","tr":"Göbələk Şorbası","ar":"Göbələk Şorbası"},"price":5.0},{"id":"r46","name":{"az":"Tomat Şorbası","en":"Tomat Şorbası","ru":"Tomat Şorbası","tr":"Tomat Şorbası","ar":"Tomat Şorbası"},"price":5.0},{"id":"r47","name":{"az":"Düşbərə","en":"Düşbərə","ru":"Düşbərə","tr":"Düşbərə","ar":"Düşbərə"},"price":6.0},{"id":"r48","name":{"az":"Toyuq Şorbası","en":"Toyuq Şorbası","ru":"Toyuq Şorbası","tr":"Toyuq Şorbası","ar":"Toyuq Şorbası"},"price":5.0}]},{"name":{"az":"Fast Food","en":"Fast Food","ru":"Fast Food","tr":"Fast Food","ar":"Fast Food"},"items":[{"id":"r49","name":{"az":"SEZAR ROLL COMBO","en":"SEZAAR ROLL COMBO — SEZAR ROLL COMBO","ru":"SEZAR ROLL COMBO","tr":"SEZAR ROLL COMBO","ar":"SEZAR ROLL COMBO"},"price":14.0,"desc":{"az":"COLA/FANTA/SPRITE  SECIM","en":"COLA/FANTA/SPRITE  SECIM","ru":"COLA/FANTA/SPRITE  SECIM","tr":"COLA/FANTA/SPRITE  SECIM","ar":"COLA/FANTA/SPRITE  SECIM"}},{"id":"r50","name":{"az":"SEZAR ROLL COMBO — SEZAR FISH ROLL KOMBO","en":"SEZAAR ROLL COMBO — SEZAR FISH ROLL KOMBO","ru":"SEZAR ROLL COMBO — SEZAR FISH ROLL KOMBO","tr":"SEZAR ROLL COMBO — SEZAR FISH ROLL KOMBO","ar":"SEZAR ROLL COMBO — SEZAR FISH ROLL KOMBO"},"price":17.0,"desc":{"az":"COLA/FANTA/SPRITE  SECIM","en":"COLA/FANTA/SPRITE  SECIM","ru":"COLA/FANTA/SPRITE  SECIM","tr":"COLA/FANTA/SPRITE  SECIM","ar":"COLA/FANTA/SPRITE  SECIM"}},{"id":"r51","name":{"az":"BURITTOS  CAN ETI  COMBO","en":"BURITTOS COMBO","ru":"BURITTOS COMBO","tr":"BURITTOS  CAN ETI  COMBO","ar":"BURITTOS  CAN ETI  COMBO"},"price":20.0,"desc":{"az":"CAN ETI RENGLI BIBER QIRMIZI LOBYA OZELL SOUS TORTILLA LAVSH KARTOF FRI NUGETS \nKOLA/FANTA/SPRITE SECIM","en":"CAN ETI RENGLI BIBER QIRMIZI LOBYA OZELL SOUS TORTILLA LAVSH KARTOF FRI NUGETS \nKOLA/FANTA/SPRITE SECIM","ru":"CAN ETI RENGLI BIBER QIRMIZI LOBYA OZELL SOUS TORTILLA LAVSH KARTOF FRI NUGETS \nKOLA/FANTA/SPRITE SECIM","tr":"CAN ETI RENGLI BIBER QIRMIZI LOBYA OZELL SOUS TORTILLA LAVSH KARTOF FRI NUGETS \nKOLA/FANTA/SPRITE SECIM","ar":"CAN ETI RENGLI BIBER QIRMIZI LOBYA OZELL SOUS TORTILLA LAVSH KARTOF FRI NUGETS \nKOLA/FANTA/SPRITE SECIM"}},{"id":"r52","name":{"az":"GRAND BURGER COMBO","en":"GRAND BURGER COMBO","ru":"GRAND BURGER COMBO","tr":"GRAND BURGER COMBO","ar":"GRAND BURGER COMBO"},"price":17.0,"desc":{"az":"MAL ETİ AYSBERG HOLLAND PENDİRİ YUMURTA POMİDOR \nOZEL SOUS XİYAR DUZLU \nKARTOF FREE\nNUGETS TOYUQ \nCOLA/FANTA/SPRITE SECIM","en":"MAL ETİ AYSBERG HOLLAND PENDİRİ YUMURTA POMİDOR \nOZEL SOUS XİYAR DUZLU \nKARTOF FREE\nNUGETS TOYUQ \nCOLA/FANTA/SPRITE SECIM","ru":"MAL ETİ AYSBERG HOLLAND PENDİRİ YUMURTA POMİDOR \nOZEL SOUS XİYAR DUZLU \nKARTOF FREE\nNUGETS TOYUQ \nCOLA/FANTA/SPRITE SECIM","tr":"MAL ETİ AYSBERG HOLLAND PENDİRİ YUMURTA POMİDOR \nOZEL SOUS XİYAR DUZLU \nKARTOF FREE\nNUGETS TOYUQ \nCOLA/FANTA/SPRITE SECIM","ar":"MAL ETİ AYSBERG HOLLAND PENDİRİ YUMURTA POMİDOR \nOZEL SOUS XİYAR DUZLU \nKARTOF FREE\nNUGETS TOYUQ \nCOLA/FANTA/SPRITE SECIM"}},{"id":"r53","name":{"az":"ENCHILADAS COMBO","en":"ENCHILADAS  COMBO","ru":"ENCHILADES COMBO","tr":"ENCHILADAS COMBO","ar":"ENCHILADAS COMBO"},"price":18.0,"desc":{"az":"COLA/FANTA/SPRITE SECIM","en":"COLA/FANTA/SPRITE SECIM","ru":"COLA/FANTA/SPRITE SECIM","tr":"COLA/FANTA/SPRITE SECIM","ar":"COLA/FANTA/SPRITE SECIM"}},{"id":"r54","name":{"az":"ENCHILADAS","en":"ENSLADES","ru":"ENSLADES","tr":"ENCHILADAS","ar":"ENCHILADAS"},"price":15.0},{"id":"r55","name":{"az":"Fish burger","en":"Fish burger","ru":"Fish burger","tr":"Fish burger","ar":"Fish burger"},"price":15.0},{"id":"r56","name":{"az":"Club Sandwich","en":"Club Sandwich","ru":"Club Sandwich","tr":"Club Sandwich","ar":"Club Sandwich"},"price":10.5},{"id":"r57","name":{"az":"Burger — Toyuq burger","en":"Burger — Toyuq burger","ru":"Burger — Toyuq burger","tr":"Burger — Toyuq burger","ar":"Burger — Toyuq burger"},"price":10.5},{"id":"r58","name":{"az":"Burger — Ət burger","en":"Burger — Ət burger","ru":"Burger — Ət burger","tr":"Burger — Ət burger","ar":"Burger — Ət burger"},"price":12.5},{"id":"r59","name":{"az":"Burger — Şef Burger","en":"Burger — Şef Burger","ru":"Burger — Şef Burger","tr":"Burger — Şef Burger","ar":"Burger — Şef Burger"},"price":15.0},{"id":"r60","name":{"az":"Cripsy Wrap","en":"Cripsy Wrap","ru":"Cripsy Wrap","tr":"Cripsy Wrap","ar":"Cripsy Wrap"},"price":11.0},{"id":"r61","name":{"az":"Şaurma","en":"Şaurma","ru":"Şaurma","tr":"Şaurma","ar":"Şaurma"},"price":9.5}]},{"name":{"az":"Pastalar","en":"Pastalar","ru":"Pastalar","tr":"Pastalar","ar":"Pastalar"},"items":[{"id":"r62","name":{"az":"Pasta  with shimps","en":"Pasta  with shimps","ru":"Pasta  with shimps","tr":"Pasta  with shimps","ar":"Pasta  with shimps"},"price":14.5},{"id":"r63","name":{"az":"Spaqetti Bolonyeze","en":"Spaqetti Bolonyeze","ru":"Spaqetti Bolonyeze","tr":"Spaqetti Bolonyeze","ar":"Spaqetti Bolonyeze"},"price":12.0},{"id":"r64","name":{"az":"Fettuçine Alfredo","en":"Fettuçine Alfredo","ru":"Fettuçine Alfredo","tr":"Fettuçine Alfredo","ar":"Fettuçine Alfredo"},"price":12.0},{"id":"r65","name":{"az":"Spagetti Pomoddoro","en":"Spagetti Pomoddoro","ru":"Spagetti Pomoddoro","tr":"Spagetti Pomoddoro","ar":"Spagetti Pomoddoro"},"price":9.0},{"id":"r66","name":{"az":"Tagliatelle","en":"Tagliatelle","ru":"Tagliatelle","tr":"Tagliatelle","ar":"Tagliatelle"},"price":11.0}]},{"name":{"az":"Əsas Yeməklər","en":"Əsas Yeməklər","ru":"Əsas Yeməklər","tr":"Əsas Yeməklər","ar":"Əsas Yeməklər"},"items":[{"id":"r67","name":{"az":"Salmon limon souzunda","en":"Salmon limon souzunda","ru":"Salmon limon souzunda","tr":"Salmon limon souzunda","ar":"Salmon limon souzunda"},"price":22.0},{"id":"r68","name":{"az":"Stake","en":"Stake","ru":"Stake","tr":"Stake","ar":"Stake"},"price":29.0},{"id":"r69","name":{"az":"BBQ souslu Quzu Maça","en":"BBQ souslu Quzu Maça","ru":"BBQ souslu Quzu Maça","tr":"BBQ souslu Quzu Maça","ar":"BBQ souslu Quzu Maça"},"price":22.0},{"id":"r70","name":{"az":"Vişnəli Can əti","en":"Vişnəli Can əti","ru":"Vişnəli can əti","tr":"Vişnəli Can əti","ar":"Vişnəli Can əti"},"price":22.0},{"id":"r71","name":{"az":"Göbələk sousu Dil","en":"Göbələk souslu Dil","ru":"Göbələk souslu Dil","tr":"Göbələk sousu Dil","ar":"Göbələk sousu Dil"},"price":14.3},{"id":"r72","name":{"az":"Xüsusi Dəniz Ləzzəti","en":"Xüsusi Dəniz Ləzzəti","ru":"Xüsusi Dəniz Ləzzəti","tr":"Xüsusi Dəniz Ləzzəti","ar":"Xüsusi Dəniz Ləzzəti"},"price":24.0},{"id":"r73","name":{"az":"Tərəvəzli Kalmar","en":"Tərəvəzli Kalmar","ru":"Tərəvəzli Kalmar","tr":"Tərəvəzli Kalmar","ar":"Tərəvəzli Kalmar"},"price":15.0},{"id":"r74","name":{"az":"Çərəzli Farel Balığı","en":"Çərəzli Farel Balığı","ru":"Çərəzli Farel Balığı","tr":"Çərəzli Farel Balığı","ar":"Çərəzli Farel Balığı"},"price":19.5},{"id":"r75","name":{"az":"Tərəvəzli Farel","en":"Tərəvəzli Farel","ru":"Tərəvəzli Farel","tr":"Tərəvəzli Farel","ar":"Tərəvəzli Farel"},"price":19.5},{"id":"r76","name":{"az":"İspanaqlı qaymaqlı Toyuq filesi","en":"İspanaqlı qaymaqlı Toyuq filesi","ru":"İspanaqlı qaymaqlı Toyuq filesi","tr":"İspanaqlı qaymaqlı Toyuq filesi","ar":"İspanaqlı qaymaqlı Toyuq filesi"},"price":14.5},{"id":"r77","name":{"az":"Teriyaki souslu Toyuq filesi","en":"Teriyaki souslu Toyuq filesi","ru":"Teriyaki souslu Toyuq filesi","tr":"Teriyaki souslu Toyuq filesi","ar":"Teriyaki souslu Toyuq filesi"},"price":13.5},{"id":"r78","name":{"az":"Tabaka","en":"Tabaka","ru":"Tabaka","tr":"Tabaka","ar":"Tabaka"},"price":17.0},{"id":"r79","name":{"az":"Quzu Qovurma","en":"Quzu Qovurma","ru":"Quzu Qovurma","tr":"Quzu Qovurma","ar":"Quzu Qovurma"},"price":15.5},{"id":"r80","name":{"az":"Toyuq Filesi Çərəzli","en":"Toyuq Filesi","ru":"Toyuq Filesi","tr":"Toyuq Filesi Çərəzli","ar":"Toyuq Filesi Çərəzli"},"price":13.5},{"id":"r81","name":{"az":"Toyuq Sote Xəmirdə","en":"Toyuq Sote Xəmirdə","ru":"Toyuq Sote Xəmirdə","tr":"Toyuq Sote Xəmirdə","ar":"Toyuq Sote Xəmirdə"},"price":14.5},{"id":"r82","name":{"az":"Beef Strogannof","en":"Beef Strogannof","ru":"Beef Strogannof","tr":"Beef Strogannof","ar":"Beef Strogannof"},"price":14.5},{"id":"r83","name":{"az":"Darado tərəvəz qızartması ilə","en":"Darado tərəvəz qızartması ilə","ru":"Darado tərəvəz qızartması ilə","tr":"Darado tərəvəz qızartması ilə","ar":"Darado tərəvəz qızartması ilə"},"price":22.0},{"id":"r84","name":{"az":"Can Əti Kartofla","en":"Can Əti Kartofla","ru":"Can Əti Kartofla","tr":"Can Əti Kartofla","ar":"Can Əti Kartofla"},"price":17.0},{"id":"r85","name":{"az":"Dolma","en":"Dolma","ru":"Dolma","tr":"Dolma","ar":"Dolma"},"price":12.0},{"id":"r86","name":{"az":"Çolpa Sacı","en":"Çolpa Sacı","ru":"Çolpa Sacı","tr":"Çolpa Sacı","ar":"Çolpa Sacı"},"price":27.0},{"id":"r87","name":{"az":"Quzu Sacı","en":"Quzu Sacı","ru":"Quzu Sacı","tr":"Quzu Sacı","ar":"Quzu Sacı"},"price":33.0},{"id":"r88","name":{"az":"Can Əti Sac","en":"Can Əti Sac","ru":"Can Əti Sac","tr":"Can Əti Sac","ar":"Can Əti Sac"},"price":45.0}]},{"name":{"az":"Kabablar","en":"Kabablar","ru":"Kabablar","tr":"Kabablar","ar":"Kabablar"},"items":[{"id":"r89","name":{"az":"Antrikot","en":"Antrikot","ru":"Antrikot","tr":"Antrikot","ar":"Antrikot"},"price":12.0},{"id":"r90","name":{"az":"Le Grand Kabab Özəl","en":"Le Grand Kabab Özəl","ru":"Le Grand Kabab Özəl","tr":"Le Grand Kabab Özəl","ar":"Le Grand Kabab Özəl"},"price":12.0},{"id":"r91","name":{"az":"Xan kababı","en":"Xan kababı","ru":"Xan kababı","tr":"Xan kababı","ar":"Xan kababı"},"price":7.0},{"id":"r92","name":{"az":"Çərəzli Toyuq kababı","en":"Çərəzli Toyuq kababı","ru":"Çərəzli Toyuq kababı","tr":"Çərəzli Toyuq kababı","ar":"Çərəzli Toyuq kababı"},"price":11.0},{"id":"r93","name":{"az":"Tikə Kabab","en":"Tikə Kabab","ru":"Tikə Kabab","tr":"Tikə Kabab","ar":"Tikə Kabab"},"price":12.0},{"id":"r94","name":{"az":"Lülə Kabab","en":"Lülə Kabab","ru":"Lülə Kabab","tr":"Lülə Kabab","ar":"Lülə Kabab"},"price":9.0},{"id":"r95","name":{"az":"Toyuq Kabab","en":"Toyuq Kabab","ru":"Toyuq Kabab","tr":"Toyuq Kabab","ar":"Toyuq Kabab"},"price":6.5},{"id":"r96","name":{"az":"Kartof Külləmə","en":"Kartof Külləmə","ru":"Kartof Külləmə","tr":"Kartof Külləmə","ar":"Kartof Külləmə"},"price":4.0},{"id":"r97","name":{"az":"Tərəvəz Assorti","en":"Tərəvəz Assorti","ru":"Tərəvəz Assorti","tr":"Tərəvəz Assorti","ar":"Tərəvəz Assorti"},"price":4.0},{"id":"r98","name":{"az":"Tərəvəz Ədəd","en":"Tərəvəz Ədəd","ru":"Tərəvəz Ədəd","tr":"Tərəvəz Ədəd","ar":"Tərəvəz Ədəd"},"price":2.0}]},{"name":{"az":"Desertlər","en":"Desertlər","ru":"Desertlər","tr":"Desertlər","ar":"Desertlər"},"items":[{"id":"r99","name":{"az":"San Sebastian","en":"San Sebastian","ru":"San Sebastian","tr":"San Sebastian","ar":"San Sebastian"},"price":7.0},{"id":"r100","name":{"az":"Şokalad Vulkan","en":"Şokalad Vulkan","ru":"Şokalad Vulkan","tr":"Şokalad Vulkan","ar":"Şokalad Vulkan"},"price":9.0},{"id":"r101","name":{"az":"Ballı Tort","en":"Ballı Tort","ru":"Ballı Tort","tr":"Ballı Tort","ar":"Ballı Tort"},"price":7.0},{"id":"r102","name":{"az":"Künəfə","en":"Künəfə","ru":"Künəfə","tr":"Künəfə","ar":"Künəfə"},"price":8.0},{"id":"r103","name":{"az":"Dondurma","en":"Dondurma","ru":"Dondurma","tr":"Dondurma","ar":"Dondurma"},"price":5.5},{"id":"r104","name":{"az":"Meyvə Assorti","en":"Meyvə Assorti","ru":"Meyvə Assorti","tr":"Meyvə Assorti","ar":"Meyvə Assorti"},"price":15.0}]},{"name":{"az":"Qarnirlər","en":"Qarnirlər","ru":"Qarnirlər","tr":"Qarnirlər","ar":"Qarnirlər"},"items":[{"id":"r105","name":{"az":"Fri","en":"Fri","ru":"Fri","tr":"Fri","ar":"Fri"},"price":4.0},{"id":"r106","name":{"az":"Düyü","en":"Düyü","ru":"Düyü","tr":"Düyü","ar":"Düyü"},"price":4.0},{"id":"r107","name":{"az":"Püre","en":"Püre","ru":"Püre","tr":"Püre","ar":"Püre"},"price":4.0},{"id":"r108","name":{"az":"Ev Sayağı Kartof","en":"Ev Sayağı Kartof","ru":"Ev Sayağı Kartof","tr":"Ev Sayağı Kartof","ar":"Ev Sayağı Kartof"},"price":5.0},{"id":"r109","name":{"az":"Göbələk","en":"Göbələk","ru":"Göbələk","tr":"Göbələk","ar":"Göbələk"},"price":6.0}]}]},{"name":{"az":"Drinks","en":"Drinks","ru":"Drinks","tr":"Drinks","ar":"Drinks"},"categories":[{"name":{"az":"Soft Drinks","en":"Soft Drinks","ru":"Soft Drinks","tr":"Soft Drinks","ar":"Soft Drinks"},"items":[{"id":"r110","name":{"az":"Coca-Cola","en":"Coca-Cola","ru":"Coca-Cola","tr":"Coca-Cola","ar":"Coca-Cola"},"price":4.0},{"id":"r111","name":{"az":"Fanta","en":"Fanta","ru":"Fanta","tr":"Fanta","ar":"Fanta"},"price":4.0},{"id":"r112","name":{"az":"Sprite","en":"Sprite","ru":"Sprite","tr":"Sprite","ar":"Sprite"},"price":4.0},{"id":"r113","name":{"az":"Red Bull","en":"Red Bull","ru":"Red Bull","tr":"Red Bull","ar":"Red Bull"},"price":8.0},{"id":"r114","name":{"az":"Qazlı su","en":"Sparkling Water","ru":"Sparkling Water","tr":"Qazlı su","ar":"Qazlı su"},"price":3.0},{"id":"r115","name":{"az":"Qazsız su","en":"Still water","ru":"Still water","tr":"Qazsız su","ar":"Qazsız su"},"price":3.0},{"id":"r116","name":{"az":"Kompot","en":"Kompot","ru":"Kompot","tr":"Kompot","ar":"Kompot"},"price":6.0},{"id":"r117","name":{"az":"Meyvə Şirəsi","en":"Meyvə Şirəsi","ru":"Meyvə Şirəsi","tr":"Meyvə Şirəsi","ar":"Meyvə Şirəsi"},"price":6.0},{"id":"r118","name":{"az":"Duşes","en":"Duşes","ru":"Duşes","tr":"Duşes","ar":"Duşes"},"price":4.0},{"id":"r119","name":{"az":"Tərxum","en":"Tərxum","ru":"Tərxum","tr":"Tərxum","ar":"Tərxum"},"price":4.0}]},{"name":{"az":"Fresh juice","en":"Fresh juice","ru":"Fresh juice","tr":"Fresh juice","ar":"Fresh juice"},"items":[{"id":"r120","name":{"az":"Apple fresh","en":"Apple fresh","ru":"Apple fresh","tr":"Apple fresh","ar":"Apple fresh"},"price":7.0},{"id":"r121","name":{"az":"Carrot fresh","en":"Carrot fresh","ru":"Carrot fresh","tr":"Carrot fresh","ar":"Carrot fresh"},"price":7.0},{"id":"r122","name":{"az":"Orange fresh","en":"Orange fresh","ru":"Orange fresh","tr":"Orange fresh","ar":"Orange fresh"},"price":7.0}]},{"name":{"az":"Limonad","en":"Limonad","ru":"Limonad","tr":"Limonad","ar":"Limonad"},"items":[{"id":"r123","name":{"az":"Basıl","en":"Basıl","ru":"Basıl","tr":"Basıl","ar":"Basıl"},"price":9.0},{"id":"r124","name":{"az":"Passion Fruit","en":"Passion Fruit","ru":"Passion Fruit","tr":"Passion Fruit","ar":"Passion Fruit"},"price":9.0},{"id":"r125","name":{"az":"Apple Kiwi","en":"Apple Kiwi","ru":"Apple Kiwi","tr":"Apple Kiwi","ar":"Apple Kiwi"},"price":9.0},{"id":"r126","name":{"az":"Pear","en":"Pear","ru":"Pear","tr":"Pear","ar":"Pear"},"price":9.0},{"id":"r127","name":{"az":"Bubble Gum","en":"Bubble Gum","ru":"Bubble Gum","tr":"Bubble Gum","ar":"Bubble Gum"},"price":9.0},{"id":"r128","name":{"az":"Milkshake","en":"Milkshake","ru":"Milkshake","tr":"Milkshake","ar":"Milkshake"},"price":9.0}]},{"name":{"az":"Hot Drinks","en":"Hot Drinks","ru":"Hot Drinks","tr":"Hot Drinks","ar":"Hot Drinks"},"items":[{"id":"r129","name":{"az":"Americano","en":"Americano","ru":"Americano","tr":"Americano","ar":"Americano"},"price":5.0},{"id":"r130","name":{"az":"Espresso","en":"Espresso","ru":"Espresso","tr":"Espresso","ar":"Espresso"},"price":4.0},{"id":"r131","name":{"az":"Double Espresso","en":"Double Espresso","ru":"Double Espresso","tr":"Double Espresso","ar":"Double Espresso"},"price":6.0},{"id":"r132","name":{"az":"Cappucino","en":"Cappucino","ru":"Cappucino","tr":"Cappucino","ar":"Cappucino"},"price":7.0},{"id":"r133","name":{"az":"İrish Coffee","en":"İrish Coffee","ru":"İrish Coffee","tr":"İrish Coffee","ar":"İrish Coffee"},"price":10.0},{"id":"r134","name":{"az":"Black Tea","en":"Black Tea","ru":"Black Tea","tr":"Black Tea","ar":"Black Tea"},"price":7.0},{"id":"r135","name":{"az":"Black tea","en":"Black tea","ru":"Black tea","tr":"Black tea","ar":"Black tea"},"price":15.0,"desc":{"az":"Mürrəbə ilə","en":"Mürrəbə ilə","ru":"Mürrəbə ilə","tr":"Mürrəbə ilə","ar":"Mürrəbə ilə"}}]}]},{"name":{"az":"Alcohol","en":"Alcoholic","ru":"Alcoholic","tr":"Alcohol","ar":"Alcohol"},"categories":[{"name":{"az":"wine","en":"wine","ru":"wine","tr":"wine","ar":"wine"},"items":[{"id":"r136","name":{"az":"Chabiant — Bottle","en":"Chabiant — Bottle","ru":"Chabiant — Bottle","tr":"Chabiant — Bottle","ar":"Chabiant — Bottle"},"price":45.0},{"id":"r137","name":{"az":"Chabiant — Glass","en":"Chabiant — Glass","ru":"Chabiant — Glass","tr":"Chabiant — Glass","ar":"Chabiant — Glass"},"price":10.0},{"id":"r138","name":{"az":"Chabian Bayan — Bottle","en":"Chabian Bayan — Bottle","ru":"Chabian Bayan — Bottle","tr":"Chabian Bayan — Bottle","ar":"Chabian Bayan — Bottle"},"price":50.0},{"id":"r139","name":{"az":"Chabian Bayan — Glass","en":"Chabian Bayan — Glass","ru":"Chabian Bayan — Glass","tr":"Chabian Bayan — Glass","ar":"Chabian Bayan — Glass"},"price":12.0},{"id":"r140","name":{"az":"Chabiant Madrasa — Bottle","en":"Chabiant Madrasa — Bottle","ru":"Chabiant Madrasa — Bottle","tr":"Chabiant Madrasa — Bottle","ar":"Chabiant Madrasa — Bottle"},"price":50.0},{"id":"r141","name":{"az":"Chabiant Madrasa — Glass","en":"Chabiant Madrasa — Glass","ru":"Chabiant Madrasa — Glass","tr":"Chabiant Madrasa — Glass","ar":"Chabiant Madrasa — Glass"},"price":12.0},{"id":"r142","name":{"az":"Chabiant Madrasa Rose — Bottle","en":"Chabiant Madrasa Rose — Bottle","ru":"Chabiant Madrasa Rose — Bottle","tr":"Chabiant Madrasa Rose — Bottle","ar":"Chabiant Madrasa Rose — Bottle"},"price":50.0},{"id":"r143","name":{"az":"Chabiant Madrasa Rose — Glass","en":"Chabiant Madrasa Rose — Glass","ru":"Chabiant Madrasa Rose — Glass","tr":"Chabiant Madrasa Rose — Glass","ar":"Chabiant Madrasa Rose — Glass"},"price":12.0},{"id":"r144","name":{"az":"Chabiant Rkatsiteli — Bottle","en":"Chabiant Rkatsiteli — Bottle","ru":"Chabiant Rkatsiteli — Bottle","tr":"Chabiant Rkatsiteli — Bottle","ar":"Chabiant Rkatsiteli — Bottle"},"price":50.0},{"id":"r145","name":{"az":"Chabiant Rkatsiteli — Glass","en":"Chabiant Rkatsiteli — Glass","ru":"Chabiant Rkatsiteli — Glass","tr":"Chabiant Rkatsiteli — Glass","ar":"Chabiant Rkatsiteli — Glass"},"price":12.0},{"id":"r146","name":{"az":"Chabiant Seperavi Caberuent — Bottle","en":"Chabiant Seperavi Caberuent — Bottle","ru":"Chabiant Seperavi Caberuent — Bottle","tr":"Chabiant Seperavi Caberuent — Bottle","ar":"Chabiant Seperavi Caberuent — Bottle"},"price":50.0},{"id":"r147","name":{"az":"Chabiant Seperavi Caberuent — Glass","en":"Chabiant Seperavi Caberuent — Glass","ru":"Chabiant Seperavi Caberuent — Glass","tr":"Chabiant Seperavi Caberuent — Glass","ar":"Chabiant Seperavi Caberuent — Glass"},"price":12.0},{"id":"r148","name":{"az":"Chabiant Vino Nuovo — Bottle","en":"Chabiant Vino Nuovo — Bottle","ru":"Chabiant Vino Nuovo — Bottle","tr":"Chabiant Vino Nuovo — Bottle","ar":"Chabiant Vino Nuovo — Bottle"},"price":65.0},{"id":"r149","name":{"az":"Chabiant Vino Nuovo — Glass","en":"Chabiant Vino Nuovo — Glass","ru":"Chabiant Vino Nuovo — Glass","tr":"Chabiant Vino Nuovo — Glass","ar":"Chabiant Vino Nuovo — Glass"},"price":15.0},{"id":"r150","name":{"az":"Chabiant Vino Raro — Bottle","en":"Chabiant Vino Raro — Bottle","ru":"Chabiant Vino Raro — Bottle","tr":"Chabiant Vino Raro — Bottle","ar":"Chabiant Vino Raro — Bottle"},"price":70.0},{"id":"r151","name":{"az":"Chabiant Vino Raro — Glass","en":"Chabiant Vino Raro — Glass","ru":"Chabiant Vino Raro — Glass","tr":"Chabiant Vino Raro — Glass","ar":"Chabiant Vino Raro — Glass"},"price":16.0}]},{"name":{"az":"Alcoholic Cocktails","en":"Alcoholic Cocktails","ru":"Alcoholic Cocktails","tr":"Alcoholic Cocktails","ar":"Alcoholic Cocktails"},"items":[{"id":"r152","name":{"az":"Long İsland","en":"Long İsland","ru":"Long İsland","tr":"Long İsland","ar":"Long İsland"},"price":15.0},{"id":"r153","name":{"az":"Mai-Tai","en":"Mai-Tai","ru":"Mai-Tai","tr":"Mai-Tai","ar":"Mai-Tai"},"price":12.0},{"id":"r154","name":{"az":"Mojito","en":"Mojito","ru":"Mojito","tr":"Mojito","ar":"Mojito"},"price":12.0},{"id":"r155","name":{"az":"Sex on the Beach","en":"Sex on the Beach","ru":"Sex on the Beach","tr":"Sex on the Beach","ar":"Sex on the Beach"},"price":12.0},{"id":"r156","name":{"az":"Tequila Sunrise","en":"Tequila Sunrise","ru":"Tequila Sunrise","tr":"Tequila Sunrise","ar":"Tequila Sunrise"},"price":12.0},{"id":"r157","name":{"az":"Negroni","en":"Negroni","ru":"Negroni","tr":"Negroni","ar":"Negroni"},"price":10.0}]},{"name":{"az":"Beer","en":"Beer","ru":"Beer","tr":"Beer","ar":"Beer"},"items":[{"id":"r158","name":{"az":"Xırdalan","en":"Xırdalan","ru":"Xırdalan","tr":"Xırdalan","ar":"Xırdalan"},"price":5.5,"desc":{"az":"0.5ml","en":"0.5ml","ru":"0.5ml","tr":"0.5ml","ar":"0.5ml"}},{"id":"r159","name":{"az":"Efes","en":"Efes","ru":"Efes","tr":"Efes","ar":"Efes"},"price":7.0,"desc":{"az":"Pilsener","en":"Pilsener","ru":"Pilsener","tr":"Pilsener","ar":"Pilsener"}},{"id":"r160","name":{"az":"Efes","en":"Efes","ru":"Efes","tr":"Efes","ar":"Efes"},"price":6.0,"desc":{"az":"Zero","en":"Zero","ru":"Zero","tr":"Zero","ar":"Zero"}},{"id":"r161","name":{"az":"Efes Draf","en":"Efes Draft","ru":"Efes Draft","tr":"Efes Draf","ar":"Efes Draf"},"price":8.0},{"id":"r162","name":{"az":"Corona","en":"Corona","ru":"Corona","tr":"Corona","ar":"Corona"},"price":10.0}]},{"name":{"az":"Vodka","en":"Vodka","ru":"Vodka","tr":"Vodka","ar":"Vodka"},"items":[{"id":"r163","name":{"az":"Finlanida — 0.7ml","en":"Finlanida — 0.7ml","ru":"Finlanida — 0.7ml","tr":"Finlanida — 0.7ml","ar":"Finlanida — 0.7ml"},"price":65.0},{"id":"r164","name":{"az":"Finlanida — 0.50ml","en":"Finlanida — 0.50ml","ru":"Finlanida — 0.50ml","tr":"Finlanida — 0.50ml","ar":"Finlanida — 0.50ml"},"price":7.0},{"id":"r165","name":{"az":"Absolut — 0.7ml","en":"Absolut — 0.7ml","ru":"Absolut — 0.7ml","tr":"Absolut — 0.7ml","ar":"Absolut — 0.7ml"},"price":70.0},{"id":"r166","name":{"az":"Absolut — 0.50ml","en":"Absolut — 0.50ml","ru":"Absolut — 0.50ml","tr":"Absolut — 0.50ml","ar":"Absolut — 0.50ml"},"price":7.0},{"id":"r167","name":{"az":"Local — 0.7ml","en":"Local — 0.7ml","ru":"Local — 0.7ml","tr":"Local — 0.7ml","ar":"Local — 0.7ml"},"price":45.0},{"id":"r168","name":{"az":"Local — 0.50ml","en":"Local — 0.50ml","ru":"Local — 0.50ml","tr":"Local — 0.50ml","ar":"Local — 0.50ml"},"price":5.0}]}]}];
 
 
 // ─── RESTAURANT FULL MENU ─────────────────────────────────────
+const SERVICE_FEE_PCT = 10;
 let _menuIdx = 0;
+
+// Pick localized field — fallback to az / en if current lang missing
+function locText(field) {
+  if (!field) return '';
+  if (typeof field === 'string') return field;
+  return field[lang] || field.az || field.en || Object.values(field)[0] || '';
+}
+
+// Flat lookup: id -> item with menuName/catName
+function findRestaurantItem(id) {
+  for (const m of RESTAURANT_MENU) {
+    for (const c of m.categories) {
+      const found = c.items.find(it => it.id === id);
+      if (found) return { ...found, _menu: m.name, _cat: c.name };
+    }
+  }
+  return null;
+}
+
 function renderMenuTabs() {
   const tabs = document.getElementById('menuTabs');
   if (!tabs) return;
   tabs.innerHTML = RESTAURANT_MENU.map((m, i) =>
-    `<button class="menu-tab ${i === _menuIdx ? 'active' : ''}" onclick="switchMenu(${i})">${escapeHtml(m.name)}</button>`
+    `<button class="menu-tab ${i === _menuIdx ? 'active' : ''}" onclick="switchMenu(${i})">${escapeHtml(locText(m.name))}</button>`
   ).join('');
 }
 function renderMenuContent() {
@@ -3916,17 +3996,28 @@ function renderMenuContent() {
   if (!m) { c.innerHTML = ''; return; }
   c.innerHTML = m.categories.map(cat => `
     <div class="menu-cat">
-      <div class="menu-cat-title">${escapeHtml(cat.name)}</div>
-      ${cat.items.map(it => `
+      <div class="menu-cat-title">${escapeHtml(locText(cat.name))}</div>
+      ${cat.items.map(it => {
+        const inCart = cart.find(x => x.id === it.id);
+        const qty = inCart ? inCart.qty : 0;
+        const priceText = it.price > 0 ? it.price + ' ₼' : '—';
+        return `
         <div class="menu-item">
           <div class="menu-item-info">
-            <div class="menu-item-name">${escapeHtml(it.name)}</div>
-            ${it.desc ? `<div class="menu-item-desc">${escapeHtml(it.desc)}</div>` : ''}
+            <div class="menu-item-name">${escapeHtml(locText(it.name))}</div>
+            ${it.desc ? `<div class="menu-item-desc">${escapeHtml(locText(it.desc))}</div>` : ''}
             ${it.weight ? `<div class="menu-item-meta">${escapeHtml(it.weight)}</div>` : ''}
+            <div class="menu-item-price">${priceText}</div>
           </div>
-          <div class="menu-item-price">${it.price > 0 ? it.price + ' ₼' : '—'}</div>
-        </div>
-      `).join('')}
+          ${it.price > 0 ? (qty === 0
+            ? `<button class="menu-add-btn" onclick="addRestaurantToCart('${it.id}')">+</button>`
+            : `<div class="menu-qty">
+                <button class="menu-qty-btn" onclick="changeRestaurantQty('${it.id}',-1)">−</button>
+                <span class="menu-qty-num">${qty}</span>
+                <button class="menu-qty-btn" onclick="changeRestaurantQty('${it.id}',1)">+</button>
+              </div>`) : ''}
+        </div>`;
+      }).join('')}
     </div>
   `).join('');
   document.getElementById('menuContent').scrollTop = 0;
@@ -3938,6 +4029,37 @@ function switchMenu(i) {
 }
 function initRestaurantMenu() {
   renderMenuTabs();
+  renderMenuContent();
+}
+
+function addRestaurantToCart(itemId) {
+  const it = findRestaurantItem(itemId);
+  if (!it) return;
+  const existing = cart.find(c => c.id === it.id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      id: it.id,
+      icon: '🍽',
+      price: it.price,
+      qty: 1,
+      dept: 'restaurant',
+      name: it.name,
+      _restaurant: true
+    });
+  }
+  updateCartBar();
+  renderMenuContent();
+  showToast(t('addToCart'));
+}
+
+function changeRestaurantQty(itemId, delta) {
+  const idx = cart.findIndex(c => c.id === itemId);
+  if (idx === -1) return;
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  updateCartBar();
   renderMenuContent();
 }
 
@@ -4130,6 +4252,33 @@ function addToCart(itemId, category) {
   showToast(t('addToCart'));
 }
 
+function cartHasRestaurantItems() {
+  return cart.some(c => c._restaurant || c.dept === 'restaurant');
+}
+function cartSubtotal() {
+  return cart.reduce((s, c) => s + c.qty * c.price, 0);
+}
+function cartServiceFee() {
+  return cartHasRestaurantItems() ? +(cartSubtotal() * SERVICE_FEE_PCT / 100).toFixed(2) : 0;
+}
+function cartGrandTotal() {
+  return +(cartSubtotal() + cartServiceFee()).toFixed(2);
+}
+
+function updateCartBar() {
+  const bar = document.getElementById('cartBar');
+  const count = cart.reduce((s, c) => s + c.qty, 0);
+  const total = cartGrandTotal();
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = total === 0 ? t('free') : total + ' ₼';
+  if (count > 0) bar.classList.add('show');
+  else bar.classList.remove('show');
+  // Also keep restaurant menu UI in sync (qty buttons)
+  if (document.getElementById('screen-restaurant')?.classList.contains('active')) {
+    renderMenuContent();
+  }
+}
+
 function changeQty(itemId, delta) {
   const idx = cart.findIndex(c => c.id === itemId);
   if (idx === -1) return;
@@ -4137,17 +4286,8 @@ function changeQty(itemId, delta) {
   if (cart[idx].qty <= 0) cart.splice(idx, 1);
   updateCartBar();
   renderAllLists();
+  renderMenuContent();
   renderCart();
-}
-
-function updateCartBar() {
-  const bar = document.getElementById('cartBar');
-  const count = cart.reduce((s, c) => s + c.qty, 0);
-  const total = cart.reduce((s, c) => s + c.qty * c.price, 0);
-  document.getElementById('cartCount').textContent = count;
-  document.getElementById('cartTotal').textContent = total === 0 ? t('free') : total + ' ₼';
-  if (count > 0) bar.classList.add('show');
-  else bar.classList.remove('show');
 }
 
 function renderCart() {
@@ -4156,16 +4296,19 @@ function renderCart() {
     c.innerHTML = `<div class="empty-cart">${t('empty')}</div>`;
     return;
   }
-  const total = cart.reduce((s, item) => s + item.qty * item.price, 0);
+  const subtotal = cartSubtotal();
+  const fee = cartServiceFee();
+  const total = cartGrandTotal();
+  const showFee = fee > 0;
   c.innerHTML = `
     <div class="item-list">
       ${cart.map(item => `
         <div class="item">
           <div class="item-icon">${item.icon}</div>
           <div class="item-info">
-            <div class="item-name">${item.name[lang] || item.name.en} × ${item.qty}</div>
+            <div class="item-name">${escapeHtml(locText(item.name))} × ${item.qty}</div>
             <div class="item-price ${item.price === 0 ? 'free' : ''}">
-              ${item.price === 0 ? t('free') : (item.qty * item.price) + ' ₼'}
+              ${item.price === 0 ? t('free') : (item.qty * item.price).toFixed(2).replace(/\.0+$/, '') + ' ₼'}
             </div>
           </div>
           <div class="qty-control">
@@ -4177,6 +4320,15 @@ function renderCart() {
       `).join('')}
     </div>
     <div class="order-summary" style="margin: 20px 0 0;">
+      <div class="summary-row">
+        <span>${t('subtotal')}</span>
+        <span>${subtotal === 0 ? t('free') : subtotal + ' ₼'}</span>
+      </div>
+      ${showFee ? `
+      <div class="summary-row">
+        <span>${t('serviceFee').replace('{p}', SERVICE_FEE_PCT)}</span>
+        <span>${fee} ₼</span>
+      </div>` : ''}
       <div class="summary-row total">
         <span>${t('total')}</span>
         <span>${total === 0 ? t('free') : total + ' ₼'}</span>
@@ -4654,14 +4806,26 @@ function placeOrder() {
   currentOrderId = 'GH-' + (window.guestData?.room || '000') + Math.floor(Math.random() * 9 + 1);
   document.getElementById('orderId').textContent = '#' + currentOrderId;
 
-  const total = cart.reduce((s, item) => s + item.qty * item.price, 0);
+  const subtotal = cartSubtotal();
+  const fee = cartServiceFee();
+  const total = cartGrandTotal();
+  const showFee = fee > 0;
   document.getElementById('orderSummary').innerHTML = `
     ${cart.map(item => `
       <div class="summary-row">
-        <span>${item.name[lang] || item.name.en} × ${item.qty}</span>
-        <span>${item.price === 0 ? t('free') : (item.qty * item.price) + ' ₼'}</span>
+        <span>${escapeHtml(locText(item.name))} × ${item.qty}</span>
+        <span>${item.price === 0 ? t('free') : (item.qty * item.price).toFixed(2).replace(/\.0+$/, '') + ' ₼'}</span>
       </div>
     `).join('')}
+    <div class="summary-row" style="opacity:0.75;">
+      <span>${t('subtotal')}</span>
+      <span>${subtotal} ₼</span>
+    </div>
+    ${showFee ? `
+    <div class="summary-row" style="opacity:0.75;">
+      <span>${t('serviceFee').replace('{p}', SERVICE_FEE_PCT)}</span>
+      <span>${fee} ₼</span>
+    </div>` : ''}
     <div class="summary-row total">
       <span>${t('total')}</span>
       <span>${total === 0 ? t('free') : total + ' ₼'}</span>
@@ -4672,6 +4836,8 @@ function placeOrder() {
     id: currentOrderId,
     createdAt: Date.now(),
     items: cart.map(c => ({ id: c.id, icon: c.icon, name: c.name, price: c.price, qty: c.qty, dept: c.dept })),
+    subtotal: subtotal,
+    serviceFee: fee,
     total: total,
     guest: { ...window.guestData },
     steps: { 1: Date.now() }
@@ -5138,8 +5304,16 @@ function sendToTelegram(items) {
   const phone = window.guestData?.phone || '';
   const guestName = window.guestData?.name || '';
   Object.entries(groups).forEach(([dept, dItems]) => {
-    const itemsList = dItems.map(i => `• ${i.qty}× ${i.name[lang] || i.name.en}`).join('\n');
-    const total = dItems.reduce((s, i) => s + i.qty * i.price, 0);
+    const itemsList = dItems.map(i => `• ${i.qty}× ${escapeHtml(locText(i.name))} — ${(i.qty * i.price).toFixed(2).replace(/\.0+$/, '')} ₼`).join('\n');
+    const subtotal = dItems.reduce((s, i) => s + i.qty * i.price, 0);
+    const isRestaurant = dept === 'restaurant';
+    const fee = isRestaurant ? +(subtotal * SERVICE_FEE_PCT / 100).toFixed(2) : 0;
+    const total = +(subtotal + fee).toFixed(2);
+    const breakdownPlain = subtotal > 0
+      ? (isRestaurant
+          ? `\n\n💰 Subtotal: ${subtotal} ₼\n📎 Servis (${SERVICE_FEE_PCT}%): ${fee} ₼\n💵 <b>Cəmi: ${total} ₼</b>`
+          : `\n\n💰 <b>${total} ₼</b>`)
+      : '';
 
     msgs.push({
       dept,
@@ -5156,7 +5330,7 @@ ${departmentNames[lang][dept]}
 👤 ${guestName}${phone ? ' · 📱 ' + phone : ''}
 
 📋 <b>Məhsullar:</b>
-${itemsList}${total > 0 ? '\n\n💰 <b>' + total + ' ₼</b>' : ''}`;
+${itemsList}${breakdownPlain}`;
 
     fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
       method: 'POST',
