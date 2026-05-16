@@ -2299,6 +2299,11 @@
       <h3 data-i18n="technicalTitle">Texniki Xidmət</h3>
       <p data-i18n="technicalDesc">TV, klimat, işıq, su</p>
     </button>
+    <button class="service-card wide" onclick="openScreen('spa')">
+      <div class="service-icon">💆</div>
+      <h3 data-i18n="spaTitle">SPA & Wellness</h3>
+      <p data-i18n="spaDesc">Massaj, hamam, sauna, manikür</p>
+    </button>
   </div>
 
   <!-- ACTIVE ORDER CARD -->
@@ -2385,6 +2390,20 @@
       <div class="report-arrow">→</div>
     </div>
     <div class="item-list" id="technicalList"></div>
+  </div>
+</div>
+
+<div class="screen" id="screen-spa">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="spaTitle">SPA & Wellness</div>
+  </div>
+  <div class="screen-content">
+    <div style="background: linear-gradient(135deg, var(--ink), var(--ink-2)); color: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;">
+      <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;" data-i18n="spaIntroTitle">Qonağımıza xoş gəlmisiniz</div>
+      <div style="font-size: 12px; opacity: 0.75; line-height: 1.5;" data-i18n="spaIntroSub">Rezerv üçün vaxt seçimi resepsion tərəfindən təsdiqlənəcək. 09:00–22:00</div>
+    </div>
+    <div class="item-list" id="spaList"></div>
   </div>
 </div>
 
@@ -2675,6 +2694,12 @@ const i18n = {
     receptionDesc: "Taksi, tur, geç check-out",
     technicalTitle: "Texniki Xidmət",
     technicalDesc: "TV, klimat, işıq, su",
+    spaTitle: "SPA & Wellness",
+    spaDesc: "Massaj, hamam, sauna, manikür",
+    spaIntroTitle: "Qonağımıza xoş gəlmisiniz",
+    spaIntroSub: "Rezerv üçün vaxt seçimi resepsion tərəfindən təsdiqlənəcək. 09:00–22:00",
+    book: "Rezerv",
+    spaBooked: "✅ Rezerv göndərildi, vaxtı təsdiqləyəcəyik",
     report: "Bildir",
     issueReported: "✅ Bildirildi, gəlirik",
     helpTitle: "Resepsion ilə Söhbət",
@@ -2795,6 +2820,12 @@ const i18n = {
     receptionDesc: "Taxi, tours, late check-out",
     technicalTitle: "Technical Service",
     technicalDesc: "TV, AC, lights, water",
+    spaTitle: "SPA & Wellness",
+    spaDesc: "Massage, hammam, sauna, manicure",
+    spaIntroTitle: "Welcome to our SPA",
+    spaIntroSub: "Time slots will be confirmed by reception. Open 09:00–22:00",
+    book: "Book",
+    spaBooked: "✅ Booking sent, time will be confirmed",
     report: "Report",
     issueReported: "✅ Reported, on our way",
     helpTitle: "Chat with Reception",
@@ -2915,6 +2946,12 @@ const i18n = {
     receptionDesc: "Такси, туры, поздний выезд",
     technicalTitle: "Тех. служба",
     technicalDesc: "ТВ, кондиционер, свет, вода",
+    spaTitle: "СПА & Wellness",
+    spaDesc: "Массаж, хамам, сауна, маникюр",
+    spaIntroTitle: "Добро пожаловать в наш СПА",
+    spaIntroSub: "Время будет подтверждено ресепшен. Работаем 09:00–22:00",
+    book: "Записаться",
+    spaBooked: "✅ Заявка отправлена, подтвердим время",
     report: "Сообщить",
     issueReported: "✅ Сообщено, идём",
     helpTitle: "Чат с ресепшен",
@@ -3035,6 +3072,12 @@ const i18n = {
     receptionDesc: "Taksi, tur, geç çıkış",
     technicalTitle: "Teknik Servis",
     technicalDesc: "TV, klima, ışık, su",
+    spaTitle: "SPA & Wellness",
+    spaDesc: "Masaj, hamam, sauna, manikür",
+    spaIntroTitle: "SPA'mıza hoş geldiniz",
+    spaIntroSub: "Saat resepsiyon tarafından onaylanacak. 09:00–22:00",
+    book: "Rezerve et",
+    spaBooked: "✅ Rezervasyon gönderildi, saati onaylayacağız",
     report: "Bildir",
     issueReported: "✅ Bildirildi, geliyoruz",
     helpTitle: "Resepsiyonla Sohbet",
@@ -3155,6 +3198,12 @@ const i18n = {
     receptionDesc: "تاكسي، جولات، تأخير المغادرة",
     technicalTitle: "الصيانة",
     technicalDesc: "تلفاز، مكيف، إضاءة، ماء",
+    spaTitle: "سبا و عافية",
+    spaDesc: "تدليك، حمّام، ساونا، مانيكير",
+    spaIntroTitle: "أهلاً بك في السبا",
+    spaIntroSub: "سيتم تأكيد الوقت من قبل الاستقبال. مفتوح 09:00–22:00",
+    book: "حجز",
+    spaBooked: "✅ تم إرسال الحجز، سنؤكد الوقت",
     report: "أبلغ",
     issueReported: "✅ تم الإبلاغ، نحن قادمون",
     helpTitle: "دردشة مع الاستقبال",
@@ -3322,15 +3371,33 @@ const menu = {
       name: { az: "Tur: Şahdağ (1 gün)", en: "Tour: Shahdag (1 day)", ru: "Тур: Шахдаг (1 день)", tr: "Tur: Şahdağ (1 gün)", ar: "جولة: شاهداغ (يوم كامل)" } },
     { id: 'rc6', icon: '🌋', price: 90, dept: 'reception',
       name: { az: "Tur: Abşeron yarımadası", en: "Tour: Absheron peninsula", ru: "Тур: Полуостров Абшерон", tr: "Tur: Abşeron yarımadası", ar: "جولة: شبه جزيرة أبشيرون" } },
+  ],
+  spa: [
+    { id: 'sp1', icon: '💆', price: 50, dept: 'spa',
+      name: { az: "Klassik bədən massajı (60 dəq)", en: "Classic body massage (60 min)", ru: "Классический массаж тела (60 мин)", tr: "Klasik vücut masajı (60 dk)", ar: "تدليك جسم كلاسيكي (60 دقيقة)" } },
+    { id: 'sp2', icon: '🪨', price: 70, dept: 'spa',
+      name: { az: "İsti daş massajı (60 dəq)", en: "Hot stone massage (60 min)", ru: "Массаж горячими камнями (60 мин)", tr: "Sıcak taş masajı (60 dk)", ar: "تدليك بالحجارة الساخنة (60 دقيقة)" } },
+    { id: 'sp3', icon: '🛀', price: 35, dept: 'spa',
+      name: { az: "Türk hamamı", en: "Turkish hammam", ru: "Турецкий хамам", tr: "Türk hamamı", ar: "حمّام تركي" } },
+    { id: 'sp4', icon: '♨️', price: 25, dept: 'spa',
+      name: { az: "Sauna (60 dəq)", en: "Sauna (60 min)", ru: "Сауна (60 мин)", tr: "Sauna (60 dk)", ar: "ساونا (60 دقيقة)" } },
+    { id: 'sp5', icon: '🏊', price: 0, dept: 'spa',
+      name: { az: "Hovuz (qonaqlar üçün pulsuz)", en: "Pool (free for guests)", ru: "Бассейн (для гостей бесплатно)", tr: "Havuz (misafirler için ücretsiz)", ar: "حمام السباحة (مجاناً للنزلاء)" } },
+    { id: 'sp6', icon: '💅', price: 25, dept: 'spa',
+      name: { az: "Manikür", en: "Manicure", ru: "Маникюр", tr: "Manikür", ar: "مانيكير" } },
+    { id: 'sp7', icon: '🦶', price: 30, dept: 'spa',
+      name: { az: "Pedikür", en: "Pedicure", ru: "Педикюр", tr: "Pedikür", ar: "باديكير" } },
+    { id: 'sp8', icon: '💇', price: 40, dept: 'spa',
+      name: { az: "Saç düzəltmə (kişi/qadın)", en: "Hair styling (men/women)", ru: "Стрижка/укладка", tr: "Saç bakımı (kadın/erkek)", ar: "تصفيف الشعر (رجال/نساء)" } }
   ]
 };
 
 const departmentNames = {
-  az: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restoran", reception: "🛎 Resepsion", technical: "🛠 Texniki" },
-  en: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restaurant", reception: "🛎 Reception", technical: "🛠 Technical" },
-  ru: { housekeeping: "🛏 Обслуживание", restaurant: "🍽 Ресторан", reception: "🛎 Ресепшен", technical: "🛠 Техн. служба" },
-  tr: { housekeeping: "🛏 Oda Hizmeti", restaurant: "🍽 Restoran", reception: "🛎 Resepsiyon", technical: "🛠 Teknik" },
-  ar: { housekeeping: "🛏 خدمة الغرف", restaurant: "🍽 المطعم", reception: "🛎 الاستقبال", technical: "🛠 صيانة" }
+  az: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restoran", reception: "🛎 Resepsion", technical: "🛠 Texniki", spa: "💆 SPA" },
+  en: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restaurant", reception: "🛎 Reception", technical: "🛠 Technical", spa: "💆 SPA" },
+  ru: { housekeeping: "🛏 Обслуживание", restaurant: "🍽 Ресторан", reception: "🛎 Ресепшен", technical: "🛠 Техн. служба", spa: "💆 СПА" },
+  tr: { housekeeping: "🛏 Oda Hizmeti", restaurant: "🍽 Restoran", reception: "🛎 Resepsiyon", technical: "🛠 Teknik", spa: "💆 SPA" },
+  ar: { housekeeping: "🛏 خدمة الغرف", restaurant: "🍽 المطعم", reception: "🛎 الاستقبال", technical: "🛠 صيانة", spa: "💆 سبا" }
 };
 
 function t(key) { return (i18n[lang] && i18n[lang][key]) || key; }
@@ -3497,13 +3564,15 @@ function renderList(category) {
           ? (item.custom
               ? `<button class="add-btn" onclick="openScreen('report')">${t('report')}</button>`
               : `<button class="add-btn" onclick="sendInstantOrder('${category}', '${item.id}')">${t('report')}</button>`)
-          : (qty === 0
-              ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
-              : `<div class="qty-control">
-                  <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
-                  <span class="qty-num">${qty}</span>
-                  <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
-                 </div>`)
+          : (category === 'spa'
+              ? `<button class="add-btn" onclick="sendInstantOrder('${category}', '${item.id}')">${t('book')}</button>`
+              : (qty === 0
+                  ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
+                  : `<div class="qty-control">
+                      <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+                      <span class="qty-num">${qty}</span>
+                      <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                     </div>`))
         }
       </div>
     `;
@@ -3522,8 +3591,11 @@ function sendInstantOrder(category, itemId) {
   const phone = window.guestData?.phone || '';
   const itemName = item.name[lang] || item.name.en;
   const deptName = departmentNames[lang][category];
-  const header = category === 'technical' ? '🛠 TEXNİKİ BİLDİRİŞ' : '🛎 SİFARİW';
-  const text = `${header} — <b>Otaq ${escapeHtml(String(room))}</b>\n${deptName}\n${item.icon} <b>${escapeHtml(itemName)}</b>\n\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}`;
+  const header = category === 'technical' ? '🛠 TEXNİKİ BİLDİRİŞ'
+              : category === 'spa'       ? '💆 SPA REZERVİ'
+              :                            '🛎 SİFARİW';
+  const priceLine = (category === 'spa' && item.price > 0) ? `\n💰 <b>${item.price} ₼</b>` : '';
+  const text = `${header} — <b>Otaq ${escapeHtml(String(room))}</b>\n${deptName}\n${item.icon} <b>${escapeHtml(itemName)}</b>${priceLine}\n\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}`;
   fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -3540,7 +3612,7 @@ function sendInstantOrder(category, itemId) {
     })
   }).catch(() => {});
   sendToAdmin(text);
-  showToast(t('issueReported'));
+  showToast(category === 'spa' ? t('spaBooked') : t('issueReported'));
 }
 
 // Keep old function name as alias for backwards compatibility
