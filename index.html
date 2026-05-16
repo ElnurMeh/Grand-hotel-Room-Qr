@@ -3447,12 +3447,12 @@ function renderList(category) {
         <div class="item-icon">${item.icon}</div>
         <div class="item-info">
           <div class="item-name">${item.name[lang] || item.name.en}</div>
-          ${category === 'technical' ? '' : `<div class="item-price ${item.price === 0 ? 'free' : ''}">${item.price === 0 ? t('free') : item.price + ' ₼'}</div>`}
+          ${(category === 'technical' || (category === 'housekeeping' && item.price === 0)) ? '' : `<div class="item-price ${item.price === 0 ? 'free' : ''}">${item.price === 0 ? t('free') : item.price + ' ₼'}</div>`}
         </div>
-        ${category === 'technical'
+        ${(category === 'technical' || (category === 'housekeeping' && item.price === 0))
           ? (item.custom
               ? `<button class="add-btn" onclick="openScreen('report')">${t('report')}</button>`
-              : `<button class="add-btn" onclick="sendTechIssue('${item.id}')">${t('report')}</button>`)
+              : `<button class="add-btn" onclick="sendInstantOrder('${category}', '${item.id}')">${t('report')}</button>`)
           : (qty === 0
               ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
               : `<div class="qty-control">
@@ -3470,14 +3470,16 @@ function renderAllLists() {
   Object.keys(menu).forEach(renderList);
 }
 
-function sendTechIssue(itemId) {
-  const item = menu.technical.find(i => i.id === itemId);
+function sendInstantOrder(category, itemId) {
+  const item = menu[category].find(i => i.id === itemId);
   if (!item) return;
   const room = window.guestData?.room || '—';
   const name = window.guestData?.name || '';
   const phone = window.guestData?.phone || '';
   const itemName = item.name[lang] || item.name.en;
-  const text = `🛠 <b>TEXNİKİ BİLDİRİŞ — Otaq ${escapeHtml(String(room))}</b>\n${item.icon} <b>${escapeHtml(itemName)}</b>\n\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}`;
+  const deptName = departmentNames[lang][category];
+  const header = category === 'technical' ? '🛠 TEXNİKİ BİLDİRİŞ' : '🛎 SİFARİW';
+  const text = `${header} — <b>Otaq ${escapeHtml(String(room))}</b>\n${deptName}\n${item.icon} <b>${escapeHtml(itemName)}</b>\n\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}`;
   fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -3487,8 +3489,8 @@ function sendTechIssue(itemId) {
       parse_mode: 'HTML',
       reply_markup: {
         inline_keyboard: [[
-          { text: '✅ Qəbul', callback_data: `tech_accept_${item.id}` },
-          { text: '✓ Tamam', callback_data: `tech_done_${item.id}` }
+          { text: '✅ Qəbul', callback_data: `inst_accept_${item.id}` },
+          { text: '✓ Tamam', callback_data: `inst_done_${item.id}` }
         ]]
       }
     })
@@ -3496,6 +3498,9 @@ function sendTechIssue(itemId) {
   sendToAdmin(text);
   showToast(t('issueReported'));
 }
+
+// Keep old function name as alias for backwards compatibility
+function sendTechIssue(itemId) { sendInstantOrder('technical', itemId); }
 
 function addToCart(itemId, category) {
   const item = menu[category].find(i => i.id === itemId);
