@@ -292,6 +292,135 @@
     padding: 8px;
   }
 
+  /* SPA BOOKING MODAL — bottom sheet style */
+  .spa-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(6,17,41,0.55);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 700;
+  }
+  .spa-modal-overlay.show { display: flex; animation: fadeIn 0.2s; }
+  .spa-modal {
+    background: var(--card);
+    border-radius: 24px 24px 0 0;
+    padding: 22px 22px 26px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  .spa-modal-close {
+    position: absolute;
+    top: 12px; right: 14px;
+    background: var(--bg);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: var(--ink);
+    cursor: pointer;
+    line-height: 1;
+  }
+  .spa-modal-icon {
+    font-size: 42px;
+    text-align: center;
+    margin: 4px 0 8px;
+  }
+  .spa-modal-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 6px;
+    padding: 0 24px;
+  }
+  .spa-modal-desc {
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.55;
+    padding: 0 4px;
+    margin-bottom: 14px;
+  }
+  .spa-modal-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .spa-modal-label {
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .spa-time-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--card);
+    margin-bottom: 18px;
+    font-family: inherit;
+    -webkit-appearance: none;
+  }
+  .spa-time-input:focus {
+    outline: none;
+    border-color: var(--ink);
+  }
+  .spa-loc-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .spa-loc-btn {
+    padding: 12px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .spa-loc-btn.active {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: white;
+  }
+  .spa-confirm-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(6,17,41,0.18);
+  }
+  .spa-confirm-btn:active { transform: scale(0.98); }
+  html[dir="rtl"] .spa-modal-close { right: auto; left: 14px; }
+
   /* WIFI CARD */
   .wifi-card {
     background: var(--card);
@@ -741,6 +870,14 @@
   .item-info { flex: 1; min-width: 0; }
   html[dir="rtl"] .item-info { text-align: right; }
   .item-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .item-desc {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    line-height: 1.4;
+    padding-right: 8px;
+  }
+  html[dir="rtl"] .item-desc { padding-right: 0; padding-left: 8px; }
   .item-meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
   .item-price {
     font-size: 13px;
@@ -2668,6 +2805,30 @@
   </div>
 </div>
 
+<!-- SPA BOOKING MODAL -->
+<div class="spa-modal-overlay" id="spaModal" onclick="if(event.target.id==='spaModal')closeSpaModal()">
+  <div class="spa-modal">
+    <button class="spa-modal-close" onclick="closeSpaModal()">×</button>
+    <div class="spa-modal-icon" id="spaModalIcon">💆</div>
+    <div class="spa-modal-name" id="spaModalName">—</div>
+    <div class="spa-modal-desc" id="spaModalDesc" style="display:none;"></div>
+    <div class="spa-modal-price" id="spaModalPrice">—</div>
+
+    <div class="spa-modal-label" data-i18n="spaTimeLabel">Saat seç</div>
+    <input type="time" id="spaTimeInput" class="spa-time-input" value="14:00" min="09:00" max="22:00">
+
+    <div id="spaLocRow" style="display:none;">
+      <div class="spa-modal-label" data-i18n="spaLocLabel">Yer</div>
+      <div class="spa-loc-row">
+        <button class="spa-loc-btn active" data-loc="room" onclick="selectSpaLoc('room')" data-i18n="spaLocRoom">🏨 Otaqda</button>
+        <button class="spa-loc-btn" data-loc="spa" onclick="selectSpaLoc('spa')" data-i18n="spaLocSpa">💆 SPA-da</button>
+      </div>
+    </div>
+
+    <button class="spa-confirm-btn" onclick="confirmSpaBooking()" data-i18n="spaConfirmBtn">Rezerv et</button>
+  </div>
+</div>
+
 <script>
 let lang = 'en';
 let cart = [];
@@ -2696,10 +2857,16 @@ const i18n = {
     technicalDesc: "TV, klimat, işıq, su",
     spaTitle: "SPA & Wellness",
     spaDesc: "Massaj, hamam, sauna, manikür",
-    spaIntroTitle: "Qonağımıza xoş gəlmisiniz",
+    spaIntroTitle: "SPA-mıza xoş gəlmisiniz",
     spaIntroSub: "Rezerv üçün vaxt seçimi resepsion tərəfindən təsdiqlənəcək. 09:00–22:00",
     book: "Rezerv",
     spaBooked: "✅ Rezerv göndərildi, vaxtı təsdiqləyəcəyik",
+    spaTimeLabel: "Saat seç",
+    spaLocLabel: "Yer",
+    spaLocRoom: "🏨 Otaqda",
+    spaLocSpa: "💆 SPA-da",
+    spaConfirmBtn: "Rezerv et",
+    pickTime: "Saat seçin",
     report: "Bildir",
     issueReported: "✅ Bildirildi, gəlirik",
     helpTitle: "Resepsion ilə Söhbət",
@@ -2826,6 +2993,12 @@ const i18n = {
     spaIntroSub: "Time slots will be confirmed by reception. Open 09:00–22:00",
     book: "Book",
     spaBooked: "✅ Booking sent, time will be confirmed",
+    spaTimeLabel: "Pick a time",
+    spaLocLabel: "Where",
+    spaLocRoom: "🏨 In room",
+    spaLocSpa: "💆 At SPA",
+    spaConfirmBtn: "Confirm booking",
+    pickTime: "Please pick a time",
     report: "Report",
     issueReported: "✅ Reported, on our way",
     helpTitle: "Chat with Reception",
@@ -2952,6 +3125,12 @@ const i18n = {
     spaIntroSub: "Время будет подтверждено ресепшен. Работаем 09:00–22:00",
     book: "Записаться",
     spaBooked: "✅ Заявка отправлена, подтвердим время",
+    spaTimeLabel: "Выберите время",
+    spaLocLabel: "Где",
+    spaLocRoom: "🏨 В номере",
+    spaLocSpa: "💆 В СПА",
+    spaConfirmBtn: "Подтвердить",
+    pickTime: "Пожалуйста, выберите время",
     report: "Сообщить",
     issueReported: "✅ Сообщено, идём",
     helpTitle: "Чат с ресепшен",
@@ -3078,6 +3257,12 @@ const i18n = {
     spaIntroSub: "Saat resepsiyon tarafından onaylanacak. 09:00–22:00",
     book: "Rezerve et",
     spaBooked: "✅ Rezervasyon gönderildi, saati onaylayacağız",
+    spaTimeLabel: "Saati seç",
+    spaLocLabel: "Yer",
+    spaLocRoom: "🏨 Odada",
+    spaLocSpa: "💆 SPA'da",
+    spaConfirmBtn: "Rezerve et",
+    pickTime: "Lütfen saat seçin",
     report: "Bildir",
     issueReported: "✅ Bildirildi, geliyoruz",
     helpTitle: "Resepsiyonla Sohbet",
@@ -3204,6 +3389,12 @@ const i18n = {
     spaIntroSub: "سيتم تأكيد الوقت من قبل الاستقبال. مفتوح 09:00–22:00",
     book: "حجز",
     spaBooked: "✅ تم إرسال الحجز، سنؤكد الوقت",
+    spaTimeLabel: "اختر الوقت",
+    spaLocLabel: "المكان",
+    spaLocRoom: "🏨 في الغرفة",
+    spaLocSpa: "💆 في السبا",
+    spaConfirmBtn: "تأكيد الحجز",
+    pickTime: "الرجاء اختيار الوقت",
     report: "أبلغ",
     issueReported: "✅ تم الإبلاغ، نحن قادمون",
     helpTitle: "دردشة مع الاستقبال",
@@ -3373,22 +3564,36 @@ const menu = {
       name: { az: "Tur: Abşeron yarımadası", en: "Tour: Absheron peninsula", ru: "Тур: Полуостров Абшерон", tr: "Tur: Abşeron yarımadası", ar: "جولة: شبه جزيرة أبشيرون" } },
   ],
   spa: [
-    { id: 'sp1', icon: '💆', price: 50, dept: 'spa',
-      name: { az: "Klassik bədən massajı (60 dəq)", en: "Classic body massage (60 min)", ru: "Классический массаж тела (60 мин)", tr: "Klasik vücut masajı (60 dk)", ar: "تدليك جسم كلاسيكي (60 دقيقة)" } },
-    { id: 'sp2', icon: '🪨', price: 70, dept: 'spa',
-      name: { az: "İsti daş massajı (60 dəq)", en: "Hot stone massage (60 min)", ru: "Массаж горячими камнями (60 мин)", tr: "Sıcak taş masajı (60 dk)", ar: "تدليك بالحجارة الساخنة (60 دقيقة)" } },
-    { id: 'sp3', icon: '🛀', price: 35, dept: 'spa',
+    { id: 'sp1', icon: '🌸', price: 80, dept: 'spa', inRoom: true,
+      name: { az: "Relaks massajı (60 dəq)", en: "Relax massage (1 hour)", ru: "Расслабляющий массаж (60 мин)", tr: "Relaks masajı (60 dk)", ar: "تدليك استرخاء (60 دقيقة)" },
+      desc: { az: "Yumşaq, stress-azaldıcı və ruhi rahatlıq tipli massaj", en: "SOFT type stress-releasing & spiritually relaxing massage", ru: "Мягкий стресс-снимающий и расслабляющий массаж", tr: "Yumuşak stres giderici, ruhsal rahatlatıcı masaj", ar: "تدليك ناعم لتخفيف التوتر والاسترخاء الروحي" } },
+    { id: 'sp2', icon: '💆', price: 100, dept: 'spa', inRoom: true,
+      name: { az: "Medikal massaj (60 dəq)", en: "Medical massage (1 hour)", ru: "Медицинский массаж (60 мин)", tr: "Medikal masaj (60 dk)", ar: "تدليك طبي (60 دقيقة)" },
+      desc: { az: "Orta səviyyəli təzyiqli, əzələ ağrılarını və yorğunluğu aradan qaldırır", en: "MEDIUM-pressure massage relieving tired & tense muscles", ru: "Среднее давление, снимает боли в усталых мышцах", tr: "Orta basınçlı, kas yorgunluğunu giderir", ar: "ضغط متوسط لتخفيف ألم العضلات والإجهاد" } },
+    { id: 'sp3', icon: '💪', price: 140, dept: 'spa', inRoom: true,
+      name: { az: "Deep Tissue massajı (60 dəq)", en: "Deep Tissue massage (1 hour)", ru: "Deep Tissue массаж (60 мин)", tr: "Deep Tissue masajı (60 dk)", ar: "تدليك الأنسجة العميقة (60 دقيقة)" },
+      desc: { az: "Sərt tipli massaj, dərin əzələ qruplarına işləyir", en: "Hard-type massage targeting deep muscle layers", ru: "Жёсткий массаж, проработка глубоких мышц", tr: "Sert masaj, derin kas tabakalarına etki eder", ar: "تدليك قوي يستهدف العضلات العميقة" } },
+    { id: 'sp4', icon: '🦶', price: 40, dept: 'spa', inRoom: true,
+      name: { az: "Ayaq massajı (20 dəq)", en: "Foot massage (20 min)", ru: "Массаж стоп (20 мин)", tr: "Ayak masajı (20 dk)", ar: "تدليك القدمين (20 دقيقة)" } },
+    { id: 'sp5', icon: '🌿', price: 120, dept: 'spa', inRoom: true,
+      name: { az: "Mixed Therapy (60 dəq)", en: "Mixed Therapy (1 hour)", ru: "Mixed Therapy (60 мин)", tr: "Mixed Therapy (60 dk)", ar: "علاج مختلط (60 دقيقة)" },
+      desc: { az: "Reflexology, Bali, Stretching, Lomi-Lomi və Aromaterapiya elementləri", en: "Reflexology, Bali, Stretching, Lomi-Lomi & Aromatherapy mix", ru: "Рефлексология, Бали, стретчинг, Ломи-Ломи и ароматерапия", tr: "Refleksoloji, Bali, Stretching, Lomi-Lomi ve aromaterapi karışımı", ar: "مزيج من العلاج بالانعكاس، بالي، التمدد، لومي لومي والعطور" } },
+    { id: 'sp6', icon: '🌺', price: 170, dept: 'spa', inRoom: true,
+      name: { az: "Mixed Therapy (90 dəq)", en: "Mixed Therapy (90 min)", ru: "Mixed Therapy (90 мин)", tr: "Mixed Therapy (90 dk)", ar: "علاج مختلط (90 دقيقة)" },
+      desc: { az: "60 dəqiqəlik versiyanın uzadılmış variantı", en: "Extended version of the 60-min Mixed Therapy", ru: "Расширенная версия 60-минутного варианта", tr: "60 dk versiyonun uzatılmış hali", ar: "نسخة موسعة من جلسة 60 دقيقة" } },
+    { id: 'sp7', icon: '👑', price: 160, dept: 'spa', inRoom: true,
+      name: { az: "Grand VIP Massajı (70 dəq)", en: "Grand VIP Massage (70 min)", ru: "Grand VIP массаж (70 мин)", tr: "Grand VIP Masajı (70 dk)", ar: "تدليك جراند VIP (70 دقيقة)" },
+      desc: { az: "Xüsusi ayaq və baş massajı, təzyiq sizə görə tənzimlənir, isti daş massajı daxildir", en: "Special foot & head massage, pressure tailored to you, hot stone included", ru: "Особый массаж стоп и головы, давление по желанию, горячие камни включены", tr: "Özel ayak ve baş masajı, baskı isteğe göre, sıcak taş dahil", ar: "تدليك خاص للقدمين والرأس، الضغط حسب رغبتك، يشمل الحجارة الساخنة" } },
+    { id: 'sp8', icon: '🛀', price: 35, dept: 'spa', inRoom: false,
       name: { az: "Türk hamamı", en: "Turkish hammam", ru: "Турецкий хамам", tr: "Türk hamamı", ar: "حمّام تركي" } },
-    { id: 'sp4', icon: '♨️', price: 25, dept: 'spa',
+    { id: 'sp9', icon: '♨️', price: 25, dept: 'spa', inRoom: false,
       name: { az: "Sauna (60 dəq)", en: "Sauna (60 min)", ru: "Сауна (60 мин)", tr: "Sauna (60 dk)", ar: "ساونا (60 دقيقة)" } },
-    { id: 'sp5', icon: '🏊', price: 0, dept: 'spa',
+    { id: 'sp10', icon: '🏊', price: 0, dept: 'spa', inRoom: false,
       name: { az: "Hovuz (qonaqlar üçün pulsuz)", en: "Pool (free for guests)", ru: "Бассейн (для гостей бесплатно)", tr: "Havuz (misafirler için ücretsiz)", ar: "حمام السباحة (مجاناً للنزلاء)" } },
-    { id: 'sp6', icon: '💅', price: 25, dept: 'spa',
+    { id: 'sp11', icon: '💅', price: 25, dept: 'spa', inRoom: true,
       name: { az: "Manikür", en: "Manicure", ru: "Маникюр", tr: "Manikür", ar: "مانيكير" } },
-    { id: 'sp7', icon: '🦶', price: 30, dept: 'spa',
-      name: { az: "Pedikür", en: "Pedicure", ru: "Педикюр", tr: "Pedikür", ar: "باديكير" } },
-    { id: 'sp8', icon: '💇', price: 40, dept: 'spa',
-      name: { az: "Saç düzəltmə (kişi/qadın)", en: "Hair styling (men/women)", ru: "Стрижка/укладка", tr: "Saç bakımı (kadın/erkek)", ar: "تصفيف الشعر (رجال/نساء)" } }
+    { id: 'sp12', icon: '👣', price: 30, dept: 'spa', inRoom: true,
+      name: { az: "Pedikür", en: "Pedicure", ru: "Педикюр", tr: "Pedikür", ar: "باديكير" } }
   ]
 };
 
@@ -3553,11 +3758,15 @@ function renderList(category) {
   container.innerHTML = menu[category].map(item => {
     const inCart = cart.find(c => c.id === item.id);
     const qty = inCart ? inCart.qty : 0;
+    const descHtml = (category === 'spa' && item.desc)
+      ? `<div class="item-desc">${escapeHtml(item.desc[lang] || item.desc.en)}</div>`
+      : '';
     return `
       <div class="item">
         <div class="item-icon">${item.icon}</div>
         <div class="item-info">
           <div class="item-name">${item.name[lang] || item.name.en}</div>
+          ${descHtml}
           ${(category === 'technical' || (category === 'housekeeping' && item.price === 0)) ? '' : `<div class="item-price ${item.price === 0 ? 'free' : ''}">${item.price === 0 ? t('free') : item.price + ' ₼'}</div>`}
         </div>
         ${(category === 'technical' || (category === 'housekeeping' && item.price === 0))
@@ -3565,7 +3774,7 @@ function renderList(category) {
               ? `<button class="add-btn" onclick="openScreen('report')">${t('report')}</button>`
               : `<button class="add-btn" onclick="sendInstantOrder('${category}', '${item.id}')">${t('report')}</button>`)
           : (category === 'spa'
-              ? `<button class="add-btn" onclick="sendInstantOrder('${category}', '${item.id}')">${t('book')}</button>`
+              ? `<button class="add-btn" onclick="openSpaBooking('${item.id}')">${t('book')}</button>`
               : (qty === 0
                   ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
                   : `<div class="qty-control">
@@ -3617,6 +3826,93 @@ function sendInstantOrder(category, itemId) {
 
 // Keep old function name as alias for backwards compatibility
 function sendTechIssue(itemId) { sendInstantOrder('technical', itemId); }
+
+// ─── SPA BOOKING MODAL ─────────────────────────────────────────
+let _spaSelectedId = null;
+let _spaSelectedLoc = 'room';
+
+function openSpaBooking(itemId) {
+  const item = menu.spa.find(i => i.id === itemId);
+  if (!item) return;
+  _spaSelectedId = itemId;
+  _spaSelectedLoc = item.inRoom ? 'room' : 'spa';
+
+  document.getElementById('spaModalIcon').textContent = item.icon;
+  document.getElementById('spaModalName').textContent = item.name[lang] || item.name.en;
+  const descEl = document.getElementById('spaModalDesc');
+  if (item.desc) {
+    descEl.textContent = item.desc[lang] || item.desc.en;
+    descEl.style.display = 'block';
+  } else {
+    descEl.style.display = 'none';
+  }
+  document.getElementById('spaModalPrice').textContent = item.price === 0 ? t('free') : item.price + ' ₼';
+
+  // Default to a sensible upcoming time
+  const now = new Date();
+  let h = now.getHours() + 1;
+  if (h < 10) h = 14;
+  if (h > 21) h = 14;
+  document.getElementById('spaTimeInput').value = String(h).padStart(2, '0') + ':00';
+
+  // Location section: only show if in-room is allowed
+  const locRow = document.getElementById('spaLocRow');
+  if (item.inRoom) {
+    locRow.style.display = 'block';
+    locRow.querySelectorAll('.spa-loc-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.loc === 'room');
+    });
+  } else {
+    locRow.style.display = 'none';
+  }
+
+  document.getElementById('spaModal').classList.add('show');
+}
+
+function selectSpaLoc(loc) {
+  _spaSelectedLoc = loc;
+  document.querySelectorAll('#spaLocRow .spa-loc-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.loc === loc);
+  });
+}
+
+function closeSpaModal() {
+  document.getElementById('spaModal').classList.remove('show');
+}
+
+function confirmSpaBooking() {
+  const item = menu.spa.find(i => i.id === _spaSelectedId);
+  if (!item) return;
+  const time = document.getElementById('spaTimeInput').value;
+  if (!time) { showToast(t('pickTime')); return; }
+  const room = window.guestData?.room || '—';
+  const name = window.guestData?.name || '';
+  const phone = window.guestData?.phone || '';
+  const itemName = item.name[lang] || item.name.en;
+  const locLabel = (item.inRoom && _spaSelectedLoc === 'room')
+    ? '🏨 ' + t('spaLocRoom').replace(/^🏨\s*/, '')
+    : '💆 ' + t('spaLocSpa').replace(/^💆\s*/, '');
+  const priceLine = item.price > 0 ? `\n💰 <b>${item.price} ₼</b>` : '';
+  const text = `💆 SPA REZERVİ — <b>Otaq ${escapeHtml(String(room))}</b>\n${item.icon} <b>${escapeHtml(itemName)}</b>${priceLine}\n⏰ <b>${escapeHtml(time)}</b>\n📍 ${escapeHtml(locLabel)}\n\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}`;
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TG_CHAT_ID,
+      text,
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard: [[
+          { text: '✅ Qəbul', callback_data: `inst_accept_${item.id}` },
+          { text: '✓ Tamam', callback_data: `inst_done_${item.id}` }
+        ]]
+      }
+    })
+  }).catch(() => {});
+  sendToAdmin(text);
+  showToast(t('spaBooked'));
+  closeSpaModal();
+}
 
 function addToCart(itemId, category) {
   const item = menu[category].find(i => i.id === itemId);
