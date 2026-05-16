@@ -4302,6 +4302,7 @@ async function submitReport() {
 const REVIEW_CATS = [
   { id: 'room', icon: '🛏', name: { az: "Otaq", en: "Room", ru: "Номер", tr: "Oda", ar: "الغرفة" } },
   { id: 'food', icon: '🍽', name: { az: "Yemək", en: "Food", ru: "Еда", tr: "Yemek", ar: "الطعام" } },
+  { id: 'breakfast', icon: '🌅', name: { az: "Səhər yeməyi", en: "Breakfast", ru: "Завтрак", tr: "Kahvaltı", ar: "الإفطار" } },
   { id: 'service', icon: '🛎', name: { az: "Xidmət", en: "Service", ru: "Сервис", tr: "Hizmet", ar: "الخدمة" } },
   { id: 'clean', icon: '🧹', name: { az: "Təmizlik", en: "Cleanliness", ru: "Чистота", tr: "Temizlik", ar: "النظافة" } }
 ];
@@ -4338,6 +4339,17 @@ function setCatStar(catId, v) {
   document.querySelectorAll(`[data-cat="${catId}"] .star`).forEach(s => {
     s.classList.toggle('on', parseInt(s.dataset.v) <= v);
   });
+  // Auto-update main rating from category averages
+  const ratings = Object.values(reviewCatRatings).filter(r => r > 0);
+  if (ratings.length > 0) {
+    const avg = Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length);
+    reviewMain = avg;
+    document.querySelectorAll('#mainStars .star').forEach(s => {
+      s.classList.toggle('on', parseInt(s.dataset.v) <= avg);
+    });
+    const labels = STAR_LABELS[lang] || STAR_LABELS.en;
+    document.getElementById('mainStarsLabel').textContent = labels[avg];
+  }
 }
 
 function renderReviewCategories() {
@@ -4356,28 +4368,83 @@ function renderReviewCategories() {
   }).join('');
 }
 
+// Saved aggregate (per browser — represents this guest's reviews)
+const REVIEWS_KEY = 'grandhotel_reviews_log';
+
+function saveReviewToLog(ratings, overall) {
+  try {
+    const log = JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]');
+    log.push({ ratings, overall, ts: Date.now() });
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(log));
+  } catch (e) {}
+}
+
+function getAggregateStats() {
+  try {
+    const log = JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]');
+    if (log.length === 0) return null;
+    const cats = {};
+    let overallSum = 0;
+    log.forEach(r => {
+      overallSum += r.overall;
+      Object.entries(r.ratings).forEach(([cat, v]) => {
+        if (!cats[cat]) cats[cat] = { sum: 0, count: 0 };
+        cats[cat].sum += v;
+        cats[cat].count += 1;
+      });
+    });
+    return {
+      count: log.length,
+      avgOverall: (overallSum / log.length).toFixed(2),
+      catAvgs: Object.fromEntries(Object.entries(cats).map(([k, v]) => [k, (v.sum / v.count).toFixed(2)]))
+    };
+  } catch (e) { return null; }
+}
+
 async function submitReview() {
-  if (reviewMain === 0) {
+  const ratings = Object.values(reviewCatRatings).filter(r => r > 0);
+  if (ratings.length === 0) {
     showToast(t('reviewNeedRating'));
     return;
   }
+  // Calculate overall from category averages
+  const overall = Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length);
+  reviewMain = overall;
+
   const comment = document.getElementById('reviewComment').value.trim();
   const room = window.guestData?.room || '—';
   const name = window.guestData?.name || '';
   const phone = window.guestData?.phone || '';
-  const stars = '⭐'.repeat(reviewMain) + '☆'.repeat(5 - reviewMain);
+  const stars = '⭐'.repeat(overall) + '☆'.repeat(5 - overall);
   let catText = '';
   REVIEW_CATS.forEach(c => {
     const r = reviewCatRatings[c.id];
-    if (r) catText += `\n${c.icon} ${c.name[lang] || c.name.en}: ${'⭐'.repeat(r)}`;
+    if (r) catText += `\n${c.icon} ${c.name[lang] || c.name.en}: ${'⭐'.repeat(r)} (${r}/5)`;
   });
-  const text = `⭐ <b>YENİ REY — Otaq ${escapeHtml(String(room))}</b>\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}\n\n<b>Ümumi:</b> ${stars} (${reviewMain}/5)${catText ? '\n\n<b>Kateqoriyalar:</b>' + catText : ''}${comment ? '\n\n💬 <i>' + escapeHtml(comment) + '</i>' : ''}`;
+  const text = `⭐ <b>YENİ REY — Otaq ${escapeHtml(String(room))}</b>\n👤 ${escapeHtml(name)}${phone ? ' · 📱 ' + escapeHtml(phone) : ''}\n\n<b>Ümumi:</b> ${stars} <b>${overall}/5</b>${catText ? '\n\n<b>Kateqoriyalar:</b>' + catText : ''}${comment ? '\n\n💬 <i>' + escapeHtml(comment) + '</i>' : ''}`;
+
+  // Save to local log
+  saveReviewToLog({ ...reviewCatRatings }, overall);
+
+  // Aggregate stats summary for admin
+  const stats = getAggregateStats();
+  let statsText = '';
+  if (stats) {
+    statsText = `\n\n📊 <b>STATİSTİKA (bu cihazdan)</b>\n` +
+                `Cəmi rey: <b>${stats.count}</b>\n` +
+                `Ümumi orta: <b>${stats.avgOverall}/5</b>`;
+    Object.entries(stats.catAvgs).forEach(([catId, avg]) => {
+      const cat = REVIEW_CATS.find(c => c.id === catId);
+      if (cat) statsText += `\n${cat.icon} ${cat.name[lang] || cat.name.en}: <b>${avg}/5</b>`;
+    });
+  }
+
   fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'HTML' })
   }).catch(() => {});
-  sendToAdmin(text);
+  sendToAdmin(text + statsText);
   showToast(t('reviewThanks'));
   setTimeout(() => { closeAllScreens(); resetReview(); }, 1500);
 }
