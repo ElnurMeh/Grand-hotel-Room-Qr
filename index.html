@@ -347,17 +347,25 @@
   .info-row {
     padding: 0 16px;
     margin-bottom: 24px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    overflow: hidden;
     position: relative;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
   }
-  .info-row::-webkit-scrollbar { display: none; }
   .info-ticker {
     display: flex;
     gap: 10px;
     width: max-content;
+    animation: tickerScroll 28s linear infinite;
+    will-change: transform;
+  }
+  .info-ticker.paused { animation-play-state: paused; }
+  @keyframes tickerScroll {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .info-ticker { animation: none; }
   }
   .info-pill {
     background: var(--card);
@@ -4788,35 +4796,32 @@ applyI18n();
 renderAllLists();
 checkWelcome();
 
-// Auto-scroll ticker (pause on touch, resume after 3s)
-setTimeout(() => {
-  const ticker = document.querySelector('.info-row');
-  if (!ticker) return;
-  let scrolling = true;
+// Ticker: CSS animation runs auto; pause on touch, resume 3s after release
+(function setupTicker() {
+  const ticker = document.querySelector('.info-ticker');
+  const row = document.querySelector('.info-row');
+  if (!ticker || !row) return;
   let resumeT = null;
-  function autoStep() {
-    if (scrolling && !document.hidden) {
-      const halfWidth = ticker.scrollWidth / 2;
-      if (halfWidth > 0) {
-        ticker.scrollLeft = (ticker.scrollLeft + 1) % halfWidth;
-      }
-    }
-  }
-  setInterval(autoStep, 40);
   function pause() {
-    scrolling = false;
+    ticker.classList.add('paused');
     if (resumeT) clearTimeout(resumeT);
   }
   function resumeAfter() {
     if (resumeT) clearTimeout(resumeT);
-    resumeT = setTimeout(() => { scrolling = true; }, 3000);
+    resumeT = setTimeout(() => ticker.classList.remove('paused'), 3000);
   }
-  ticker.addEventListener('touchstart', pause, { passive: true });
-  ticker.addEventListener('touchend', resumeAfter, { passive: true });
-  ticker.addEventListener('mousedown', pause);
-  ticker.addEventListener('mouseup', resumeAfter);
-  ticker.addEventListener('mouseleave', resumeAfter);
-}, 500);
+  row.addEventListener('touchstart', pause, { passive: true });
+  row.addEventListener('touchend',   resumeAfter, { passive: true });
+  row.addEventListener('touchcancel', resumeAfter, { passive: true });
+  row.addEventListener('mousedown',  pause);
+  row.addEventListener('mouseup',    resumeAfter);
+  row.addEventListener('mouseleave', resumeAfter);
+  // Auto-pause when tab hidden so animation doesn't desync
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) ticker.classList.add('paused');
+    else ticker.classList.remove('paused');
+  });
+})();
 renderActiveOrderCard();
 updateNotifBadge();
 (async () => {
