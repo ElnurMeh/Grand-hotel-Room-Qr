@@ -3395,9 +3395,7 @@ function renderList(category) {
         <div class="item-icon">${item.icon}</div>
         <div class="item-info">
           <div class="item-name">${item.name[lang] || item.name.en}</div>
-          <div class="item-price ${item.price === 0 ? 'free' : ''}">
-            ${item.price === 0 ? t('free') : item.price + ' ₼'}
-          </div>
+          ${category === 'technical' ? '' : `<div class="item-price ${item.price === 0 ? 'free' : ''}">${item.price === 0 ? t('free') : item.price + ' ₼'}</div>`}
         </div>
         ${qty === 0
           ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
