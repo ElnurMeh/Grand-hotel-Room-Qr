@@ -4789,20 +4789,20 @@ renderAllLists();
 checkWelcome();
 
 // Auto-scroll ticker (pause on touch, resume after 3s)
-(function() {
+setTimeout(() => {
   const ticker = document.querySelector('.info-row');
   if (!ticker) return;
   let scrolling = true;
   let resumeT = null;
-  const speed = 0.5;
   function autoStep() {
     if (scrolling && !document.hidden) {
       const halfWidth = ticker.scrollWidth / 2;
-      ticker.scrollLeft += speed;
-      if (ticker.scrollLeft >= halfWidth) ticker.scrollLeft -= halfWidth;
+      if (halfWidth > 0) {
+        ticker.scrollLeft = (ticker.scrollLeft + 1) % halfWidth;
+      }
     }
-    requestAnimationFrame(autoStep);
   }
+  setInterval(autoStep, 40);
   function pause() {
     scrolling = false;
     if (resumeT) clearTimeout(resumeT);
@@ -4816,8 +4816,7 @@ checkWelcome();
   ticker.addEventListener('mousedown', pause);
   ticker.addEventListener('mouseup', resumeAfter);
   ticker.addEventListener('mouseleave', resumeAfter);
-  requestAnimationFrame(autoStep);
-})();
+}, 500);
 renderActiveOrderCard();
 updateNotifBadge();
 (async () => {
