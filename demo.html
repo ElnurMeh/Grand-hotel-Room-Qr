@@ -30,11 +30,16 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Display", "Segoe UI", "Tahoma", sans-serif;
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><text x='120' y='130' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='700' fill='rgb(6,17,41)' opacity='0.05' letter-spacing='4' transform='rotate(-25 120 120)'>EK · SPLORE</text></svg>");
+    background-repeat: repeat;
     color: var(--ink);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     line-height: 1.5;
+  }
+  .app, .screen {
+    background-color: transparent;
   }
   html[dir="rtl"] body { font-family: -apple-system, "SF Arabic", "Geeza Pro", Tahoma, sans-serif; }
 
