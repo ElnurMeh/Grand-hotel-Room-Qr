@@ -2314,7 +2314,17 @@
     <button class="back-btn" onclick="closeScreen()">←</button>
     <div class="screen-title" data-i18n="technicalTitle">Texniki Xidmət</div>
   </div>
-  <div class="screen-content"><div class="item-list" id="technicalList"></div></div>
+  <div class="screen-content">
+    <div class="report-card" onclick="openScreen('report')" style="margin: 0 0 16px;">
+      <div class="report-icon">📸</div>
+      <div class="report-info">
+        <div class="report-title" data-i18n="reportTitle">Problemi bildir</div>
+        <div class="report-sub" data-i18n="reportSub">Şəkil çək, göndər — komandamız gəlir</div>
+      </div>
+      <div class="report-arrow">→</div>
+    </div>
+    <div class="item-list" id="technicalList"></div>
+  </div>
 </div>
 
 <div class="screen" id="screen-report">
@@ -3190,22 +3200,16 @@ const menu = {
       name: { az: "Paxlava", en: "Baklava", ru: "Пахлава", tr: "Baklava", ar: "بقلاوة" } }
   ],
   technical: [
-    { id: 'tc1', icon: '📺', price: 0, dept: 'technical',
-      name: { az: "TV problemi", en: "TV issue", ru: "Проблема с ТВ", tr: "TV sorunu", ar: "مشكلة في التلفاز" } },
-    { id: 'tc2', icon: '❄️', price: 0, dept: 'technical',
-      name: { az: "Klimat işləmir", en: "AC not working", ru: "Не работает кондиционер", tr: "Klima çalışmıyor", ar: "المكيف لا يعمل" } },
-    { id: 'tc3', icon: '💡', price: 0, dept: 'technical',
-      name: { az: "İşıq yanmır", en: "Light not working", ru: "Не работает свет", tr: "Işık yanmıyor", ar: "الإضاءة لا تعمل" } },
-    { id: 'tc4', icon: '💧', price: 0, dept: 'technical',
-      name: { az: "Su sızması", en: "Water leak", ru: "Протечка воды", tr: "Su sızıntısı", ar: "تسرب مياه" } },
-    { id: 'tc5', icon: '🚪', price: 0, dept: 'technical',
-      name: { az: "Qapı / kart problemi", en: "Door / key card issue", ru: "Проблема с дверью / картой", tr: "Kapı / kart sorunu", ar: "مشكلة في الباب / البطاقة" } },
-    { id: 'tc6', icon: '📶', price: 0, dept: 'technical',
-      name: { az: "WiFi qoşulmur", en: "WiFi not connecting", ru: "WiFi не подключается", tr: "WiFi bağlanmıyor", ar: "الواي فاي لا يتصل" } },
-    { id: 'tc7', icon: '🔥', price: 0, dept: 'technical',
-      name: { az: "İsidici / qızıl su yox", en: "Heating / hot water", ru: "Отопление / горячая вода", tr: "Isıtma / sıcak su yok", ar: "التدفئة / الماء الساخن" } },
-    { id: 'tc8', icon: '🚽', price: 0, dept: 'technical',
-      name: { az: "Santexnika problemi", en: "Plumbing issue", ru: "Сантехника", tr: "Tesisat sorunu", ar: "مشكلة سباكة" } }
+    { id: 'tc1', icon: '🚿', price: 0, dept: 'technical',
+      name: { az: "İsti su yoxdur", en: "No hot water", ru: "Нет горячей воды", tr: "Sıcak su yok", ar: "لا يوجد ماء ساخن" } },
+    { id: 'tc2', icon: '🚰', price: 0, dept: 'technical',
+      name: { az: "Soyuq su yoxdur", en: "No cold water", ru: "Нет холодной воды", tr: "Soğuk su yok", ar: "لا يوجد ماء بارد" } },
+    { id: 'tc3', icon: '🔥', price: 0, dept: 'technical',
+      name: { az: "Otaqı isit", en: "Heat up the room", ru: "Нагреть номер", tr: "Odayı ısıt", ar: "تدفئة الغرفة" } },
+    { id: 'tc4', icon: '🧊', price: 0, dept: 'technical',
+      name: { az: "Otaqı soyut", en: "Cool down the room", ru: "Охладить номер", tr: "Odayı soğut", ar: "تبريد الغرفة" } },
+    { id: 'tc5', icon: '📺', price: 0, dept: 'technical',
+      name: { az: "Televizorda problem", en: "TV problem", ru: "Проблема с телевизором", tr: "TV sorunu", ar: "مشكلة في التلفاز" } }
   ],
   reception: [
     { id: 'rc1', icon: '🕐', price: 0, dept: 'reception',
