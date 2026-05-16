@@ -163,6 +163,99 @@
   }
   .room-badge:active { opacity: 0.7; }
 
+  /* WIFI HEADER BUTTON */
+  .wifi-btn {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+  }
+  html[dir="rtl"] .wifi-btn { margin-right: 0; margin-left: 6px; }
+  .wifi-btn:active { transform: scale(0.9); }
+
+  /* WIFI POPUP */
+  .wifi-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 600;
+    padding: 20px;
+  }
+  .wifi-popup-overlay.show { display: flex; animation: fadeIn 0.2s; }
+  .wifi-popup {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px 24px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: scaleIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .wifi-popup-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: var(--green-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+  }
+  .wifi-popup-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .wifi-popup-pass {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 1px;
+    background: var(--bg);
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    user-select: all;
+  }
+  .wifi-popup-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .wifi-popup-btn.copied { background: #16A34A; }
+  .wifi-popup-close {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-top: 12px;
+    cursor: pointer;
+    padding: 8px;
+  }
+
   /* WIFI CARD */
   .wifi-card {
     background: var(--card);
@@ -2081,6 +2174,7 @@
     <div class="header-top">
       <img src="logo.svg" alt="Grand Hotel" class="logo-img">
       <div style="display: flex; align-items: center; gap: 4px;">
+      <button class="wifi-btn" onclick="showWifiPopup()" title="WiFi">📶</button>
       <div class="notif-bell">
         <button class="notif-bell-btn" onclick="openNotifs()">🔔</button>
         <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
@@ -2104,17 +2198,6 @@
     <div class="room-badge" onclick="resetGuest()" title="Reset">Otaq —</div>
   </div>
 
-  <!-- WIFI -->
-  <div class="wifi-card">
-    <div class="wifi-icon">📶</div>
-    <div class="wifi-info">
-      <div class="wifi-label" data-i18n="wifiLabel">WIFI PAROLU</div>
-      <div class="wifi-pass" id="wifiPass">••••••••••</div>
-    </div>
-    <button class="copy-btn" id="copyBtn" onclick="toggleWifi()">
-      <span id="wifiBtnLabel" data-i18n="show">Göstər</span>
-    </button>
-  </div>
 
   <!-- INFO PILLS -->
   <div class="info-row">
@@ -2455,6 +2538,19 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- WIFI POPUP -->
+<div class="wifi-popup-overlay" id="wifiPopup" onclick="if(event.target.id==='wifiPopup')hideWifiPopup()">
+  <div class="wifi-popup">
+    <div class="wifi-popup-icon">📶</div>
+    <div class="wifi-popup-label" data-i18n="wifiLabel">WIFI PAROLU</div>
+    <div class="wifi-popup-pass" id="wifiPopupPass">Grand@0081</div>
+    <button class="wifi-popup-btn" id="wifiPopupBtn" onclick="copyWifiPopup()">
+      <span id="wifiPopupBtnLabel" data-i18n="copy">Kopyala</span>
+    </button>
+    <button class="wifi-popup-close" onclick="hideWifiPopup()" data-i18n="close">Bağla</button>
+  </div>
+</div>
+
 <!-- CALL CONFIRMATION DIALOG -->
 <div class="call-dialog-overlay" id="callDialog">
   <div class="call-dialog">
@@ -2482,7 +2578,7 @@ const i18n = {
     welcomeName: "Xoş gəldiniz",
     roomLabel: "Otaq",
     wifiLabel: "WIFI PAROLU",
-    copy: "Kopyala", copied: "Kopyalandı", show: "Göstər",
+    copy: "Kopyala", copied: "Kopyalandı", show: "Göstər", close: "Bağla",
     breakfast: "Səhər: 07:00–11:00",
     restaurant: "Restoran: 24/7",
     reception24: "Resepsion: 24/7",
@@ -2593,7 +2689,7 @@ const i18n = {
     welcomeName: "Welcome",
     roomLabel: "Room",
     wifiLabel: "WIFI PASSWORD",
-    copy: "Copy", copied: "Copied", show: "Show",
+    copy: "Copy", copied: "Copied", show: "Show", close: "Close",
     breakfast: "Breakfast: 07:00–11:00",
     restaurant: "Restaurant: 24/7",
     reception24: "Reception: 24/7",
@@ -2704,7 +2800,7 @@ const i18n = {
     welcomeName: "Добро пожаловать",
     roomLabel: "Номер",
     wifiLabel: "WIFI ПАРОЛЬ",
-    copy: "Копировать", copied: "Скопировано", show: "Показать",
+    copy: "Копировать", copied: "Скопировано", show: "Показать", close: "Закрыть",
     breakfast: "Завтрак: 07:00–11:00",
     restaurant: "Ресторан: 24/7",
     reception24: "Ресепшен: 24/7",
@@ -2815,7 +2911,7 @@ const i18n = {
     welcomeName: "Hoş geldiniz",
     roomLabel: "Oda",
     wifiLabel: "WIFI ŞİFRESİ",
-    copy: "Kopyala", copied: "Kopyalandı", show: "Göster",
+    copy: "Kopyala", copied: "Kopyalandı", show: "Göster", close: "Kapat",
     breakfast: "Kahvaltı: 07:00–11:00",
     restaurant: "Restoran: 24/7",
     reception24: "Resepsiyon: 24/7",
@@ -2926,7 +3022,7 @@ const i18n = {
     welcomeName: "مرحباً",
     roomLabel: "غرفة",
     wifiLabel: "كلمة سر واي فاي",
-    copy: "نسخ", copied: "تم النسخ", show: "إظهار",
+    copy: "نسخ", copied: "تم النسخ", show: "إظهار", close: "إغلاق",
     breakfast: "الإفطار: 07:00–11:00",
     restaurant: "المطعم: 24/7",
     reception24: "الاستقبال: 24/7",
@@ -3226,29 +3322,22 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-let wifiRevealed = false;
 const WIFI_PASSWORD = 'Grand@0081';
 
-function toggleWifi() {
-  if (!wifiRevealed) {
-    document.getElementById('wifiPass').textContent = WIFI_PASSWORD;
-    document.getElementById('wifiBtnLabel').textContent = t('copy');
-    document.getElementById('wifiBtnLabel').removeAttribute('data-i18n');
-    document.getElementById('wifiBtnLabel').setAttribute('data-i18n', 'copy');
-    wifiRevealed = true;
-  } else {
-    copyWifi();
-  }
+function showWifiPopup() {
+  document.getElementById('wifiPopup').classList.add('show');
 }
-
-function copyWifi() {
+function hideWifiPopup() {
+  document.getElementById('wifiPopup').classList.remove('show');
+}
+function copyWifiPopup() {
   navigator.clipboard?.writeText(WIFI_PASSWORD);
-  const btn = document.getElementById('copyBtn');
+  const btn = document.getElementById('wifiPopupBtn');
   btn.classList.add('copied');
-  document.getElementById('wifiBtnLabel').textContent = t('copied');
+  document.getElementById('wifiPopupBtnLabel').textContent = t('copied');
   setTimeout(() => {
     btn.classList.remove('copied');
-    document.getElementById('wifiBtnLabel').textContent = t('copy');
+    document.getElementById('wifiPopupBtnLabel').textContent = t('copy');
   }, 1500);
 }
 
