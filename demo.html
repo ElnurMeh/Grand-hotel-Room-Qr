@@ -3922,6 +3922,9 @@ function setLang(newLang) {
   renderCountryMenu();
   renderSights();
   renderTours();
+  // Refresh restaurant menu tabs + content (data is multilingual)
+  if (typeof renderMenuTabs === 'function') renderMenuTabs();
+  if (typeof renderMenuContent === 'function') renderMenuContent();
   document.getElementById('langMenu')?.classList.remove('show');
   document.getElementById('welcomeLangMenu')?.classList.remove('show');
   const flag = langToFlag[newLang] || '🌐';
@@ -4255,11 +4258,16 @@ function addToCart(itemId, category) {
 function cartHasRestaurantItems() {
   return cart.some(c => c._restaurant || c.dept === 'restaurant');
 }
+function cartRestaurantSubtotal() {
+  return cart.filter(c => c._restaurant || c.dept === 'restaurant')
+             .reduce((s, c) => s + c.qty * c.price, 0);
+}
 function cartSubtotal() {
   return cart.reduce((s, c) => s + c.qty * c.price, 0);
 }
 function cartServiceFee() {
-  return cartHasRestaurantItems() ? +(cartSubtotal() * SERVICE_FEE_PCT / 100).toFixed(2) : 0;
+  // 10% only on restaurant portion
+  return +(cartRestaurantSubtotal() * SERVICE_FEE_PCT / 100).toFixed(2);
 }
 function cartGrandTotal() {
   return +(cartSubtotal() + cartServiceFee()).toFixed(2);
