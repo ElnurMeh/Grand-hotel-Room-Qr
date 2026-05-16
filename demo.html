@@ -601,6 +601,49 @@
   .report-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
   .report-sub { font-size: 12px; opacity: 0.85; line-height: 1.4; }
   .report-arrow { font-size: 22px; flex-shrink: 0; }
+
+  /* FULL MENU CARD (link to oddmenu.com) */
+  .full-menu-card {
+    margin: 0 0 14px;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
+    color: white;
+    border-radius: 18px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 6px 22px rgba(6,17,41,0.2);
+    transition: transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .full-menu-card:active { transform: scale(0.98); }
+  .full-menu-card::before {
+    content: "";
+    position: absolute;
+    top: -40%; right: -10%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,137,62,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .full-menu-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--gold), #9C7330);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(184,137,62,0.4);
+    z-index: 1;
+  }
+  .full-menu-info { flex: 1; min-width: 0; z-index: 1; }
+  html[dir="rtl"] .full-menu-info { text-align: right; }
+  .full-menu-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .full-menu-sub { font-size: 11px; opacity: 0.7; line-height: 1.4; }
+  .full-menu-arrow { font-size: 20px; opacity: 0.7; flex-shrink: 0; z-index: 1; }
   .photo-capture {
     background: var(--card);
     border: 2px dashed var(--line);
@@ -2484,7 +2527,18 @@
     <button class="back-btn" onclick="closeScreen()">←</button>
     <div class="screen-title" data-i18n="restaurantTitle">Restoran</div>
   </div>
-  <div class="screen-content"><div class="item-list" id="restaurantList"></div></div>
+  <div class="screen-content">
+    <a class="full-menu-card" href="https://oddmenu.com/az/p/le-grand-lounge" target="_blank" rel="noopener">
+      <div class="full-menu-icon">📖</div>
+      <div class="full-menu-info">
+        <div class="full-menu-title" data-i18n="fullMenuTitle">Tam menyuya bax</div>
+        <div class="full-menu-sub" data-i18n="fullMenuSub">Le Grand Lounge — bütün yeməklər, içkilər, deserlər</div>
+      </div>
+      <div class="full-menu-arrow">↗</div>
+    </a>
+    <div class="section-title" style="padding: 0; margin-bottom: 10px;" data-i18n="quickOrder">Sürətli sifariş</div>
+    <div class="item-list" id="restaurantList"></div>
+  </div>
 </div>
 
 <div class="screen" id="screen-reception">
@@ -2851,6 +2905,9 @@ const i18n = {
     housekeepingDesc: "Dəsmal, slipper, su",
     restaurantTitle: "Restoran",
     restaurantDesc: "Otağa çatdırılma",
+    fullMenuTitle: "Tam menyuya bax",
+    fullMenuSub: "Le Grand Lounge — yeməklər, içkilər, deserlər",
+    quickOrder: "Sürətli sifariş",
     receptionTitle: "Resepsion",
     receptionDesc: "Taksi, tur, geç check-out",
     technicalTitle: "Texniki Xidmət",
@@ -2983,6 +3040,9 @@ const i18n = {
     housekeepingDesc: "Towels, slippers, water",
     restaurantTitle: "Restaurant",
     restaurantDesc: "Room service",
+    fullMenuTitle: "View full menu",
+    fullMenuSub: "Le Grand Lounge — full food, drinks & desserts",
+    quickOrder: "Quick order",
     receptionTitle: "Reception",
     receptionDesc: "Taxi, tours, late check-out",
     technicalTitle: "Technical Service",
@@ -3115,6 +3175,9 @@ const i18n = {
     housekeepingDesc: "Полотенца, тапочки, вода",
     restaurantTitle: "Ресторан",
     restaurantDesc: "Доставка в номер",
+    fullMenuTitle: "Полное меню",
+    fullMenuSub: "Le Grand Lounge — блюда, напитки, десерты",
+    quickOrder: "Быстрый заказ",
     receptionTitle: "Ресепшен",
     receptionDesc: "Такси, туры, поздний выезд",
     technicalTitle: "Тех. служба",
@@ -3247,6 +3310,9 @@ const i18n = {
     housekeepingDesc: "Havlu, terlik, su",
     restaurantTitle: "Restoran",
     restaurantDesc: "Odaya servis",
+    fullMenuTitle: "Tam menüyü gör",
+    fullMenuSub: "Le Grand Lounge — yemekler, içecekler, tatlılar",
+    quickOrder: "Hızlı sipariş",
     receptionTitle: "Resepsiyon",
     receptionDesc: "Taksi, tur, geç çıkış",
     technicalTitle: "Teknik Servis",
@@ -3379,6 +3445,9 @@ const i18n = {
     housekeepingDesc: "مناشف، نعال، مياه",
     restaurantTitle: "المطعم",
     restaurantDesc: "خدمة إلى الغرفة",
+    fullMenuTitle: "عرض القائمة الكاملة",
+    fullMenuSub: "Le Grand Lounge — الأطباق والمشروبات والحلويات",
+    quickOrder: "طلب سريع",
     receptionTitle: "الاستقبال",
     receptionDesc: "تاكسي، جولات، تأخير المغادرة",
     technicalTitle: "الصيانة",
