@@ -2219,10 +2219,15 @@
       <h3 data-i18n="restaurantTitle">Restoran</h3>
       <p data-i18n="restaurantDesc">Otağa çatdırılma</p>
     </button>
-    <button class="service-card wide" onclick="openScreen('reception')">
+    <button class="service-card" onclick="openScreen('reception')">
       <div class="service-icon">🛎️</div>
       <h3 data-i18n="receptionTitle">Resepsion</h3>
-      <p data-i18n="receptionDesc">Taksi, tur, geç check-out və daha çox</p>
+      <p data-i18n="receptionDesc">Taksi, tur, geç check-out</p>
+    </button>
+    <button class="service-card" onclick="openScreen('technical')">
+      <div class="service-icon">🛠️</div>
+      <h3 data-i18n="technicalTitle">Texniki Xidmət</h3>
+      <p data-i18n="technicalDesc">TV, klimat, işıq, su</p>
     </button>
   </div>
 
@@ -2302,6 +2307,14 @@
     <div class="screen-title" data-i18n="receptionTitle">Resepsion</div>
   </div>
   <div class="screen-content"><div class="item-list" id="receptionList"></div></div>
+</div>
+
+<div class="screen" id="screen-technical">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeScreen()">←</button>
+    <div class="screen-title" data-i18n="technicalTitle">Texniki Xidmət</div>
+  </div>
+  <div class="screen-content"><div class="item-list" id="technicalList"></div></div>
 </div>
 
 <div class="screen" id="screen-report">
@@ -2588,7 +2601,9 @@ const i18n = {
     restaurantTitle: "Restoran",
     restaurantDesc: "Otağa çatdırılma",
     receptionTitle: "Resepsion",
-    receptionDesc: "Taksi, tur, geç check-out və daha çox",
+    receptionDesc: "Taksi, tur, geç check-out",
+    technicalTitle: "Texniki Xidmət",
+    technicalDesc: "TV, klimat, işıq, su",
     helpTitle: "Resepsion ilə Söhbət",
     helpDesc: "İstənilən sualı yaz, dərhal cavab al",
     cartTitle: "Sifarişiniz",
@@ -2699,7 +2714,9 @@ const i18n = {
     restaurantTitle: "Restaurant",
     restaurantDesc: "Room service",
     receptionTitle: "Reception",
-    receptionDesc: "Taxi, tours, late check-out and more",
+    receptionDesc: "Taxi, tours, late check-out",
+    technicalTitle: "Technical Service",
+    technicalDesc: "TV, AC, lights, water",
     helpTitle: "Chat with Reception",
     helpDesc: "Ask anything, get instant reply",
     cartTitle: "Your Order",
@@ -2810,7 +2827,9 @@ const i18n = {
     restaurantTitle: "Ресторан",
     restaurantDesc: "Доставка в номер",
     receptionTitle: "Ресепшен",
-    receptionDesc: "Такси, туры, поздний выезд и др.",
+    receptionDesc: "Такси, туры, поздний выезд",
+    technicalTitle: "Тех. служба",
+    technicalDesc: "ТВ, кондиционер, свет, вода",
     helpTitle: "Чат с ресепшен",
     helpDesc: "Напишите вопрос — мгновенный ответ",
     cartTitle: "Ваш заказ",
@@ -2921,7 +2940,9 @@ const i18n = {
     restaurantTitle: "Restoran",
     restaurantDesc: "Odaya servis",
     receptionTitle: "Resepsiyon",
-    receptionDesc: "Taksi, tur, geç çıkış ve dahası",
+    receptionDesc: "Taksi, tur, geç çıkış",
+    technicalTitle: "Teknik Servis",
+    technicalDesc: "TV, klima, ışık, su",
     helpTitle: "Resepsiyonla Sohbet",
     helpDesc: "Sorunuzu yazın, anında cevap",
     cartTitle: "Siparişiniz",
@@ -3032,7 +3053,9 @@ const i18n = {
     restaurantTitle: "المطعم",
     restaurantDesc: "خدمة إلى الغرفة",
     receptionTitle: "الاستقبال",
-    receptionDesc: "تاكسي، جولات، تأخير المغادرة وأكثر",
+    receptionDesc: "تاكسي، جولات، تأخير المغادرة",
+    technicalTitle: "الصيانة",
+    technicalDesc: "تلفاز، مكيف، إضاءة، ماء",
     helpTitle: "دردشة مع الاستقبال",
     helpDesc: "اكتب سؤالك، رد فوري",
     cartTitle: "طلبك",
@@ -3166,6 +3189,24 @@ const menu = {
     { id: 'r9', icon: '🍯', price: 8, dept: 'restaurant',
       name: { az: "Paxlava", en: "Baklava", ru: "Пахлава", tr: "Baklava", ar: "بقلاوة" } }
   ],
+  technical: [
+    { id: 'tc1', icon: '📺', price: 0, dept: 'technical',
+      name: { az: "TV problemi", en: "TV issue", ru: "Проблема с ТВ", tr: "TV sorunu", ar: "مشكلة في التلفاز" } },
+    { id: 'tc2', icon: '❄️', price: 0, dept: 'technical',
+      name: { az: "Klimat işləmir", en: "AC not working", ru: "Не работает кондиционер", tr: "Klima çalışmıyor", ar: "المكيف لا يعمل" } },
+    { id: 'tc3', icon: '💡', price: 0, dept: 'technical',
+      name: { az: "İşıq yanmır", en: "Light not working", ru: "Не работает свет", tr: "Işık yanmıyor", ar: "الإضاءة لا تعمل" } },
+    { id: 'tc4', icon: '💧', price: 0, dept: 'technical',
+      name: { az: "Su sızması", en: "Water leak", ru: "Протечка воды", tr: "Su sızıntısı", ar: "تسرب مياه" } },
+    { id: 'tc5', icon: '🚪', price: 0, dept: 'technical',
+      name: { az: "Qapı / kart problemi", en: "Door / key card issue", ru: "Проблема с дверью / картой", tr: "Kapı / kart sorunu", ar: "مشكلة في الباب / البطاقة" } },
+    { id: 'tc6', icon: '📶', price: 0, dept: 'technical',
+      name: { az: "WiFi qoşulmur", en: "WiFi not connecting", ru: "WiFi не подключается", tr: "WiFi bağlanmıyor", ar: "الواي فاي لا يتصل" } },
+    { id: 'tc7', icon: '🔥', price: 0, dept: 'technical',
+      name: { az: "İsidici / qızıl su yox", en: "Heating / hot water", ru: "Отопление / горячая вода", tr: "Isıtma / sıcak su yok", ar: "التدفئة / الماء الساخن" } },
+    { id: 'tc8', icon: '🚽', price: 0, dept: 'technical',
+      name: { az: "Santexnika problemi", en: "Plumbing issue", ru: "Сантехника", tr: "Tesisat sorunu", ar: "مشكلة سباكة" } }
+  ],
   reception: [
     { id: 'rc1', icon: '🕐', price: 0, dept: 'reception',
       name: { az: "Geç check-out (2 saat)", en: "Late check-out (2h)", ru: "Поздний выезд (+2 ч)", tr: "Geç çıkış (2 saat)", ar: "تأخير المغادرة (ساعتان)" } },
@@ -3185,11 +3226,11 @@ const menu = {
 };
 
 const departmentNames = {
-  az: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restoran", reception: "🛎 Resepsion" },
-  en: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restaurant", reception: "🛎 Reception" },
-  ru: { housekeeping: "🛏 Обслуживание", restaurant: "🍽 Ресторан", reception: "🛎 Ресепшен" },
-  tr: { housekeeping: "🛏 Oda Hizmeti", restaurant: "🍽 Restoran", reception: "🛎 Resepsiyon" },
-  ar: { housekeeping: "🛏 خدمة الغرف", restaurant: "🍽 المطعم", reception: "🛎 الاستقبال" }
+  az: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restoran", reception: "🛎 Resepsion", technical: "🛠 Texniki" },
+  en: { housekeeping: "🛏 Housekeeping", restaurant: "🍽 Restaurant", reception: "🛎 Reception", technical: "🛠 Technical" },
+  ru: { housekeeping: "🛏 Обслуживание", restaurant: "🍽 Ресторан", reception: "🛎 Ресепшен", technical: "🛠 Техн. служба" },
+  tr: { housekeeping: "🛏 Oda Hizmeti", restaurant: "🍽 Restoran", reception: "🛎 Resepsiyon", technical: "🛠 Teknik" },
+  ar: { housekeeping: "🛏 خدمة الغرف", restaurant: "🍽 المطعم", reception: "🛎 الاستقبال", technical: "🛠 صيانة" }
 };
 
 function t(key) { return (i18n[lang] && i18n[lang][key]) || key; }
