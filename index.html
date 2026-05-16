@@ -345,6 +345,14 @@
     gap: 6px;
   }
   .info-pill strong { color: var(--ink); font-weight: 600; }
+  .info-pill.clickable {
+    background: linear-gradient(135deg, var(--ink), var(--ink-2));
+    border-color: transparent;
+    color: white;
+    cursor: pointer;
+  }
+  .info-pill.clickable strong { color: white; }
+  .info-pill.clickable:active { transform: scale(0.95); }
 
   .section-title {
     font-size: 11px;
@@ -2189,7 +2197,6 @@
     <div class="header-top">
       <img src="logo.svg" alt="Grand Hotel" class="logo-img">
       <div style="display: flex; align-items: center; gap: 4px;">
-      <button class="wifi-btn" onclick="showWifiPopup()" title="WiFi">📶</button>
       <div class="notif-bell">
         <button class="notif-bell-btn" onclick="openNotifs()">🔔</button>
         <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
@@ -2217,9 +2224,11 @@
   <!-- INFO PILLS — auto-scrolling ticker -->
   <div class="info-row">
     <div class="info-ticker">
+      <div class="info-pill clickable" onclick="showWifiPopup()">📶 <strong data-i18n="wifiPillLabel">WiFi · toxun</strong></div>
       <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
       <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
       <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
+      <div class="info-pill clickable" onclick="showWifiPopup()">📶 <strong data-i18n="wifiPillLabel">WiFi · toxun</strong></div>
       <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
       <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
       <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
@@ -2623,7 +2632,7 @@ const i18n = {
     welcomeName: "Xoş gəldiniz",
     roomLabel: "Otaq",
     wifiLabel: "WIFI PAROLU",
-    copy: "Kopyala", copied: "Kopyalandı", show: "Göstər", close: "Bağla",
+    copy: "Kopyala", copied: "Kopyalandı", show: "Göstər", close: "Bağla", wifiPillLabel: "WiFi · toxun",
     breakfast: "Səhər: 08:00–11:00",
     restaurant: "Restoran: 24/7",
     reception24: "Resepsion: 24/7",
@@ -2742,7 +2751,7 @@ const i18n = {
     welcomeName: "Welcome",
     roomLabel: "Room",
     wifiLabel: "WIFI PASSWORD",
-    copy: "Copy", copied: "Copied", show: "Show", close: "Close",
+    copy: "Copy", copied: "Copied", show: "Show", close: "Close", wifiPillLabel: "WiFi · tap",
     breakfast: "Breakfast: 08:00–11:00",
     restaurant: "Restaurant: 24/7",
     reception24: "Reception: 24/7",
@@ -2861,7 +2870,7 @@ const i18n = {
     welcomeName: "Добро пожаловать",
     roomLabel: "Номер",
     wifiLabel: "WIFI ПАРОЛЬ",
-    copy: "Копировать", copied: "Скопировано", show: "Показать", close: "Закрыть",
+    copy: "Копировать", copied: "Скопировано", show: "Показать", close: "Закрыть", wifiPillLabel: "WiFi · нажми",
     breakfast: "Завтрак: 08:00–11:00",
     restaurant: "Ресторан: 24/7",
     reception24: "Ресепшен: 24/7",
@@ -2980,7 +2989,7 @@ const i18n = {
     welcomeName: "Hoş geldiniz",
     roomLabel: "Oda",
     wifiLabel: "WIFI ŞİFRESİ",
-    copy: "Kopyala", copied: "Kopyalandı", show: "Göster", close: "Kapat",
+    copy: "Kopyala", copied: "Kopyalandı", show: "Göster", close: "Kapat", wifiPillLabel: "WiFi · dokun",
     breakfast: "Kahvaltı: 08:00–11:00",
     restaurant: "Restoran: 24/7",
     reception24: "Resepsiyon: 24/7",
@@ -3099,7 +3108,7 @@ const i18n = {
     welcomeName: "مرحباً",
     roomLabel: "غرفة",
     wifiLabel: "كلمة سر واي فاي",
-    copy: "نسخ", copied: "تم النسخ", show: "إظهار", close: "إغلاق",
+    copy: "نسخ", copied: "تم النسخ", show: "إظهار", close: "إغلاق", wifiPillLabel: "واي فاي · اضغط",
     breakfast: "الإفطار: 08:00–11:00",
     restaurant: "المطعم: 24/7",
     reception24: "الاستقبال: 24/7",
