@@ -2536,8 +2536,11 @@
       </div>
       <div class="full-menu-arrow">↗</div>
     </a>
-    <div class="section-title" style="padding: 0; margin-bottom: 10px;" data-i18n="quickOrder">Sürətli sifariş</div>
-    <div class="item-list" id="restaurantList"></div>
+    <div style="background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; text-align: center;">
+      <div style="font-size: 28px; margin-bottom: 6px;">🍽️</div>
+      <div style="font-size: 13px; color: var(--ink); font-weight: 600; margin-bottom: 4px;" data-i18n="restaurantInfoTitle">Otağa çatdırılma</div>
+      <div style="font-size: 12px; color: var(--ink-soft); line-height: 1.5;" data-i18n="restaurantInfoSub">Menyuya bax, sifarişi resepsiona zəng edib elə — otağa gətirəcəyik. 24/7 açıq.</div>
+    </div>
   </div>
 </div>
 
@@ -2908,12 +2911,14 @@ const i18n = {
     fullMenuTitle: "Tam menyuya bax",
     fullMenuSub: "Le Grand Lounge — yeməklər, içkilər, deserlər",
     quickOrder: "Sürətli sifariş",
+    restaurantInfoTitle: "Otağa çatdırılma",
+    restaurantInfoSub: "Menyuya bax, sifarişi resepsiona zəng edib elə — otağa gətirəcəyik. 24/7 açıq.",
     receptionTitle: "Resepsion",
     receptionDesc: "Taksi, tur, geç check-out",
     technicalTitle: "Texniki Xidmət",
     technicalDesc: "TV, klimat, işıq, su",
     spaTitle: "SPA & Wellness",
-    spaDesc: "Massaj, hamam, sauna, manikür",
+    spaDesc: "Relaks, medikal, Deep Tissue, VIP massajlar",
     spaIntroTitle: "SPA-mıza xoş gəlmisiniz",
     spaIntroSub: "Rezerv üçün vaxt seçimi resepsion tərəfindən təsdiqlənəcək. 09:00–22:00",
     book: "Rezerv",
@@ -3043,12 +3048,14 @@ const i18n = {
     fullMenuTitle: "View full menu",
     fullMenuSub: "Le Grand Lounge — full food, drinks & desserts",
     quickOrder: "Quick order",
+    restaurantInfoTitle: "Room delivery",
+    restaurantInfoSub: "Browse the menu, call reception to order — we'll bring it to your room. Open 24/7.",
     receptionTitle: "Reception",
     receptionDesc: "Taxi, tours, late check-out",
     technicalTitle: "Technical Service",
     technicalDesc: "TV, AC, lights, water",
     spaTitle: "SPA & Wellness",
-    spaDesc: "Massage, hammam, sauna, manicure",
+    spaDesc: "Relax, medical, Deep Tissue, VIP massages",
     spaIntroTitle: "Welcome to our SPA",
     spaIntroSub: "Time slots will be confirmed by reception. Open 09:00–22:00",
     book: "Book",
@@ -3178,12 +3185,14 @@ const i18n = {
     fullMenuTitle: "Полное меню",
     fullMenuSub: "Le Grand Lounge — блюда, напитки, десерты",
     quickOrder: "Быстрый заказ",
+    restaurantInfoTitle: "Доставка в номер",
+    restaurantInfoSub: "Посмотрите меню, позвоните на ресепшен — принесём в номер. Работаем 24/7.",
     receptionTitle: "Ресепшен",
     receptionDesc: "Такси, туры, поздний выезд",
     technicalTitle: "Тех. служба",
     technicalDesc: "ТВ, кондиционер, свет, вода",
     spaTitle: "СПА & Wellness",
-    spaDesc: "Массаж, хамам, сауна, маникюр",
+    spaDesc: "Релакс, медицинский, Deep Tissue, VIP массажи",
     spaIntroTitle: "Добро пожаловать в наш СПА",
     spaIntroSub: "Время будет подтверждено ресепшен. Работаем 09:00–22:00",
     book: "Записаться",
@@ -3313,12 +3322,14 @@ const i18n = {
     fullMenuTitle: "Tam menüyü gör",
     fullMenuSub: "Le Grand Lounge — yemekler, içecekler, tatlılar",
     quickOrder: "Hızlı sipariş",
+    restaurantInfoTitle: "Odaya servis",
+    restaurantInfoSub: "Menüyü inceleyin, resepsiyonu arayın — odanıza getireceğiz. 24/7 açık.",
     receptionTitle: "Resepsiyon",
     receptionDesc: "Taksi, tur, geç çıkış",
     technicalTitle: "Teknik Servis",
     technicalDesc: "TV, klima, ışık, su",
     spaTitle: "SPA & Wellness",
-    spaDesc: "Masaj, hamam, sauna, manikür",
+    spaDesc: "Relax, medikal, Deep Tissue, VIP masajlar",
     spaIntroTitle: "SPA'mıza hoş geldiniz",
     spaIntroSub: "Saat resepsiyon tarafından onaylanacak. 09:00–22:00",
     book: "Rezerve et",
@@ -3448,12 +3459,14 @@ const i18n = {
     fullMenuTitle: "عرض القائمة الكاملة",
     fullMenuSub: "Le Grand Lounge — الأطباق والمشروبات والحلويات",
     quickOrder: "طلب سريع",
+    restaurantInfoTitle: "التوصيل للغرفة",
+    restaurantInfoSub: "تصفّح القائمة، اتصل بالاستقبال — سنوصلها لغرفتك. مفتوح 24/7.",
     receptionTitle: "الاستقبال",
     receptionDesc: "تاكسي، جولات، تأخير المغادرة",
     technicalTitle: "الصيانة",
     technicalDesc: "تلفاز، مكيف، إضاءة، ماء",
     spaTitle: "سبا و عافية",
-    spaDesc: "تدليك، حمّام، ساونا، مانيكير",
+    spaDesc: "تدليك ريلاكس، طبي، ديب تيشو، VIP",
     spaIntroTitle: "أهلاً بك في السبا",
     spaIntroSub: "سيتم تأكيد الوقت من قبل الاستقبال. مفتوح 09:00–22:00",
     book: "حجز",
@@ -3652,17 +3665,7 @@ const menu = {
       desc: { az: "60 dəqiqəlik versiyanın uzadılmış variantı", en: "Extended version of the 60-min Mixed Therapy", ru: "Расширенная версия 60-минутного варианта", tr: "60 dk versiyonun uzatılmış hali", ar: "نسخة موسعة من جلسة 60 دقيقة" } },
     { id: 'sp7', icon: '👑', price: 160, dept: 'spa', inRoom: true,
       name: { az: "Grand VIP Massajı (70 dəq)", en: "Grand VIP Massage (70 min)", ru: "Grand VIP массаж (70 мин)", tr: "Grand VIP Masajı (70 dk)", ar: "تدليك جراند VIP (70 دقيقة)" },
-      desc: { az: "Xüsusi ayaq və baş massajı, təzyiq sizə görə tənzimlənir, isti daş massajı daxildir", en: "Special foot & head massage, pressure tailored to you, hot stone included", ru: "Особый массаж стоп и головы, давление по желанию, горячие камни включены", tr: "Özel ayak ve baş masajı, baskı isteğe göre, sıcak taş dahil", ar: "تدليك خاص للقدمين والرأس، الضغط حسب رغبتك، يشمل الحجارة الساخنة" } },
-    { id: 'sp8', icon: '🛀', price: 35, dept: 'spa', inRoom: false,
-      name: { az: "Türk hamamı", en: "Turkish hammam", ru: "Турецкий хамам", tr: "Türk hamamı", ar: "حمّام تركي" } },
-    { id: 'sp9', icon: '♨️', price: 25, dept: 'spa', inRoom: false,
-      name: { az: "Sauna (60 dəq)", en: "Sauna (60 min)", ru: "Сауна (60 мин)", tr: "Sauna (60 dk)", ar: "ساونا (60 دقيقة)" } },
-    { id: 'sp10', icon: '🏊', price: 0, dept: 'spa', inRoom: false,
-      name: { az: "Hovuz (qonaqlar üçün pulsuz)", en: "Pool (free for guests)", ru: "Бассейн (для гостей бесплатно)", tr: "Havuz (misafirler için ücretsiz)", ar: "حمام السباحة (مجاناً للنزلاء)" } },
-    { id: 'sp11', icon: '💅', price: 25, dept: 'spa', inRoom: true,
-      name: { az: "Manikür", en: "Manicure", ru: "Маникюр", tr: "Manikür", ar: "مانيكير" } },
-    { id: 'sp12', icon: '👣', price: 30, dept: 'spa', inRoom: true,
-      name: { az: "Pedikür", en: "Pedicure", ru: "Педикюр", tr: "Pedikür", ar: "باديكير" } }
+      desc: { az: "Xüsusi ayaq və baş massajı, təzyiq sizə görə tənzimlənir, isti daş massajı daxildir", en: "Special foot & head massage, pressure tailored to you, hot stone included", ru: "Особый массаж стоп и головы, давление по желанию, горячие камни включены", tr: "Özel ayak ve baş masajı, baskı isteğe göre, sıcak taş dahil", ar: "تدليك خاص للقدمين والرأس، الضغط حسب رغبتك، يشمل الحجارة الساخنة" } }
   ]
 };
 
