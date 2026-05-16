@@ -347,22 +347,18 @@
   .info-row {
     padding: 0 16px;
     margin-bottom: 24px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     position: relative;
   }
   .info-row::-webkit-scrollbar { display: none; }
   .info-ticker {
     display: flex;
     gap: 10px;
-    animation: tickerScroll 18s linear infinite;
     width: max-content;
-    will-change: transform;
   }
-  @keyframes tickerScroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  .info-ticker:hover { animation-play-state: paused; }
   .info-pill {
     background: var(--card);
     padding: 10px 14px;
@@ -376,13 +372,7 @@
     gap: 6px;
   }
   .info-pill strong { color: var(--ink); font-weight: 600; }
-  .info-pill.clickable {
-    background: linear-gradient(135deg, var(--ink), var(--ink-2));
-    border-color: transparent;
-    color: white;
-    cursor: pointer;
-  }
-  .info-pill.clickable strong { color: white; }
+  .info-pill.clickable { cursor: pointer; }
   .info-pill.clickable:active { transform: scale(0.95); }
 
   .section-title {
@@ -2255,11 +2245,11 @@
   <!-- INFO PILLS — auto-scrolling ticker -->
   <div class="info-row">
     <div class="info-ticker">
-      <div class="info-pill clickable" onclick="showWifiPopup()">📶 <strong data-i18n="wifiPillLabel">WiFi · toxun</strong></div>
+      <div class="info-pill clickable" onclick="showWifiPopup()">📶 <strong>WiFi 24/7</strong></div>
       <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
       <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
       <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
-      <div class="info-pill clickable" onclick="showWifiPopup()">📶 <strong data-i18n="wifiPillLabel">WiFi · toxun</strong></div>
+      <div class="info-pill clickable" onclick="showWifiPopup()">📶 <strong>WiFi 24/7</strong></div>
       <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
       <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
       <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
@@ -4730,6 +4720,37 @@ renderTours();
 applyI18n();
 renderAllLists();
 checkWelcome();
+
+// Auto-scroll ticker (pause on touch, resume after 3s)
+(function() {
+  const ticker = document.querySelector('.info-row');
+  if (!ticker) return;
+  let scrolling = true;
+  let resumeT = null;
+  const speed = 0.5;
+  function autoStep() {
+    if (scrolling && !document.hidden) {
+      const halfWidth = ticker.scrollWidth / 2;
+      ticker.scrollLeft += speed;
+      if (ticker.scrollLeft >= halfWidth) ticker.scrollLeft -= halfWidth;
+    }
+    requestAnimationFrame(autoStep);
+  }
+  function pause() {
+    scrolling = false;
+    if (resumeT) clearTimeout(resumeT);
+  }
+  function resumeAfter() {
+    if (resumeT) clearTimeout(resumeT);
+    resumeT = setTimeout(() => { scrolling = true; }, 3000);
+  }
+  ticker.addEventListener('touchstart', pause, { passive: true });
+  ticker.addEventListener('touchend', resumeAfter, { passive: true });
+  ticker.addEventListener('mousedown', pause);
+  ticker.addEventListener('mouseup', resumeAfter);
+  ticker.addEventListener('mouseleave', resumeAfter);
+  requestAnimationFrame(autoStep);
+})();
 renderActiveOrderCard();
 updateNotifBadge();
 (async () => {
