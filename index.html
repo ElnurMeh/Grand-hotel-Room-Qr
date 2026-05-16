@@ -3219,7 +3219,9 @@ const menu = {
     { id: 'tc4', icon: '🧊', price: 0, dept: 'technical',
       name: { az: "Otaqı soyut", en: "Cool down the room", ru: "Охладить номер", tr: "Odayı soğut", ar: "تبريد الغرفة" } },
     { id: 'tc5', icon: '📺', price: 0, dept: 'technical',
-      name: { az: "Televizorda problem", en: "TV problem", ru: "Проблема с телевизором", tr: "TV sorunu", ar: "مشكلة في التلفاز" } }
+      name: { az: "Televizorda problem", en: "TV problem", ru: "Проблема с телевизором", tr: "TV sorunu", ar: "مشكلة في التلفاز" } },
+    { id: 'tc6', icon: '🔧', price: 0, dept: 'technical', custom: true,
+      name: { az: "Digər problem", en: "Other problem", ru: "Другая проблема", tr: "Diğer sorun", ar: "مشكلة أخرى" } }
   ],
   reception: [
     { id: 'rc1', icon: '🕐', price: 0, dept: 'reception',
@@ -3408,7 +3410,9 @@ function renderList(category) {
           ${category === 'technical' ? '' : `<div class="item-price ${item.price === 0 ? 'free' : ''}">${item.price === 0 ? t('free') : item.price + ' ₼'}</div>`}
         </div>
         ${category === 'technical'
-          ? `<button class="add-btn" onclick="sendTechIssue('${item.id}')">${t('report')}</button>`
+          ? (item.custom
+              ? `<button class="add-btn" onclick="openScreen('report')">${t('report')}</button>`
+              : `<button class="add-btn" onclick="sendTechIssue('${item.id}')">${t('report')}</button>`)
           : (qty === 0
               ? `<button class="add-btn" onclick="addToCart('${item.id}', '${category}')">${t('add')}</button>`
               : `<div class="qty-control">
