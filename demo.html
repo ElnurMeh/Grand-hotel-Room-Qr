@@ -309,14 +309,24 @@
 
   /* INFO PILLS */
   .info-row {
-    display: flex;
-    gap: 8px;
     padding: 0 16px;
     margin-bottom: 24px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    overflow: hidden;
+    position: relative;
   }
   .info-row::-webkit-scrollbar { display: none; }
+  .info-ticker {
+    display: flex;
+    gap: 10px;
+    animation: tickerScroll 18s linear infinite;
+    width: max-content;
+    will-change: transform;
+  }
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .info-ticker:hover { animation-play-state: paused; }
   .info-pill {
     background: var(--card);
     padding: 10px 14px;
@@ -2199,11 +2209,16 @@
   </div>
 
 
-  <!-- INFO PILLS -->
+  <!-- INFO PILLS — auto-scrolling ticker -->
   <div class="info-row">
-    <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
-    <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
-    <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
+    <div class="info-ticker">
+      <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
+      <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
+      <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
+      <div class="info-pill">🌅 <strong data-i18n="breakfast">Səhər: 08:00–11:00</strong></div>
+      <div class="info-pill">🍽 <strong data-i18n="restaurant">Restoran: 24/7</strong></div>
+      <div class="info-pill">🛎 <strong data-i18n="reception24">Resepsion: 24/7</strong></div>
+    </div>
   </div>
 
   <!-- SERVICES -->
