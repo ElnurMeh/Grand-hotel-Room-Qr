@@ -4639,11 +4639,27 @@ async function pollChatMessages() {
     const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=0`);
     const data = await resp.json();
     if (data.ok && data.result.length > 0) {
+      const myIds = loadMyMsgIds();
+      const myRoom = String(window.guestData?.room || '');
       data.result.forEach(update => {
         if (update.update_id > lastUpdateId) lastUpdateId = update.update_id;
         const m = update.message;
         if (m && m.text && !m.from.is_bot && !m.text.startsWith('/')) {
-          addChatMessage('staff', m.text);
+          // FILTER: only show staff message if they REPLIED to one of this guest's messages,
+          // OR if the reply body explicitly mentions this guest's room number ("Otaq 304", "304:", etc.)
+          let forMe = false;
+          if (m.reply_to_message && myIds.includes(m.reply_to_message.message_id)) {
+            forMe = true;
+          } else if (myRoom && new RegExp('(?:otaq|room|номер|oda|غرفة)\\s*' + myRoom + '\\b', 'i').test(m.text)) {
+            forMe = true;
+          } else if (myRoom && new RegExp('(?:^|\\s|#)' + myRoom + '\\s*[:\\-]', 'i').test(m.text)) {
+            forMe = true;
+          }
+          if (forMe) {
+            // Strip room prefix from displayed text if present
+            const cleaned = m.text.replace(new RegExp('^\\s*(?:otaq|room|номер|oda|غرفة)?\\s*#?' + myRoom + '\\s*[:\\-]\\s*', 'i'), '');
+            addChatMessage('staff', cleaned || m.text);
+          }
         }
         if (update.callback_query) {
           handleStatusCallback(update.callback_query);
@@ -4651,6 +4667,18 @@ async function pollChatMessages() {
       });
     }
   } catch (e) { console.error('Poll error:', e); }
+}
+
+// Track message_ids this guest has sent to TG so we can filter inbound replies
+function loadMyMsgIds() {
+  try { return JSON.parse(localStorage.getItem('grandhotel_my_msg_ids') || '[]'); } catch { return []; }
+}
+function addMyMsgId(id) {
+  const arr = loadMyMsgIds();
+  if (!arr.includes(id)) arr.push(id);
+  // keep last 200 only
+  while (arr.length > 200) arr.shift();
+  localStorage.setItem('grandhotel_my_msg_ids', JSON.stringify(arr));
 }
 
 async function sendChatMessage() {
@@ -4666,11 +4694,15 @@ async function sendChatMessage() {
   const tgText = `💬 <b>Otaq ${room} — ${escapeHtml(name)}</b>${phone ? '\n📱 ' + escapeHtml(phone) : ''}\n\n${escapeHtml(text)}`;
 
   try {
-    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    const resp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: TG_CHAT_ID, text: tgText, parse_mode: 'HTML' })
     });
+    const data = await resp.json();
+    if (data.ok && data.result?.message_id) {
+      addMyMsgId(data.result.message_id);
+    }
     sendToAdmin(tgText);
   } catch (e) { console.error('Send error:', e); }
 }
